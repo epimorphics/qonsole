@@ -1,0 +1,27 @@
+[
+  {
+    "name": "default",
+    "prefixes": {
+      "rdf": "",
+      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+      "owl": "http://www.w3.org/2002/07/owl#",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "skos": "http://www.w3.org/2004/02/skos/core#",
+      "dc": "http://purl.org/dc/elements/1.1/"
+    },
+    "endpoint": "http://environment.data.gov.uk/sparql/bwq/query"
+  },
+  {
+    "name": "example1",
+    "desc": "This is the first example query",
+    "summary": "Basic select example",
+    "query": "select * where {?thing rdf:type ?type} limit 50"
+  },
+  {
+    "name": "example2",
+    "desc": "This is the second example query",
+    "summary": "Simple OWL example",
+    "query": "select * where {?thing a owl:Class ; ?p ?obj",
+    "prefixes": {"bwq": "http://environment.data.gov.uk/def/bathing-water-quality/"}
+  }
+]

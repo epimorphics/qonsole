@@ -29,6 +29,7 @@
 
     <script src="js/jquery-1.8.2.min.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script src="js/sprintf-0.7-beta1.js"></script>
     <script src="js/qonsole.js"></script>
   </head>
 
@@ -56,6 +57,25 @@
       <div class="row-fluid">
         <div class="span2">
           <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Queries</li>
+              <li><ul class="unstyled" id="queries"></ul></li>
+            </ul>
+            <ul class="nav nav-list">
+              <li class="nav-header">Prefixes</li>
+              <li><ul class="unstyled" id="prefixes"></ul></li>
+            </ul>
+            <ul class="nav nav-list">
+              <li class="nav-header">Output formats</li>
+              <li>
+                <div class="btn-group btn-group-vertical" data-toggle="buttons-radio">
+                  <button type="button" class="btn active" data-format="plain">plain text</button>
+                  <button type="button" class="btn " data-format="json">JSON</button>
+                  <button type="button" class="btn " data-format="table">table</button>
+                  <button type="button" class="btn " data-format="xml">XML</button>
+                </div>
+              </li>
+            </ul>
             <ul id="layout-options" class="nav nav-list">
               <li class="nav-header">Layout</li>
               <li>
@@ -64,18 +84,6 @@
                   <button type="button" class="btn" data-layout="vertical"><img src="img/icon-vertical-stack.20x20.png"> vertical</button>
                 </div>
               </li>
-            </ul>
-            <ul class="nav nav-list">
-              <li class="nav-header">Example queries</li>
-              <li><a href="#">Link</a></li>
-            </ul>
-            <ul class="nav nav-list">
-              <li class="nav-header">Prefixes</li>
-              <li><a href="#">Link</a></li>
-            </ul>
-            <ul class="nav nav-list">
-              <li class="nav-header">Output formats</li>
-              <li><a href="#">Link</a></li>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
