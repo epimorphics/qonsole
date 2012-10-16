@@ -4,10 +4,12 @@ var qonsole = function() {
   /** The loaded configuration */
   var _config = {};
   var _defaults = {};
+  var _current_query = null;
 
   var init = function() {
     $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
     $("#layout-options .btn").click( onSelectLayout );
+    $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
     loadConfig();
   };
 
@@ -56,15 +58,36 @@ var qonsole = function() {
 
   var showQueries = function( config ) {
     $.each( _config, function( i, c ) {
-      var html = sprintf( "<label class='radio'><input type='radio' value='%s' name='query' title='%s' />%s</label>",
-                          c.name, c.desc, c.summary );
+      var html = sprintf( "<label class='radio'><input type='radio' value='%s' name='query' title='%s' data-query-id='%s'/>%s</label>",
+                          c.name, c.desc, i, c.summary );
       $("#queries").append( html );
     } );
+
+    selectQuery( $("#queries").find( "input" )[0] );
   };
 
   var selectQuery = function( elt ) {
+    var queryId = $(elt).attr( "data-query-id" );
+    _current_query = _config[queryId];
 
+    $($("#queries").find( "input" )[queryId]).attr( "checked", true );
+    loadPrefixes( queryId );
   };
+
+  var loadPrefixes = function( queryId ) {
+    $("#prefixes").empty();
+    if (_defaults && _defaults.prefixes) {
+      $.each( _defaults.prefixes, function( k, v ) {loadPrefix( k, v )} );
+    }
+    if (_current_query && _current_query.prefixes) {
+      $.each( _current_query.prefixes, function( k, v ) {loadPrefix( k, v )} );
+    }
+  };
+
+  var loadPrefix = function( prefix, uri ) {
+    var html = sprintf( "<li><label><input type='checkbox' checked='true' value='%s'></input> %s:</label></li>", uri, prefix );
+    $("#prefixes").append( html );
+  }
 
   return {
     init: init

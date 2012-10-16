@@ -1,3 +1,9 @@
 #queries label, #prefixes label {
   /*display: inline;*/
 }
+
+a.inline-control {
+  display: inline !important;
+  margin-left: 1px !important;
+  padding-left: 0 !important;
+}
