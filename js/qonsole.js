@@ -71,11 +71,12 @@ var qonsole = function() {
   };
 
   var selectQuery = function( elt ) {
-    var queryId = $(elt).attr( "data-query-id" );
+    var queryId = $(elt).attr( "data-query-id" ) || $(elt).find("[data-query-id]").first().attr( "data-query-id");
     _current_query = _config[queryId];
 
     $($("#queries").find( "input" )[queryId]).attr( "checked", true );
     loadPrefixes( queryId );
+    loadQuery( queryId );
   };
 
   var loadPrefixes = function( queryId ) {
@@ -103,6 +104,10 @@ var qonsole = function() {
     } );
 
     $("#prefix-decl textarea").val( d );
+  };
+
+  var loadQuery = function() {
+    $("#query-edit textarea").val( _current_query.query );
   };
 
   return {
