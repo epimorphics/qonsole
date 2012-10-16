@@ -19,12 +19,14 @@ var qonsole = function() {
   var onSelectLayout = function( e ) {
     e.preventDefault();
     if ($(e.target).attr("data-layout") === "vertical") {
-      $("#query-block").removeClass("span5").addClass("span10");
-      $("#results-block").removeClass("span5").addClass("span10");
+      $("#query-block").removeClass("span6").addClass("span12");
+      $("#results-block").removeClass("span6").addClass("row-fluid");
+      $("#results-block > div").addClass( "span12" );
     }
     else {
-      $("#query-block").removeClass("span10").addClass("span5");
-      $("#results-block").removeClass("span10").addClass("span5");
+      $("#query-block").removeClass("span12").addClass("span6");
+      $("#results-block").removeClass("row-fluid").addClass("span6");
+      $("#results-block > div").removeClass( "span12" );
     }
   };
 
