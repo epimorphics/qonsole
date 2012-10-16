@@ -91,13 +91,17 @@
         </div><!--/span-->
 
         <!-- query -->
-        <div id="query-block" class="span5">
+        <div id="query-block" class="span5 sparql">
           <div class="well">
-            <div class="row-fluid">
+            <div class="row-fluid" id="prefix-decl">
               <h2 class="span12">Prefix declarations</h2>
+              <textarea class="span12" readonly="yes"></textarea>
             </div>
-            <div class="row-fluid"><div class="span12" id="prefix-decl">prefixes</div></div>
-            <div class="row-fluid"><div class="span12" id="query-edit">
+            <div class="row-fluid" id="query-edit">
+              <h2 class="span12">Query</h2>
+              <textarea class="span12"></textarea>
+            </div>
+            <div class="row-fluid"><div class="span12" id="query-chrome">
               query
               <a href="#" class="btn btn-primary">run query</a>
             </div></div>
@@ -105,7 +109,7 @@
         </div>
 
         <!-- results -->
-        <div id="results-block" class="span5">
+        <div id="results-block" class="span5 sparql sparql-results">
           <div class="well">
             <div class="row-fluid"><h2 class="span12">Query results</h2></div>
             <div class="row-fluid"><div class="span12" id="results" /></div>

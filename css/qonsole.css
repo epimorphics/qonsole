@@ -7,3 +7,22 @@ a.inline-control {
   margin-left: 1px !important;
   padding-left: 0 !important;
 }
+
+.sparql h2 {
+  font-size: 10px;
+  color: #666666;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.sparql .well {
+  padding: 5px;
+}
+
+.sparql textarea {
+  font-family: Inconsolata, Courier-new, Courier, monospace;
+  font-size: 10pt;
+  line-height: 1.2;
+  min-height: 90px !important;
+  resize: vertical;
+}

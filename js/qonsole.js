@@ -10,6 +10,8 @@ var qonsole = function() {
     $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
     $("#layout-options .btn").click( onSelectLayout );
     $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
+    $("#prefixes").click( renderPrefixes );
+
     loadConfig();
   };
 
@@ -82,12 +84,24 @@ var qonsole = function() {
     if (_current_query && _current_query.prefixes) {
       $.each( _current_query.prefixes, function( k, v ) {loadPrefix( k, v )} );
     }
+
+    renderPrefixes();
   };
 
   var loadPrefix = function( prefix, uri ) {
     var html = sprintf( "<li><label><input type='checkbox' checked='true' value='%s'></input> %s:</label></li>", uri, prefix );
     $("#prefixes").append( html );
   }
+
+  var renderPrefixes = function() {
+    var d = "";
+
+    $("#prefixes input:checked" ).each( function( i, elt ) {
+      d = d + sprintf( "prefix %s <%s>\n", $(elt).parent().text(), $(elt).attr("value") );
+    } );
+
+    $("#prefix-decl textarea").val( d );
+  };
 
   return {
     init: init
