@@ -70,8 +70,8 @@
             <ul class="nav nav-list">
               <li class="nav-header">Output formats</li>
               <li>
-                <div class="btn-group btn-group-vertical" data-toggle="buttons-radio">
-                  <button type="button" class="btn active" data-format="plain">plain text</button>
+                <div class="btn-group btn-group-vertical" data-toggle="buttons-radio" id="format-choice">
+                  <button type="button" class="btn active" data-format="text">plain text</button>
                   <button type="button" class="btn " data-format="json">JSON</button>
                   <button type="button" class="btn " data-format="table">table</button>
                   <button type="button" class="btn " data-format="xml">XML</button>
@@ -122,7 +122,7 @@
               <div>
                 <div class="well">
                   <div class="row-fluid"><h2 class="span12">Query results</h2></div>
-                  <div class="row-fluid"><div class="span12" id="results" /></div>
+                  <div class="row-fluid"><div class="span12" id="results"></div>
                 </div>
               </div>
             </div>

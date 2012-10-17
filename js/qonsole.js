@@ -11,6 +11,7 @@ var qonsole = function() {
     $("#layout-options .btn").click( onSelectLayout );
     $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
     $("#prefixes").click( renderPrefixes );
+    $("#query-chrome2 a").click( runQuery );
 
     loadConfig();
   };
@@ -122,6 +123,48 @@ var qonsole = function() {
     ep = ep || "/sparql";
 
     return ep;
+  };
+
+  var runQuery = function( e ) {
+    e.preventDefault();
+
+    var url = $("#query-chrome2 input").val();
+    var query = $("#prefix-decl textarea").val() + $("#query-edit textarea").val();
+    var format = selectedFormat();
+
+    $.ajax( url, {
+      data: {query: query, output: format},
+      success: onQuerySuccess,
+      failure: onQueryFail
+    } );
+  };
+
+  var selectedFormat = function() {
+    return $("#format-choice button.active" ).attr( "data-format" );
+  };
+
+  var onQueryFail = function() {
+    alert( "query fail" );
+  };
+
+  var onQuerySuccess = function( data ) {
+    switch (selectedFormat()) {
+      case "text":
+        showPlainTextResult( data );
+        break;
+      case "json":
+        break;
+      case "xml":
+        break;
+      case "table":
+        break;
+    }
+  };
+
+  var showPlainTextResult = function( data ) {
+    var lineLength = data.indexOf( "\n" );
+    $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
+    $( "#results pre.results-plain" ).text( data );
   };
 
   return {

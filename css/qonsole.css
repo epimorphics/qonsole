@@ -26,3 +26,11 @@ a.inline-control {
   min-height: 90px !important;
   resize: vertical;
 }
+
+#results {
+  overflow: auto;
+}
+
+#results .results-plain {
+  background-color: white;
+}
