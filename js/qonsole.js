@@ -156,7 +156,8 @@ var qonsole = function() {
         break;
       case "xml":
         break;
-      case "table":
+      case "tsv":
+        showTableResult( data );
         break;
     }
   };
@@ -165,6 +166,31 @@ var qonsole = function() {
     var lineLength = data.indexOf( "\n" );
     $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
     $( "#results pre.results-plain" ).text( data );
+  };
+
+  var showTableResult = function( data ) {
+    var lines = data.split( "\n" );
+
+    var data = new google.visualization.DataTable();
+    $.each( lines.shift().split("\t"), function(i, c ) {data.addColumn('string', c);} );
+
+    $.each( lines, function( i, l ) {
+      if (l && l !== "") {
+        var d = [];
+        $.each( l.split( "\t" ), function( i, v ) {d.push( v.slice( 1, -1 ));} );
+        data.addRows( [d] );
+      }
+    } );
+
+    $("#results").empty();
+    var table = new google.visualization.Table(document.getElementById('results'));
+    table.draw(data, {
+      showRowNumber: true,
+      page: "enable",
+      pageSize: 25,
+      alternatingRowStyle: true
+    });
+
   };
 
   return {
