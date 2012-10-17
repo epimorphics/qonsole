@@ -108,6 +108,20 @@ var qonsole = function() {
 
   var loadQuery = function() {
     $("#query-edit textarea").val( _current_query.query );
+    $("#query-chrome1 span").html( sprintf( "<em>%s</em>", _current_query.desc ));
+    $("#query-chrome2 input").val( endpointURL() );
+  };
+
+  var endpointURL = function() {
+    var ep = null;
+    if (_current_query) {
+      ep = _current_query.endpoint;
+    }
+
+    ep = ep || (_defaults && _defaults.endpoint);
+    ep = ep || "/sparql";
+
+    return ep;
   };
 
   return {
