@@ -23,7 +23,7 @@ a.inline-control {
   font-family: Inconsolata, Courier-new, Courier, monospace;
   font-size: 10pt;
   line-height: 1.2;
-  min-height: 90px !important;
+  min-height: 200px !important;
   resize: vertical;
 }
 

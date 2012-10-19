@@ -10,7 +10,7 @@ var qonsole = function() {
     $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
     $("#layout-options .btn").click( onSelectLayout );
     $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
-    $("#prefixes").click( renderPrefixes );
+    // $("#prefixes").click( addOrRemovePrefix );
     $("#query-chrome2 a").click( runQuery );
 
     loadConfig();
@@ -88,8 +88,6 @@ var qonsole = function() {
     if (_current_query && _current_query.prefixes) {
       $.each( _current_query.prefixes, function( k, v ) {loadPrefix( k, v )} );
     }
-
-    renderPrefixes();
   };
 
   var loadPrefix = function( prefix, uri ) {
@@ -97,18 +95,20 @@ var qonsole = function() {
     $("#prefixes").append( html );
   }
 
-  var renderPrefixes = function() {
+  var renderAllPrefixes = function() {
     var d = "";
 
     $("#prefixes input:checked" ).each( function( i, elt ) {
       d = d + sprintf( "prefix %s <%s>\n", $(elt).parent().text(), $(elt).attr("value") );
     } );
 
-    $("#prefix-decl textarea").val( d );
+    return d;
   };
 
   var loadQuery = function() {
-    $("#query-edit textarea").val( _current_query.query );
+    var q = renderAllPrefixes() + "\n";
+
+    $("#query-edit textarea").val( q + _current_query.query );
     $("#query-chrome1 span").html( sprintf( "<em>%s</em>", _current_query.desc ));
     $("#query-chrome2 input").val( endpointURL() );
   };
@@ -129,7 +129,7 @@ var qonsole = function() {
     e.preventDefault();
 
     var url = $("#query-chrome2 input").val();
-    var query = $("#prefix-decl textarea").val() + $("#query-edit textarea").val();
+    var query = $("#query-edit textarea").val();
     var format = selectedFormat();
     var options = {
       data: {query: query, output: format},
