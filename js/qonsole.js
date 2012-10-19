@@ -131,12 +131,18 @@ var qonsole = function() {
     var url = $("#query-chrome2 input").val();
     var query = $("#prefix-decl textarea").val() + $("#query-edit textarea").val();
     var format = selectedFormat();
-
-    $.ajax( url, {
+    var options = {
       data: {query: query, output: format},
       success: onQuerySuccess,
       failure: onQueryFail
-    } );
+    };
+
+    // hack TODO remove
+    if (selectedFormat() === "xml"){
+      options.data["force-accept"] = "text/plain";
+    }
+
+    $.ajax( url, options );
   };
 
   var selectedFormat = function() {
@@ -153,8 +159,10 @@ var qonsole = function() {
         showPlainTextResult( data );
         break;
       case "json":
+        showPlainTextResult( data );
         break;
       case "xml":
+        showPlainTextResult( data );
         break;
       case "tsv":
         showTableResult( data );
@@ -163,7 +171,24 @@ var qonsole = function() {
   };
 
   var showPlainTextResult = function( data ) {
-    var lineLength = data.indexOf( "\n" );
+    var lineLength = 100;
+    var k = 0;
+
+    for (var i = 0; i < 100; i++) {
+      var nextNewline = data.indexOf( "\n", k );
+      if (nextNewline < 0) {
+        break;
+      }
+      else {
+        if ((nextNewline - k) > lineLength) {
+          lineLength = nextNewline - k;
+        }
+
+        k = nextNewline + 1;
+      }
+    }
+
+
     $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
     $( "#results pre.results-plain" ).text( data );
   };
