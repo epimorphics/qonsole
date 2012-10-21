@@ -51,3 +51,12 @@ a.inline-control {
 pre.errorText {
   color: #d02020;
 }
+
+.navbar h1.brand, .navbar h2.brand {
+  line-height: 12px;
+}
+
+.navbar h1.brand {
+  font-weight: bold;
+  font-size: 20pt;
+}
