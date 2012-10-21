@@ -47,3 +47,7 @@ a.inline-control {
   font-style: italic;
   text-transform: none;
 }
+
+pre.errorText {
+  color: #d02020;
+}

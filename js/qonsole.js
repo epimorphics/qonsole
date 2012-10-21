@@ -220,19 +220,19 @@ var qonsole = function() {
   };
 
   var onQueryFail = function( jqXHR, textStatus, errorThrown, then ) {
-    showPlainTextResult( jqXHR.responseText, then, 0 );
+    showPlainTextResult( jqXHR.responseText, then, 0, "errorText", null );
   };
 
   var onQuerySuccess = function( data, then ) {
     switch (selectedFormat()) {
       case "text":
-        showPlainTextResult( data, then );
+        showPlainTextResult( data, then, null, null, "errorText" );
         break;
       case "json":
-        showPlainTextResult( data, then );
+        showPlainTextResult( data, then, "errorText" );
         break;
       case "xml":
-        showPlainTextResult( data, then );
+        showPlainTextResult( data, then, "errorText" );
         break;
       case "tsv":
         showTableResult( data, then );
@@ -246,7 +246,7 @@ var qonsole = function() {
     $("#timeTaken").addClass( "hidden" );
   };
 
-  var showPlainTextResult = function( data, then, count ) {
+  var showPlainTextResult = function( data, then, count, addClass, removeClass ) {
     var lineLength = 100;
     var lineLength = 0;
     var lineCount = 0;
@@ -273,7 +273,9 @@ var qonsole = function() {
     showTimeTaken( (count === null) ? lineCount - 4 : count, then );
 
     $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
-    $( "#results pre.results-plain" ).text( data );
+    $( "#results pre.results-plain" ).text( data )
+                                     .addClass( addClass )
+                                     .removeClass( removeClass );
   };
 
   var showTableResult = function( data, then ) {
