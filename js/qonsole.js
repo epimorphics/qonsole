@@ -111,6 +111,7 @@ var qonsole = function() {
     $($("#queries").find( "input" )[queryId]).attr( "checked", true );
     loadPrefixes( queryId );
     loadQuery( queryId );
+    clearResults();
   };
 
   var loadPrefixes = function( queryId ) {
@@ -237,6 +238,12 @@ var qonsole = function() {
         showTableResult( data, then );
         break;
     }
+  };
+
+  var clearResults = function() {
+    $("#results").empty();
+    $("#loadingSpinner").hide();
+    $("#timeTaken").addClass( "hidden" );
   };
 
   var showPlainTextResult = function( data, then, count ) {
