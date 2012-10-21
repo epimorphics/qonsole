@@ -21,9 +21,9 @@ a.inline-control {
 
 .sparql textarea {
   font-family: Inconsolata, Courier-new, Courier, monospace;
-  font-size: 10pt;
-  line-height: 1.2;
-  min-height: 200px !important;
+  font-size: 10pt;*/
+  line-height: 1.2;*/
+  min-height: 250px !important;
   resize: vertical;
 }
 

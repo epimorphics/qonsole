@@ -128,7 +128,7 @@
     "name": "ag-3",
     "summary": "Aggregation 3",
     "desc": "Show counties with at least 10 sampling points",
-    "query": "SELECT  ?countyName \n               (count(?sp) AS ?numSamplingPoint)\nWHERE {\n    ?sp    rdf:type      ef-sp:SamplingPoint .\n    ?sp bw:bathingWater ?bw .\n    ?bw stats:county ?county .\n    ?county rdfs:label ?countyName .\n}\nGROUP BY ?countyName\nHAVING (?numSamplingPoint >= 10)\nORDER BY ?numSamplingPoint"
+    "query": "SELECT  ?countyName (count(?sp) AS ?numSamplingPoint)\nWHERE {\n    ?sp    rdf:type      ef-sp:SamplingPoint .\n    ?sp bw:bathingWater ?bw .\n    ?bw stats:county ?county .\n    ?county rdfs:label ?countyName .\n}\nGROUP BY ?countyName\nHAVING (?numSamplingPoint >= 10)\nORDER BY ?numSamplingPoint"
   },
   {
     "name": "ag-fn-1",

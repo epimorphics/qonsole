@@ -318,7 +318,7 @@ var qonsole = function() {
     var m = Math.floor( duration / 60 );
 
     var html = (count === 1) ? "1 row in: " : (count + " rows in: ");
-    $("#timeTaken").html( html + m + "mins " + s + "s " + ms + "ms." );
+    $("#timeTaken").html( html + m + "min " + s + "s " + ms + "ms." );
     $("#timeTaken").removeClass("hidden");
   };
 
