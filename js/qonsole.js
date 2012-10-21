@@ -219,8 +219,7 @@ var qonsole = function() {
   };
 
   var onQueryFail = function( jqXHR, textStatus, errorThrown, then ) {
-    showTimeTaken( 0, then );
-    showPlainTextResult( jqXHR.responseText );
+    showPlainTextResult( jqXHR.responseText, then, 0 );
   };
 
   var onQuerySuccess = function( data, then ) {
@@ -240,7 +239,7 @@ var qonsole = function() {
     }
   };
 
-  var showPlainTextResult = function( data, then ) {
+  var showPlainTextResult = function( data, then, count ) {
     var lineLength = 100;
     var lineLength = 0;
     var lineCount = 0;
@@ -263,7 +262,8 @@ var qonsole = function() {
       }
     }
 
-    showTimeTaken( lineCount, then )
+    // we ignore 4 rows of chrome in the query format
+    showTimeTaken( (count === null) ? lineCount - 4 : count, then );
 
     $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
     $( "#results pre.results-plain" ).text( data );
@@ -280,7 +280,7 @@ var qonsole = function() {
       if (l && l !== "") {
         lineCount++;
         var d = [];
-        $.each( l.split( "\t" ), function( i, v ) {d.push( v.slice( 1, -1 ));} );
+        $.each( l.split( "\t" ), function( i, v ) {d.push( /*v.slice( 1, -1 )*/ v );} ); // TODO format values properly
         data.addRows( [d] );
       }
     } );
