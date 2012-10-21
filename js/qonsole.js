@@ -10,7 +10,7 @@ var qonsole = function() {
     $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
     $("#layout-options .btn").click( onSelectLayout );
     $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
-    // $("#prefixes").click( addOrRemovePrefix );
+    $("#prefixes").click( "input", addOrRemovePrefix );
     $("#query-chrome2 a").click( runQuery );
 
     loadConfig();
@@ -94,6 +94,39 @@ var qonsole = function() {
     var html = sprintf( "<li><label><input type='checkbox' checked='true' value='%s'></input> %s:</label></li>", uri, prefix );
     $("#prefixes").append( html );
   }
+
+  var addOrRemovePrefix = function( e ) {
+    var elt = $(e.target);
+    var prefix = elt.parent().text().trim().replace( /:/, "" );
+    var uri = elt.attr("value");
+
+    addPrefixDeclaration( prefix, uri, elt.is( ":checked" ) );
+  };
+
+  var addPrefixDeclaration = function( pref, uri, add ) {
+    var query = $("#query-edit textarea").val();
+    var lines = query.split( "\n" );
+    var pattern = new RegExp( "^prefix +" + pref );
+    var found = false;
+
+    for (var i = 0; !found && i < lines.length; i++) {
+      found = lines[i].match( pattern );
+      if (found && !add) {
+        lines.splice( i, 1 );
+      }
+    }
+
+    if (!found && add) {
+      for (var i = 0; i < lines.length; i++) {
+        if (!lines[i].match( /^prefix/ )) {
+          lines.splice( i, 0, sprintf( "prefix %s <%s>", pref, uri ) );
+          break;
+        }
+      }
+    }
+
+    $("#query-edit textarea").val( lines.join( "\n" ))
+  };
 
   var renderAllPrefixes = function() {
     var d = "";
