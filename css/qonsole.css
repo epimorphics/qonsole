@@ -34,3 +34,11 @@ a.inline-control {
 #results .results-plain {
   background-color: white;
 }
+
+#query-edit-cm {
+  background-color: white;
+  margin: 0 0 10px 0;
+  padding: 0;
+  border: 1px solid #E3E3E3;
+  border-radius: 4px;
+}

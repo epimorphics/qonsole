@@ -5,6 +5,7 @@ var qonsole = function() {
   var _config = {};
   var _defaults = {};
   var _current_query = null;
+  var _query_editor = null;
 
   var init = function() {
     $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
@@ -14,6 +15,33 @@ var qonsole = function() {
     $("#query-chrome2 a").click( runQuery );
 
     loadConfig();
+  };
+
+  /** Return the DOM node representing the query editor */
+  var queryEditor = function() {
+    if (!_query_editor) {
+      _query_editor = CodeMirror( $("#query-edit-cm").get(0), {
+        lineNumbers: true,
+        mode: "sparql"
+      } );
+    }
+    // return $("#query-edit textarea").get( 0 );
+    return _query_editor;
+  };
+
+  /** Return the configuration of the currently selected example query */
+  var currentQueryConfig = function() {
+    return _current_query;
+  };
+
+  /** Return the current value of the query edit area */
+  var currentQueryText = function() {
+    return queryEditor().getValue();
+  };
+
+  /** Set the value of the query edit area */
+  var setCurrentQueryText = function( text ) {
+    queryEditor().setValue( text );
   };
 
   /** User has selected a different layout of the main query area */
@@ -85,8 +113,8 @@ var qonsole = function() {
     if (_defaults && _defaults.prefixes) {
       $.each( _defaults.prefixes, function( k, v ) {loadPrefix( k, v )} );
     }
-    if (_current_query && _current_query.prefixes) {
-      $.each( _current_query.prefixes, function( k, v ) {loadPrefix( k, v )} );
+    if (currentQueryConfig() && currentQueryConfig().prefixes) {
+      $.each( currentQueryConfig().prefixes, function( k, v ) {loadPrefix( k, v )} );
     }
   };
 
@@ -104,9 +132,9 @@ var qonsole = function() {
   };
 
   var addPrefixDeclaration = function( pref, uri, add ) {
-    var query = $("#query-edit textarea").val();
+    var query = currentQueryText();
     var lines = query.split( "\n" );
-    var pattern = new RegExp( "^prefix +" + pref );
+    var pattern = new RegExp( "^prefix +" + pref + ":");
     var found = false;
 
     for (var i = 0; !found && i < lines.length; i++) {
@@ -119,20 +147,20 @@ var qonsole = function() {
     if (!found && add) {
       for (var i = 0; i < lines.length; i++) {
         if (!lines[i].match( /^prefix/ )) {
-          lines.splice( i, 0, sprintf( "prefix %s <%s>", pref, uri ) );
+          lines.splice( i, 0, sprintf( "prefix %s: <%s>", pref, uri ) );
           break;
         }
       }
     }
 
-    $("#query-edit textarea").val( lines.join( "\n" ))
+    setCurrentQueryText( lines.join( "\n" ) );
   };
 
   var renderAllPrefixes = function() {
     var d = "";
 
     $("#prefixes input:checked" ).each( function( i, elt ) {
-      d = d + sprintf( "prefix %s <%s>\n", $(elt).parent().text(), $(elt).attr("value") );
+      d = d + sprintf( "prefix %s <%s>\n", $(elt).parent().text().trim(), $(elt).attr("value") );
     } );
 
     return d;
@@ -141,15 +169,15 @@ var qonsole = function() {
   var loadQuery = function() {
     var q = renderAllPrefixes() + "\n";
 
-    $("#query-edit textarea").val( q + _current_query.query );
-    $("#query-chrome1 span").html( sprintf( "<em>%s</em>", _current_query.desc ));
+    setCurrentQueryText( q + currentQueryConfig().query );
+    $("#query-chrome1 span").html( sprintf( "<em>%s</em>", currentQueryConfig().desc ));
     $("#query-chrome2 input").val( endpointURL() );
   };
 
   var endpointURL = function() {
     var ep = null;
-    if (_current_query) {
-      ep = _current_query.endpoint;
+    if (currentQueryConfig()) {
+      ep = currentQueryConfig().endpoint;
     }
 
     ep = ep || (_defaults && _defaults.endpoint);
@@ -162,7 +190,7 @@ var qonsole = function() {
     e.preventDefault();
 
     var url = $("#query-chrome2 input").val();
-    var query = $("#query-edit textarea").val();
+    var query = currentQueryText();
     var format = selectedFormat();
     var options = {
       data: {query: query, output: format},
