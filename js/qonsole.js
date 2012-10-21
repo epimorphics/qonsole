@@ -131,7 +131,7 @@ var qonsole = function() {
 
   var addOrRemovePrefix = function( e ) {
     var elt = $(e.target);
-    var prefix = elt.parent().text().trim().replace( /:/, "" );
+    var prefix = $.trim(elt.parent().text()).replace( /:/, "" );
     var uri = elt.attr("value");
 
     addPrefixDeclaration( prefix, uri, elt.is( ":checked" ) );
@@ -166,7 +166,7 @@ var qonsole = function() {
     var d = "";
 
     $("#prefixes input:checked" ).each( function( i, elt ) {
-      d = d + sprintf( "prefix %s <%s>\n", $(elt).parent().text().trim(), $(elt).attr("value") );
+      d = d + sprintf( "prefix %s <%s>\n", $.trim($(elt).parent().text()), $(elt).attr("value") );
     } );
 
     return d;
@@ -277,9 +277,18 @@ var qonsole = function() {
     // we ignore 4 rows of chrome in the query format
     showTimeTaken( (count === null) ? lineCount - 4 : count, then );
 
-    $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
-    $( "#results pre.results-plain" ).text( data )
-                                     .addClass( addClass )
+
+    // versions of IE break the text formatting of pre nodes. Why? FFS
+    if (isIE()) {
+      $("#results").html( "<div></div>" );
+      var n = $("#results").children().get( 0 );
+      n.outerHTML = sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'>", lineLength * 8 ) + data.replace( /</g, "&lt;" ) + "</pre>";
+    }
+    else {
+      $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
+      $( "#results pre.results-plain" ).text( data );
+    }
+    $( "#results pre.results-plain" ).addClass( addClass )
                                      .removeClass( removeClass );
   };
 

@@ -24,8 +24,8 @@
   {
     "name": "core2",
     "summary": "Core SPARQL 2",
-    "desc": "This query has many solutions. Warning: it takes a long time to run!",
-    "query": "SELECT ?bw ?name\nWHERE {\n    ?bw    rdfs:label ?name .\n}"
+    "desc": "This query has many solutions. Warning: it takes a <strong>long time to run</strong>! In IE7, this query can take more than 10 minutes to complete. As a precaution, we have deliberately introduced a syntax error. If you really want to run this query, remove the space in <code>? label</label>.",
+    "query": "SELECT ?bw ?name\nWHERE {\n    ?bw    rdfs:label ? name .\n}"
   },
   {
     "name": "core3",
