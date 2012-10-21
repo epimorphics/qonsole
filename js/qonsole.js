@@ -195,7 +195,7 @@ var qonsole = function() {
     var options = {
       data: {query: query, output: format},
       success: onQuerySuccess,
-      failure: onQueryFail
+      error: onQueryFail
     };
 
     // hack TODO remove
@@ -210,8 +210,9 @@ var qonsole = function() {
     return $("#format-choice button.active" ).attr( "data-format" );
   };
 
-  var onQueryFail = function() {
-    alert( "query fail" );
+  var onQueryFail = function( jqXHR, textStatus, errorThrown ) {
+    //alert( "query fail " + textStatus );
+    showPlainTextResult( jqXHR.responseText );
   };
 
   var onQuerySuccess = function( data ) {
