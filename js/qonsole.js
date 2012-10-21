@@ -208,8 +208,13 @@ var qonsole = function() {
     };
 
     // hack TODO remove
-    if (selectedFormat() === "xml"){
+    if (selectedFormat() === "xml" || selectedFormat() === "json"){
       options.data["force-accept"] = "text/plain";
+    }
+
+    // IE doesn't speak CORS
+    if (isIE()) {
+      // options.dataType = "jsonp";
     }
 
     $.ajax( url, options );
@@ -220,7 +225,7 @@ var qonsole = function() {
   };
 
   var onQueryFail = function( jqXHR, textStatus, errorThrown, then ) {
-    showPlainTextResult( jqXHR.responseText, then, 0, "errorText", null );
+    showPlainTextResult( jqXHR.responseText || jqXHR.statusText, then, 0, "errorText", null );
   };
 
   var onQuerySuccess = function( data, then ) {
@@ -321,6 +326,16 @@ var qonsole = function() {
     $("#timeTaken").html( html + m + "min " + s + "s " + ms + "ms." );
     $("#timeTaken").removeClass("hidden");
   };
+
+  var isOpera = function() {return !!(window.opera && window.opera.version);};  // Opera 8.0+
+  var isFirefox = function() {return testCSS('MozBoxSizing');};                 // FF 0.8+
+  var isSafari = function() {return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;};    // At least Safari 3+: "[object HTMLElementConstructor]"
+  var isChrome = function() {return !isSafari() && testCSS('WebkitTransform');};  // Chrome 1+
+  var isIE = function() {return /*@cc_on!@*/false || testCSS('msTransform');};  // At least IE6
+
+  var testCSS =  function(prop) {
+      return prop in document.documentElement.style;
+  }
 
   return {
     init: init

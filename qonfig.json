@@ -13,7 +13,7 @@
       "owl":      "http://www.w3.org/2002/07/owl#",
       "xsd":      "http://www.w3.org/2001/XMLSchema#"
     },
-    "endpoint": "http://environment.data.gov.uk/sparql/bwq/query"
+    "endpoint": "http://staging-epimorphics.dnsalias.net/sparql/bwq/query"
   },
   {
     "name": "core-1",
