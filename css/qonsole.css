@@ -42,3 +42,8 @@ a.inline-control {
   border: 1px solid #E3E3E3;
   border-radius: 4px;
 }
+
+#timeTaken {
+  font-style: italic;
+  text-transform: none;
+}

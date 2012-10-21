@@ -14,6 +14,11 @@ var qonsole = function() {
     $("#prefixes").click( "input", addOrRemovePrefix );
     $("#query-chrome2 a").click( runQuery );
 
+    $('#loadingSpinner')
+      .hide()
+      .ajaxStart(function() {$(this).show();})
+      .ajaxStop(function() {$(this).hide();});
+
     loadConfig();
   };
 
@@ -188,14 +193,17 @@ var qonsole = function() {
 
   var runQuery = function( e ) {
     e.preventDefault();
+    hideTimeTaken();
 
     var url = $("#query-chrome2 input").val();
     var query = currentQueryText();
     var format = selectedFormat();
+    var now = new Date();
+
     var options = {
       data: {query: query, output: format},
-      success: onQuerySuccess,
-      error: onQueryFail
+      success: function( data ) {onQuerySuccess( data, now );},
+      error: function( x, t, e ) {onQueryFail( x, t, e, now );}
     };
 
     // hack TODO remove
@@ -210,38 +218,43 @@ var qonsole = function() {
     return $("#format-choice button.active" ).attr( "data-format" );
   };
 
-  var onQueryFail = function( jqXHR, textStatus, errorThrown ) {
-    //alert( "query fail " + textStatus );
+  var onQueryFail = function( jqXHR, textStatus, errorThrown, then ) {
+    showTimeTaken( 0, then );
     showPlainTextResult( jqXHR.responseText );
   };
 
-  var onQuerySuccess = function( data ) {
+  var onQuerySuccess = function( data, then ) {
     switch (selectedFormat()) {
       case "text":
-        showPlainTextResult( data );
+        showPlainTextResult( data, then );
         break;
       case "json":
-        showPlainTextResult( data );
+        showPlainTextResult( data, then );
         break;
       case "xml":
-        showPlainTextResult( data );
+        showPlainTextResult( data, then );
         break;
       case "tsv":
-        showTableResult( data );
+        showTableResult( data, then );
         break;
     }
   };
 
-  var showPlainTextResult = function( data ) {
+  var showPlainTextResult = function( data, then ) {
     var lineLength = 100;
+    var lineLength = 0;
+    var lineCount = 0;
+    var counting = true;
     var k = 0;
 
-    for (var i = 0; i < 100; i++) {
+    while (counting) {
       var nextNewline = data.indexOf( "\n", k );
       if (nextNewline < 0) {
-        break;
+        counting = false;
       }
       else {
+        lineCount++;
+
         if ((nextNewline - k) > lineLength) {
           lineLength = nextNewline - k;
         }
@@ -250,25 +263,29 @@ var qonsole = function() {
       }
     }
 
+    showTimeTaken( lineCount, then )
 
     $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
     $( "#results pre.results-plain" ).text( data );
   };
 
-  var showTableResult = function( data ) {
+  var showTableResult = function( data, then ) {
     var lines = data.split( "\n" );
+    var lineCount = 0;
 
     var data = new google.visualization.DataTable();
     $.each( lines.shift().split("\t"), function(i, c ) {data.addColumn('string', c);} );
 
     $.each( lines, function( i, l ) {
       if (l && l !== "") {
+        lineCount++;
         var d = [];
         $.each( l.split( "\t" ), function( i, v ) {d.push( v.slice( 1, -1 ));} );
         data.addRows( [d] );
       }
     } );
 
+    showTimeTaken( lineCount, then );
     $("#results").empty();
     var table = new google.visualization.Table(document.getElementById('results'));
     table.draw(data, {
@@ -278,6 +295,22 @@ var qonsole = function() {
       alternatingRowStyle: true
     });
 
+  };
+
+  var hideTimeTaken = function() {
+    $("#timeTaken").addClass( "hidden" );
+  };
+
+  var showTimeTaken = function( count, then ) {
+    var duration = new Date().getTime() - then.getTime();
+    var ms = duration % 1000;
+    duration = Math.floor( duration / 1000 );
+    var s = duration % 60;
+    var m = Math.floor( duration / 60 );
+
+    var html = (count === 1) ? "1 row in: " : (count + " rows in: ");
+    $("#timeTaken").html( html + m + "mins " + s + "s " + ms + "ms." );
+    $("#timeTaken").removeClass("hidden");
   };
 
   return {
