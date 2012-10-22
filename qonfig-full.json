@@ -1,0 +1,168 @@
+[
+  {
+    "name": "default",
+    "prefixes": {
+      "bw":       "http://environment.data.gov.uk/def/bathing-water/",
+      "bwq":      "http://environment.data.gov.uk/def/bathing-water-quality/",
+      "ef-sp":    "http://location.data.gov.uk/def/ef/SamplingPoint/",
+      "interval": "http://reference.data.gov.uk/def/intervals/",
+      "stats":    "http://statistics.data.gov.uk/def/administrative-geography/",
+      "sr":       "http://data.ordnancesurvey.co.uk/ontology/spatialrelations/",
+      "rdf":      "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "rdfs":     "http://www.w3.org/2000/01/rdf-schema#",
+      "owl":      "http://www.w3.org/2002/07/owl#",
+      "xsd":      "http://www.w3.org/2001/XMLSchema#"
+    },
+    "endpoint": "http://staging-epimorphics.dnsalias.net/sparql/bwq/query"
+  },
+  {
+    "name": "core-1",
+    "summary": "Core SPARQL 1",
+    "desc": "A first SPARQL query",
+    "query": "SELECT ?var\nWHERE {\n    ?var\n       <http://www.w3.org/2000/01/rdf-schema#label>       \"Spittal\"@en.\n}"
+  },
+  {
+    "name": "core2",
+    "summary": "Core SPARQL 2",
+    "desc": "This query has many solutions. Warning: it takes a <strong>long time to run</strong>! In IE7, this query can take more than 10 minutes to complete. As a precaution, we have deliberately introduced a syntax error. If you really want to run this query, remove the space in <code>? name</label>.",
+    "query": "SELECT ?bw ?name\nWHERE {\n    ?bw    rdfs:label ? name .\n}"
+  },
+  {
+    "name": "core3",
+    "summary": "Core SPARQL 3",
+    "desc": "This query has mutliple solutions, but we only show the first five",
+    "query": "SELECT ?bw ?name\nWHERE {\n    ?bw    rdfs:label ?name .\n}\nlimit 5"
+  },
+  {
+    "name": "core4",
+    "summary": "Core SPARQL 4",
+    "desc": "Selecting the labels of bw:BathingWater resources only",
+    "query": "SELECT ?bw ?name\nWHERE {\n    ?bw   rdf:type bw:BathingWater .\n    ?bw    rdfs:label ?name .\n}\nLIMIT 5"
+  },
+
+  {
+    "name": "core5",
+    "summary": "Core SPARQL 5",
+    "desc": "List five bathing waters and their eubwid",
+    "query": "SELECT  ?name ?eubwid\nWHERE {\n    ?bw    rdfs:label ?name .\n    ?bw    bw:eubwidNotation ?eubwid .\n}\nLIMIT 5"
+  },
+  {
+    "name": "core6",
+    "summary": "Core SPARQL 6",
+    "desc": "Get Spittal's easting and northing",
+    "query": "SELECT ?easting ?northing\nWHERE {\n    ?bw    rdfs:label \"Spittal\"@en.\n    ?bw    ef-sp:samplingPoint ?sp.\n    ?sp      sr:easting  ?easting .\n    ?sp      sr:northing ?northing .\n}"
+  },
+  {
+    "name": "core7",
+    "summary": "Core SPARQL 7",
+    "desc": "List bathing waters and their sampling point eastings and northings",
+    "query": "SELECT  ?name ?easting ?northing\nWHERE {\n    ?bw    rdfs:label ?name.\n    ?bw    ef-sp:samplingPoint ?sp.\n    ?sp      sr:easting  ?easting .\n    ?sp      sr:northing ?northing .\n}\nLIMIT 4"
+  },
+  {
+    "name": "filter1",
+    "summary": "Filters 1",
+    "desc": "List four bathing waters east of Spittal",
+    "query": "SELECT  ?name ?easting\nWHERE {\n    ?bw    rdf:type bw:BathingWater .\n    ?bw    rdfs:label ?name.\n    ?bw    ef-sp:samplingPoint ?sp.\n    ?sp      sr:easting  ?easting .\n    FILTER (?easting  > 400800)\n}\nLIMIT 4"
+  },
+  {
+    "name": "filter2",
+    "summary": "Filters 2",
+    "desc": "List four bathing waters whose name begins with 'S'",
+    "query": "SELECT  ?name \nWHERE {\n    ?bw    rdf:type bw:BathingWater .\n    ?bw    rdfs:label ?name.\n    FILTER regex(?name, \"^S\")\n}\nLIMIT 4"
+  },
+  {
+    "name": "filter3",
+    "summary": "Filters 3",
+    "desc": "List four bathing waters with ukc identifiers",
+    "query": "SELECT  ?name ?bw\nWHERE {\n    ?bw    rdf:type bw:BathingWater .\n    ?bw    rdfs:label ?name.\n    FILTER regex(STR(?bw), \"/ukc\")\n}\nLIMIT 4"
+  },
+  {
+    "name": "filter4",
+    "summary": "Filters 4",
+    "desc": "List just the English names of bathing waters",
+    "query": "SELECT  ?name ?bw\nWHERE {\n    ?bw    rdf:type bw:BathingWater .\n    ?bw    rdfs:label ?name.\n    FILTER (lang(?name) = \"en\")\n}\nLIMIT 4"
+  },
+  {
+    "name": "filter5",
+    "summary": "Filters 5",
+    "desc": "List bathing waters that do not have a county",
+    "query": "SELECT  ?name ?eubwid\nWHERE {\n    ?bw    rdf:type bw:BathingWater .\n    ?bw    rdfs:label ?name.\n    ?bw    bw:eubwidNotation ?eubwid .\n    FILTER NOT EXISTS {\n        ?bw stats:county ?county .\n    }\n}\nLIMIT 4"
+  },
+  {
+    "name": "opt1",
+    "summary": "Optional and union 1",
+    "desc": "Bathing waters beginning with 'C' and their counties",
+    "query": "SELECT  ?name ?countyName\nWHERE {\n    ?bw       rdf:type bw:BathingWater .\n    ?bw       rdfs:label ?name .\n    FILTER regex(?name, \"^C\")\n        ?bw       stats:county ?county .\n        ?county rdfs:label ?countyName .\n}\nLIMIT 4"
+  },
+  {
+    "name": "opt2",
+    "summary": "Optional and union 2",
+    "desc": "Bathing waters beginning with 'C' and, optionally, their counties",
+    "query": "SELECT  ?name ?countyName\nWHERE {\n    ?bw       rdf:type bw:BathingWater .\n    ?bw       rdfs:label ?name .\n    FILTER regex(?name, \"^C\")\n    OPTIONAL {\n        ?bw       stats:county ?county .\n        ?county rdfs:label ?countyName .\n    }\n}\nLIMIT 4"
+  },
+  {
+    "name": "opt3",
+    "summary": "Optional and union 3",
+    "desc": "Names of counties and local authority districts",
+    "query": "SELECT  DISTINCT ?name\nWHERE {    \n    ?bw       rdf:type bw:BathingWater .\n    {\n      ?bw       stats:county ?county .\n       ?county rdfs:label ?name .\n    }  UNION {\n       ?bw       stats:district ?district .\n       ?district rdfs:label ?name \n    }\n}"
+  },
+  {
+    "name": "opt4",
+    "summary": "Optional and union 4",
+    "desc": "Union: which name is which type?",
+    "query": "SELECT REDUCED ?countyName ?districtName\nWHERE {    \n    ?bw       rdf:type bw:BathingWater .\n    {\n      ?bw       stats:county ?county .\n       ?county rdfs:label ?countyName .\n    }  UNION {\n       ?bw       stats:district ?district .\n       ?district rdfs:label ?districtName \n    }\n}"
+  },
+  {
+    "name": "ag-1",
+    "summary": "Aggregation 1",
+    "desc": "Count all the sampling points",
+    "query": "SELECT (COUNT(?sp) AS ?numSamplingPoint)\nWHERE {\n    ?sp    rdf:type      ef-sp:SamplingPoint .\n}"
+  },
+  {
+    "name": "ag-2",
+    "summary": "Aggregation 2",
+    "desc": "Count sampling points by county",
+    "query": "SELECT  ?countyName \n               (count(?sp) AS ?numSamplingPoint)\nWHERE {\n    ?sp    rdf:type      ef-sp:SamplingPoint .\n    ?sp bw:bathingWater ?bw .\n    ?bw stats:county ?county .\n    ?county rdfs:label ?countyName .\n}\nGROUP BY ?countyName\nORDER BY ?numSamplingPoint"
+  },
+  {
+    "name": "ag-3",
+    "summary": "Aggregation 3",
+    "desc": "Show counties with at least 10 sampling points",
+    "query": "SELECT  ?countyName (count(?sp) AS ?numSamplingPoint)\nWHERE {\n    ?sp    rdf:type      ef-sp:SamplingPoint .\n    ?sp bw:bathingWater ?bw .\n    ?bw stats:county ?county .\n    ?county rdfs:label ?countyName .\n}\nGROUP BY ?countyName\nHAVING (?numSamplingPoint >= 10)\nORDER BY ?numSamplingPoint"
+  },
+  {
+    "name": "ag-fn-1",
+    "summary": "Aggregation fns 1",
+    "desc": "How many bathing waters have failed an annual assessment?",
+    "query": "SELECT  (COUNT(  DISTINCT   ?bw) AS ?count)\nWHERE {\n    ?ca   rdf:type bwq:ComplianceAssessment .\n    ?ca   bwq:bathingWater ?bw .\n    ?ca  bwq:complianceClassification bwq:F .\n}"
+  },
+  {
+    "name": "ag-fn-2",
+    "summary": "Aggregation fns 2",
+    "desc": "How many bathing waters were designated in each year ordered by year",
+    "query": "SELECT ?year (COUNT(?name) AS ?count)\nWHERE {\n    ?bw rdf:type bw:BathingWater .\n    ?bw bw:yearDesignated ?y .\n    ?y interval:ordinalYear ?year .\n    ?bw rdfs:label ?name .\n    FILTER(lang(?name)=\"en\")}\nGROUP BY ?year\nORDER BY ?year"
+  },
+
+  {
+    "name": "exercise1",
+    "summary": "Exercise 1",
+    "desc": "Exercise: write a query to get the eubwid of Spittal",
+    "query": "SELECT  ?var1 ?var2\nWHERE {\n    triple pattern 1 .\n    triple pattern 2  .\n}"
+  },
+  {
+    "name": "exercise2",
+    "summary": "Exercise 2",
+    "desc": "Exercise: find Spittal's latest compliance assessment",
+    "query": "SELECT  ?assessmentLabel\nWHERE {\n    triple pattern\n    triple pattern\n    triple pattern\n    triple pattern\n}"
+  },
+  {
+    "name": "exercise3",
+    "summary": "Exercise 3",
+    "desc": "Exercise: list the names and latest compliance assessments of 4 bathing waters",
+    "query": "SELECT  ?name ?assessmentLabel\nWHERE {\n    triple pattern\n    triple pattern\n    triple pattern\n    triple pattern\n    triple pattern\n}\n..."
+  }
+
+
+]
+
+
