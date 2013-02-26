@@ -7,7 +7,7 @@ var qonsole = function() {
   var _current_query = null;
   var _query_editor = null;
 
-  var init = function() {
+  var init = function( configFile ) {
     $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
     $("#layout-options .btn").click( onSelectLayout );
     $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
@@ -19,7 +19,7 @@ var qonsole = function() {
       .ajaxStart(function() {$(this).show();})
       .ajaxStop(function() {$(this).hide();});
 
-    loadConfig();
+    loadConfig( configFile );
   };
 
   /** Return the DOM node representing the query editor */
@@ -65,8 +65,8 @@ var qonsole = function() {
   };
 
   /** Load the configuration file with the example queries */
-  var loadConfig = function() {
-    $.getJSON("qonfig.json", onConfigLoaded )
+  var loadConfig = function( configFile ) {
+    $.getJSON( configFile, onConfigLoaded )
      .error( onConfigFail );
   };
 
@@ -350,6 +350,4 @@ var qonsole = function() {
     init: init
   }
 }();
-
-$(function() {qonsole.init();});
 
