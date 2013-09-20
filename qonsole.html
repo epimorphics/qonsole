@@ -57,9 +57,7 @@
           "owl":      "http://www.w3.org/2002/07/owl#",
           "xsd":      "http://www.w3.org/2001/XMLSchema#"
         },
-        queries: [{ "name": "core-1",
-                    "summary": "Example query",
-                    "desc": "",
+        queries: [{ "name": "Example query",
                     "query": "SELECT ?var\nWHERE {\n    ?var\n       <http://www.w3.org/2000/01/rdf-schema#label>       \"Spittal\"@en.\n}"
                   }
         ]
@@ -95,9 +93,7 @@
 
       <div class="col-md-12 well">
         <h2 class="">Example queries</h2>
-        <ul class="nav nav-list">
-          <li class="nav-header">Queries</li>
-          <li><ul class="unstyled" id="queries"></ul></li>
+        <ul class="list-inline examples">
         </ul>
       </div>
 
@@ -113,9 +109,7 @@
                 <a data-toggle="dropdown" class="btn btn-info" href="#">
                   Select endpoint <i class="icon-collapse"></i>
                 </a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">/foo/bar</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">/bim/bam</a></li>
+                <ul class="dropdown-menu endpoints" role="menu" aria-labelledby="dropdownMenu1">
                 </ul>
               </div>
             </div>
@@ -137,23 +131,6 @@
             </div>
 
           </form>
-<!--
-          <span class="col-md-10">
-            <span class="input-prepend"><span class="add-on">SPARQL endpoint: </span>
-            <input class="col-md-8" type="text"></input></span>
-          </span>
-          <ul class="nav nav-list">
-            <li class="nav-header">Output formats</li>
-            <li>
-              <div class="btn-group btn-group-vertical" data-toggle="buttons-radio" id="format-choice">
-                <button type="button" class="btn" data-format="text">plain text</button>
-                <button type="button" class="btn " data-format="json">JSON</button>
-                <button type="button" class="btn active" data-format="tsv">table</button>
-                <button type="button" class="btn " data-format="xml">XML</button>
-              </div>
-            </li>
-          </ul>
--->
         </div>
       </div>
 

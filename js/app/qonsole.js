@@ -95,14 +95,6 @@ var qonsole = function() {
     setCurrentQueryText( lines.join( "\n" ) );
   };
 
-  var loadQuery = function() {
-    var q = renderAllPrefixes() + "\n";
-
-    setCurrentQueryText( q + currentQueryConfig().query );
-    $("#query-chrome1 span").html( sprintf( "<em>%s</em>", currentQueryConfig().desc ));
-    $("#query-chrome2 input").val( endpointURL() );
-  };
-
   var endpointURL = function() {
     var ep = null;
     if (currentQueryConfig()) {
@@ -302,6 +294,8 @@ var qonsole = function() {
   var onConfigLoaded = function( config, status, jqXHR ) {
     _config = config;
     initPrefixes( config );
+    initExamples( config );
+    initEndpoints( config );
     initQuery( config );
   };
 
@@ -319,9 +313,37 @@ var qonsole = function() {
     } );
   };
 
+  /** List the example queries from the config */
+  var initExamples = function( config ) {
+    var examples = $("ul.examples");
+    examples.empty();
+
+    $.each( config.queries, function( i, queryDesc ) {
+      var html = sprintf( "<li><a class='btn btn-info btn-sm' data-toggle='button' data-query='%s'>%s</a></li>",
+                          queryDesc.query, queryDesc.name );
+      examples.append( html );
+    } );
+
+    examples.find("a").first().addClass( "active" );
+  };
+
+  /** Set up the drop-down list of end-points */
+  var initEndpoints = function( config ) {
+    var endpoints = $("ul.endpoints");
+    endpoints.empty();
+
+    $.each( config.endpoints, function( key, url ) {
+      var html = sprintf( "<li role='presentation'><a role='menuitem' tabindex='-1' href='#'>%s</a></li>",
+                          url );
+      endpoints.append( html );
+    } );
+
+    $("[id=sparqlEndpoint]").val( config.endpoints["default"] );
+  };
+
   /** Set the initial query, which will be the default selection plus the selected prefixes */
   var initQuery = function( config ) {
-    showQuery( config.queries[0].query );
+    showCurrentQuery();
   };
 
   /** Return the DOM node representing the query editor */
@@ -346,8 +368,15 @@ var qonsole = function() {
   };
 
   /** Display the given query, with the currently defined prefixes */
-  var showQuery = function( query ) {
-    setCurrentQueryText( renderCurrentPrefixes() );
+  var showCurrentQuery = function() {
+    var query = currentQuery().data( "query" );
+    var q = sprintf( "%s\n\n%s", renderCurrentPrefixes(), query );
+    setCurrentQueryText( q );
+  };
+
+  /** Return the currently selected example query */
+  var currentQuery = function() {
+    return $("ul.examples a.active").first();
   };
 
   /** Return a string comprising the currently selected prefixes */
