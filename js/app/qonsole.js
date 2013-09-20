@@ -7,60 +7,10 @@ var qonsole = function() {
   var _current_query = null;
   var _query_editor = null;
 
-  /** User has selected a different layout of the main query area */
-  var onSelectLayout = function( e ) {
-    e.preventDefault();
-    if ($(e.target).attr("data-layout") === "vertical") {
-      $("#query-block").removeClass("span6").addClass("span12");
-      $("#results-block").removeClass("span6").addClass("row-fluid");
-      $("#results-block > div").addClass( "span12" );
-    }
-    else {
-      $("#query-block").removeClass("span12").addClass("span6");
-      $("#results-block").removeClass("row-fluid").addClass("span6");
-      $("#results-block > div").removeClass( "span12" );
-    }
-  };
-
   /** Failed to load the configuration */
   var onConfigFail = function() {
     alert("Failed to load qonfig.json");
   };
-
-  var showQueries = function( config ) {
-    $.each( _config, function( i, c ) {
-      var html = sprintf( "<label class='radio'><input type='radio' value='%s' name='query' title='%s' data-query-id='%s'/>%s</label>",
-                          c.name, c.desc, i, c.summary );
-      $("#queries").append( html );
-    } );
-
-    selectQuery( $("#queries").find( "input" )[0] );
-  };
-
-  var selectQuery = function( elt ) {
-    var queryId = $(elt).attr( "data-query-id" ) || $(elt).find("[data-query-id]").first().attr( "data-query-id");
-    _current_query = _config[queryId];
-
-    $($("#queries").find( "input" )[queryId]).attr( "checked", true );
-    loadPrefixes( queryId );
-    loadQuery( queryId );
-    clearResults();
-  };
-
-  var loadPrefixes = function( queryId ) {
-    $("#prefixes").empty();
-    if (_defaults && _defaults.prefixes) {
-      $.each( _defaults.prefixes, function( k, v ) {loadPrefix( k, v )} );
-    }
-    if (currentQueryConfig() && currentQueryConfig().prefixes) {
-      $.each( currentQueryConfig().prefixes, function( k, v ) {loadPrefix( k, v )} );
-    }
-  };
-
-  var loadPrefix = function( prefix, uri ) {
-    var html = sprintf( "<li><label><input type='checkbox' checked='true' value='%s'></input> %s:</label></li>", uri, prefix );
-    $("#prefixes").append( html );
-  }
 
   var addOrRemovePrefix = function( e ) {
     var elt = $(e.target);
@@ -68,31 +18,6 @@ var qonsole = function() {
     var uri = elt.attr("value");
 
     addPrefixDeclaration( prefix, uri, elt.is( ":checked" ) );
-  };
-
-  var addPrefixDeclaration = function( pref, uri, add ) {
-    var query = currentQueryText();
-    var lines = query.split( "\n" );
-    var pattern = new RegExp( "^prefix +" + pref + ":");
-    var found = false;
-
-    for (var i = 0; !found && i < lines.length; i++) {
-      found = lines[i].match( pattern );
-      if (found && !add) {
-        lines.splice( i, 1 );
-      }
-    }
-
-    if (!found && add) {
-      for (var i = 0; i < lines.length; i++) {
-        if (!lines[i].match( /^prefix/ )) {
-          lines.splice( i, 0, sprintf( "prefix %s: <%s>", pref, uri ) );
-          break;
-        }
-      }
-    }
-
-    setCurrentQueryText( lines.join( "\n" ) );
   };
 
   var endpointURL = function() {
@@ -277,6 +202,7 @@ var qonsole = function() {
       .ajaxStop(function() {$(this).hide();});
 
     loadConfig( config );
+    bindEvents();
   };
 
   /** Load the configuration definition */
@@ -297,6 +223,14 @@ var qonsole = function() {
     initExamples( config );
     initEndpoints( config );
     initQuery( config );
+  };
+
+  /** Bind events that we want to manage */
+  var bindEvents = function() {
+    $("ul.prefixes").on( "click", "a", function( e ) {
+      var elem = $(e.currentTarget);
+      updatePrefixDeclaration( elem.text().trim(), elem.data( "uri" ), !elem.is(".active") );
+    } );
   };
 
   /** Return the configuration of the currently selected example query */
@@ -385,6 +319,32 @@ var qonsole = function() {
       return sprintf( "prefix %s: <%s>", $(elt).text().trim(), $(elt).data( "uri" ) );
     } );
     return $.makeArray(l).join( "\n" );
+  };
+
+  /** Add or remove the given prefix declaration from the current query */
+  var updatePrefixDeclaration = function( prefix, uri, added ) {
+    var query = currentQueryText();
+    var lines = query.split( "\n" );
+    var pattern = new RegExp( "^prefix +" + prefix + ":");
+    var found = false;
+
+    for (var i = 0; !found && i < lines.length; i++) {
+      found = lines[i].match( pattern );
+      if (found && !added) {
+        lines.splice( i, 1 );
+      }
+    }
+
+    if (!found && added) {
+      for (var i = 0; i < lines.length; i++) {
+        if (!lines[i].match( /^prefix/ )) {
+          lines.splice( i, 0, sprintf( "prefix %s: <%s>", prefix, uri ) );
+          break;
+        }
+      }
+    }
+
+    setCurrentQueryText( lines.join( "\n" ) );
   };
 
 
