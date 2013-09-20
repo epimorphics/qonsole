@@ -52,11 +52,20 @@ pre.errorText {
   color: #d02020;
 }
 
+.navbar .navbar-header {
+}
+
 .navbar h1.brand, .navbar h2.brand {
   line-height: 12px;
 }
 
 .navbar h1.brand {
   font-weight: bold;
-  font-size: 20pt;
+  font-size: 16pt;
+  display: inline-block;
+}
+
+h2.brand {
+  display: inline-block;
+  font-size: 14pt;
 }
