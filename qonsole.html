@@ -8,6 +8,8 @@
     <meta name="author" content="" />
 
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" />
+
     <link href="css/qonsole.css" rel="stylesheet" />
     <link href="css/codemirror.css" rel="stylesheet" />
 
@@ -38,9 +40,33 @@
     <script type="text/javascript">google.load('visualization', '1.0', {'packages':['table']});</script>
 
     <script type="text/javascript">
-      $(function(){qonsole.init("qonfig.json");});
-    </script>
+      // configuration
+      var config = {
+        endpoints: {
+          "default": "/sparql/bwq/query",
+        },
+        prefixes: {
+          "bw":       "http://environment.data.gov.uk/def/bathing-water/",
+          "bwq":      "http://environment.data.gov.uk/def/bathing-water-quality/",
+          "ef-sp":    "http://location.data.gov.uk/def/ef/SamplingPoint/",
+          "interval": "http://reference.data.gov.uk/def/intervals/",
+          "stats":    "http://statistics.data.gov.uk/def/administrative-geography/",
+          "sr":       "http://data.ordnancesurvey.co.uk/ontology/spatialrelations/",
+          "rdf":      "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+          "rdfs":     "http://www.w3.org/2000/01/rdf-schema#",
+          "owl":      "http://www.w3.org/2002/07/owl#",
+          "xsd":      "http://www.w3.org/2001/XMLSchema#"
+        },
+        queries: [{ "name": "core-1",
+                    "summary": "Example query",
+                    "desc": "",
+                    "query": "SELECT ?var\nWHERE {\n    ?var\n       <http://www.w3.org/2000/01/rdf-schema#label>       \"Spittal\"@en.\n}"
+                  }
+        ]
+        };
 
+      $(function(){qonsole.init( config );});
+    </script>
   </head>
 
   <body>
@@ -59,42 +85,23 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container qonsole">
       <div class="row">
-        <div class="col-md-2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Queries</li>
-              <li><ul class="unstyled" id="queries"></ul></li>
-            </ul>
-            <ul class="nav nav-list">
-              <li class="nav-header">Output formats</li>
-              <li>
-                <div class="btn-group btn-group-vertical" data-toggle="buttons-radio" id="format-choice">
-                  <button type="button" class="btn" data-format="text">plain text</button>
-                  <button type="button" class="btn " data-format="json">JSON</button>
-                  <button type="button" class="btn active" data-format="tsv">table</button>
-                  <button type="button" class="btn " data-format="xml">XML</button>
-                </div>
-              </li>
-            </ul>
-            <ul class="nav nav-list">
-              <li class="nav-header">Prefixes <a class="inline-control" data-toggle="collapse" href="#" data-target="#prefixes"><i class="icon-circle-arrow-down"></i></a></li>
-              <li><ul class="unstyled collapse" id="prefixes"></ul></li>
-            </ul>
-            <ul id="layout-options" class="nav nav-list">
-              <li class="nav-header">Layout</li>
-              <li>
-                <div class="btn-group btn-group-vertical" data-toggle="buttons-radio">
-                  <button type="button" class="btn active" data-layout="vertical"><img src="img/icon-vertical-stack.20x20.png"> vertical</button>
-                  <button type="button" class="btn" data-layout="horizontal"><img src="img/icon-horizontal-stack.20x20.png"> horizontal</button>
-                </div>
-              </li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
+        <div class="col-md-12 well">
+          <h2 class="">Prefixes</h2>
+          <ul class="list-inline prefixes">
+            <li><a href="#" class="button"><i class="icon-plus-sign"></i></a></li>
+          </ul>
+        </div>
+        <div class="col-md-12 well">
+          <h2 class="">Queries</h2>
+          <ul class="nav nav-list">
+            <li class="nav-header">Queries</li>
+            <li><ul class="unstyled" id="queries"></ul></li>
+          </ul>
+        </div>
 
-        <div class="col-md-10">
+        <div class="col-md-12">
           <!-- query -->
           <div class="row">
             <div id="query-block" class="col-md-12 sparql">
@@ -113,6 +120,18 @@
                   <span class="col-md-10">
                     <span class="input-prepend"><span class="add-on">SPARQL endpoint: </span><input class="col-md-8" type="text"></input></span>
                   </span>
+                  <ul class="nav nav-list">
+                    <li class="nav-header">Output formats</li>
+                    <li>
+                      <div class="btn-group btn-group-vertical" data-toggle="buttons-radio" id="format-choice">
+                        <button type="button" class="btn" data-format="text">plain text</button>
+                        <button type="button" class="btn " data-format="json">JSON</button>
+                        <button type="button" class="btn active" data-format="tsv">table</button>
+                        <button type="button" class="btn " data-format="xml">XML</button>
+                      </div>
+                    </li>
+                  </ul>
+
                   <span class="col-md-2 pull-right"><a href="#" class="btn btn-primary">run query</a></span>
                 </div>
               </div>

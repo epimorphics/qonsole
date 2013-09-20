@@ -8,17 +8,6 @@ a.inline-control {
   padding-left: 0 !important;
 }
 
-.sparql h2 {
-  font-size: 10px;
-  color: #666666;
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.sparql .well {
-  padding: 5px;
-}
-
 .sparql textarea {
   font-family: Inconsolata, Courier-new, Courier, monospace;
   font-size: 10pt;*/
@@ -68,4 +57,22 @@ pre.errorText {
 h2.brand {
   display: inline-block;
   font-size: 14pt;
+}
+
+/* --------------------- new ------------------ */
+
+.qonsole h2 {
+  font-size: 10px;
+  color: #666666;
+  margin: 0;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.qonsole .well {
+  padding: 5px;
+}
+
+.qonsole h2+ul {
+  display: inline-block;
 }

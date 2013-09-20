@@ -7,48 +7,6 @@ var qonsole = function() {
   var _current_query = null;
   var _query_editor = null;
 
-  var init = function( configFile ) {
-    $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
-    $("#layout-options .btn").click( onSelectLayout );
-    $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
-    $("#prefixes").click( "input", addOrRemovePrefix );
-    $("#query-chrome2 a").click( runQuery );
-
-    $('#loadingSpinner')
-      .hide()
-      .ajaxStart(function() {$(this).show();})
-      .ajaxStop(function() {$(this).hide();});
-
-    loadConfig( configFile );
-  };
-
-  /** Return the DOM node representing the query editor */
-  var queryEditor = function() {
-    if (!_query_editor) {
-      _query_editor = CodeMirror( $("#query-edit-cm").get(0), {
-        lineNumbers: true,
-        mode: "sparql"
-      } );
-    }
-    // return $("#query-edit textarea").get( 0 );
-    return _query_editor;
-  };
-
-  /** Return the configuration of the currently selected example query */
-  var currentQueryConfig = function() {
-    return _current_query;
-  };
-
-  /** Return the current value of the query edit area */
-  var currentQueryText = function() {
-    return queryEditor().getValue();
-  };
-
-  /** Set the value of the query edit area */
-  var setCurrentQueryText = function( text ) {
-    queryEditor().setValue( text );
-  };
-
   /** User has selected a different layout of the main query area */
   var onSelectLayout = function( e ) {
     e.preventDefault();
@@ -62,31 +20,6 @@ var qonsole = function() {
       $("#results-block").removeClass("row-fluid").addClass("span6");
       $("#results-block > div").removeClass( "span12" );
     }
-  };
-
-  /** Load the configuration file with the example queries */
-  var loadConfig = function( configFile ) {
-    $.getJSON( configFile, onConfigLoaded )
-     .error( onConfigFail );
-  };
-
-  /** Successfully loaded the configuration */
-  var onConfigLoaded = function( data, status, jqXHR ) {
-    _config = data;
-    var j = -1;
-
-    $.each( data, function( i, d ) {
-      if (d.name === "default") {
-        _defaults = d;
-        j = i;
-      }
-    } );
-
-    if (j >= 0) {
-      _config.splice( _config, 1 );
-    }
-
-    showQueries();
   };
 
   /** Failed to load the configuration */
@@ -160,16 +93,6 @@ var qonsole = function() {
     }
 
     setCurrentQueryText( lines.join( "\n" ) );
-  };
-
-  var renderAllPrefixes = function() {
-    var d = "";
-
-    $("#prefixes input:checked" ).each( function( i, elt ) {
-      d = d + sprintf( "prefix %s <%s>\n", $.trim($(elt).parent().text()), $(elt).attr("value") );
-    } );
-
-    return d;
   };
 
   var loadQuery = function() {
@@ -345,6 +268,97 @@ var qonsole = function() {
   var testCSS =  function(prop) {
       return prop in document.documentElement.style;
   }
+
+  /* ---- new ---- */
+
+  /** Initialisation - only called once */
+  var init = function( config ) {
+    // $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
+    // $("#layout-options .btn").click( onSelectLayout );
+    // $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
+    // $("#prefixes").click( "input", addOrRemovePrefix );
+    // $("#query-chrome2 a").click( runQuery );
+
+    $('#loadingSpinner')
+      .hide()
+      .ajaxStart(function() {$(this).show();})
+      .ajaxStop(function() {$(this).hide();});
+
+    loadConfig( config );
+  };
+
+  /** Load the configuration definition */
+  var loadConfig = function( config ) {
+    if (config.configURL) {
+      $.getJSON( config.configURL, onConfigLoaded )
+       .error( onConfigFail );
+    }
+    else {
+      onConfigLoaded( config )
+    }
+  };
+
+  /** Successfully loaded the configuration */
+  var onConfigLoaded = function( config, status, jqXHR ) {
+    _config = config;
+    initPrefixes( config );
+    initQuery( config );
+  };
+
+  /** Return the configuration of the currently selected example query */
+  var currentQueryConfig = function() {
+    return _current_query;
+  };
+
+  /** List the current defined prefixes from the config */
+  var initPrefixes = function( config ) {
+    var prefixAdd = $("ul.prefixes li:last" );
+    $.each( config.prefixes, function( key, value ) {
+      var html = sprintf( "<li><a class='btn btn-info btn-sm active' data-toggle='button' data-uri='%s'>%s</a></li>", value, key );
+      $(html).insertBefore( prefixAdd);
+    } );
+  };
+
+  /** Set the initial query, which will be the default selection plus the selected prefixes */
+  var initQuery = function( config ) {
+    showQuery( config.queries[0].query );
+  };
+
+  /** Return the DOM node representing the query editor */
+  var queryEditor = function() {
+    if (!_query_editor) {
+      _query_editor = CodeMirror( $("#query-edit-cm").get(0), {
+        lineNumbers: true,
+        mode: "sparql"
+      } );
+    }
+    return _query_editor;
+  };
+
+  /** Return the current value of the query edit area */
+  var currentQueryText = function() {
+    return queryEditor().getValue();
+  };
+
+  /** Set the value of the query edit area */
+  var setCurrentQueryText = function( text ) {
+    queryEditor().setValue( text );
+  };
+
+  /** Display the given query, with the currently defined prefixes */
+  var showQuery = function( query ) {
+    setCurrentQueryText( renderCurrentPrefixes() );
+  };
+
+  /** Return a string comprising the currently selected prefixes */
+  var renderCurrentPrefixes = function() {
+    var l = $("ul.prefixes a.active" ).map( function( i, elt ) {
+      return sprintf( "prefix %s: <%s>", $(elt).text().trim(), $(elt).data( "uri" ) );
+    } );
+    return $.makeArray(l).join( "\n" );
+  };
+
+
 
   return {
     init: init
