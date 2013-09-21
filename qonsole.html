@@ -58,8 +58,11 @@
           "owl":      "http://www.w3.org/2002/07/owl#",
           "xsd":      "http://www.w3.org/2001/XMLSchema#"
         },
-        queries: [{ "name": "Example query",
+        queries: [{ "name": "Example query1",
                     "query": "SELECT ?var\nWHERE {\n    ?var\n       <http://www.w3.org/2000/01/rdf-schema#label>       \"Spittal\"@en.\n}"
+                  },
+                  { "name": "Example query 2",
+                    "query": "SELECT ?bw\nWHERE {\n    ?bw\n       <http://www.w3.org/2000/01/rdf-schema#label>       \"Spittal\"@en.\n}"
                   }
         ]
         };

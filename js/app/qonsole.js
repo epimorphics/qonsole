@@ -238,7 +238,8 @@ var qonsole = function() {
     } );
     $("ul.examples").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
-
+      $("ul.examples a").removeClass( "active" );
+      _.defer( function() {showCurrentQuery()} );
     } );
   };
 
@@ -286,12 +287,12 @@ var qonsole = function() {
 
   /** Return the query definition with the given name */
   var namedExample = function( name ) {
-    return _.find( config().examples, function( ex ) {return ex.name === name;} );
+    return _.find( config().queries, function( ex ) {return ex.name === name;} );
   };
 
   /** Return the currently active named example */
   var currentNamedExample = function() {
-    return namedExample( $("ul.examples a.active").text().trim() );
+    return namedExample( $("ul.examples a.active").first().text().trim() );
   };
 
   /** Return the DOM node representing the query editor */
@@ -317,14 +318,9 @@ var qonsole = function() {
 
   /** Display the given query, with the currently defined prefixes */
   var showCurrentQuery = function() {
-    var query = currentQuery().data( "query" );
-    var q = sprintf( "%s\n\n%s", renderCurrentPrefixes(), query );
+    var query = currentNamedExample();
+    var q = sprintf( "%s\n\n%s", renderCurrentPrefixes(), query.query );
     setCurrentQueryText( q );
-  };
-
-  /** Return the currently selected example query */
-  var currentQuery = function() {
-    return $("ul.examples a.active").first();
   };
 
   /** Return a string comprising the currently selected prefixes */
