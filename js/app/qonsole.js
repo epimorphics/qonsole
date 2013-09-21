@@ -225,17 +225,21 @@ var qonsole = function() {
     initQuery( config );
   };
 
+  /** Return the current config object */
+  var config = function() {
+    return _config;
+  };
+
   /** Bind events that we want to manage */
   var bindEvents = function() {
     $("ul.prefixes").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
       updatePrefixDeclaration( elem.text().trim(), elem.data( "uri" ), !elem.is(".active") );
     } );
-  };
+    $("ul.examples").on( "click", "a", function( e ) {
+      var elem = $(e.currentTarget);
 
-  /** Return the configuration of the currently selected example query */
-  var currentQueryConfig = function() {
-    return _current_query;
+    } );
   };
 
   /** List the current defined prefixes from the config */
@@ -253,8 +257,8 @@ var qonsole = function() {
     examples.empty();
 
     $.each( config.queries, function( i, queryDesc ) {
-      var html = sprintf( "<li><a class='btn btn-info btn-sm' data-toggle='button' data-query='%s'>%s</a></li>",
-                          queryDesc.query, queryDesc.name );
+      var html = sprintf( "<li><a class='btn btn-info btn-sm' data-toggle='button'>%s</a></li>",
+                          queryDesc.name );
       examples.append( html );
     } );
 
@@ -278,6 +282,16 @@ var qonsole = function() {
   /** Set the initial query, which will be the default selection plus the selected prefixes */
   var initQuery = function( config ) {
     showCurrentQuery();
+  };
+
+  /** Return the query definition with the given name */
+  var namedExample = function( name ) {
+    return _.find( config().examples, function( ex ) {return ex.name === name;} );
+  };
+
+  /** Return the currently active named example */
+  var currentNamedExample = function() {
+    return namedExample( $("ul.examples a.active").text().trim() );
   };
 
   /** Return the DOM node representing the query editor */
