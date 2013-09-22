@@ -241,6 +241,10 @@ var qonsole = function() {
       $("ul.examples a").removeClass( "active" );
       _.defer( function() {showCurrentQuery()} );
     } );
+    $(".endpoints").on( "click", "a", function( e ) {
+      var elem = $(e.currentTarget);
+      setCurrentEndpoint( elem.text().trim() );
+    } );
   };
 
   /** List the current defined prefixes from the config */
@@ -277,7 +281,12 @@ var qonsole = function() {
       endpoints.append( html );
     } );
 
-    $("[id=sparqlEndpoint]").val( config.endpoints["default"] );
+    setCurrentEndpoint( config.endpoints["default"] );
+  };
+
+  /** Set the current endpoint text */
+  var setCurrentEndpoint = function( url ) {
+    $("[id=sparqlEndpoint]").val( url );
   };
 
   /** Set the initial query, which will be the default selection plus the selected prefixes */
