@@ -32,34 +32,6 @@ var qonsole = function() {
     return ep;
   };
 
-  var runQuery = function( e ) {
-    e.preventDefault();
-    hideTimeTaken();
-
-    var url = $("#query-chrome2 input").val();
-    var query = currentQueryText();
-    var format = selectedFormat();
-    var now = new Date();
-
-    var options = {
-      data: {query: query, output: format},
-      success: function( data ) {onQuerySuccess( data, now );},
-      error: function( x, t, e ) {onQueryFail( x, t, e, now );}
-    };
-
-    // hack TODO remove
-    if (selectedFormat() === "xml" || selectedFormat() === "json"){
-      options.data["force-accept"] = "text/plain";
-    }
-
-    // IE doesn't speak CORS
-    if (isIE()) {
-      // options.dataType = "jsonp";
-    }
-
-    $.ajax( url, options );
-  };
-
   var selectedFormat = function() {
     return $("#format-choice button.active" ).attr( "data-format" );
   };
@@ -158,10 +130,6 @@ var qonsole = function() {
       alternatingRowStyle: true
     });
 
-  };
-
-  var hideTimeTaken = function() {
-    $("#timeTaken").addClass( "hidden" );
   };
 
   var showTimeTaken = function( count, then ) {
@@ -289,6 +257,11 @@ var qonsole = function() {
     $("[id=sparqlEndpoint]").val( url );
   };
 
+  /** Return the current endpoint text */
+  var currentEndpoint = function( url ) {
+    $("[id=sparqlEndpoint]").val();
+  };
+
   /** Set the initial query, which will be the default selection plus the selected prefixes */
   var initQuery = function( config ) {
     showCurrentQuery();
@@ -364,6 +337,45 @@ var qonsole = function() {
     }
 
     setCurrentQueryText( lines.join( "\n" ) );
+  };
+
+  /** Show or hide the timeTaken field */
+  var setTimeTakenVisibility = function( visible ) {
+    if (visible) {
+      $("#timeTaken").removeClass( "hidden" );
+    }
+    else {
+      $("#timeTaken").addClass( "hidden" );
+    }
+  };
+
+  /** Perform the query */
+  var runQuery = function( e ) {
+    e.preventDefault();
+    setTimeTakenVisibility( false );
+
+    var url = currentEndpoint();
+    var query = currentQueryText();
+    var format = selectedFormat();
+    var now = new Date();
+
+    var options = {
+      data: {query: query, output: format},
+      success: function( data ) {onQuerySuccess( data, now );},
+      error: function( x, t, e ) {onQueryFail( x, t, e, now );}
+    };
+
+    // hack TODO remove
+    if (selectedFormat() === "xml" || selectedFormat() === "json"){
+      options.data["force-accept"] = "text/plain";
+    }
+
+    // IE doesn't speak CORS
+    if (isIE()) {
+      // options.dataType = "jsonp";
+    }
+
+    $.ajax( url, options );
   };
 
 
