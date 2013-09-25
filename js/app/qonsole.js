@@ -321,35 +321,37 @@ var qonsole = function() {
       mode: mode,
       lineNumbers: true,
       extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
-      foldGutter: true
+      foldGutter: true,
+      readOnly: true
     } );
   };
 
-  var showTableResult = function( data, then ) {
-    var lines = data.split( "\n" );
-    var lineCount = 0;
+  /** Show the result using jQuery dataTables */
+  var showTableResult = function( data ) {
+    var lines = _.compact(data.split( "\n" ));
+    showResultsTimeAndCount( lines.length - 1 );
 
-    var data = new google.visualization.DataTable();
-    $.each( lines.shift().split("\t"), function(i, c ) {data.addColumn('string', c);} );
-
-    $.each( lines, function( i, l ) {
-      if (l && l !== "") {
-        lineCount++;
-        var d = [];
-        $.each( l.split( "\t" ), function( i, v ) {d.push( /*v.slice( 1, -1 )*/ v );} ); // TODO format values properly
-        data.addRows( [d] );
-      }
+    var aoColumns = _.map( lines.shift().split("\t"), function( header) {
+      return {sTitle: header};
+    } );
+    var aaData = _.map( lines, function( line ) {
+      var values = _.flatten( [line.split("\t")] );
+      return _.map( values, function( v) {
+        if (_.isNumber( v )) {
+          return parseFloat( v );
+        }
+        else {
+          return _.escape(v);
+        }
+      } );
     } );
 
-    // showTimeTaken( lineCount );
-    var table = new google.visualization.Table(document.getElementById('results'));
-    table.draw(data, {
-      showRowNumber: true,
-      page: "enable",
-      pageSize: 25,
-      alternatingRowStyle: true
-    });
-
+    $("#results").empty()
+                 .append( '<table cellpadding="0" cellspacing="0" border="0" class="display"></table>' )
+                 .children()
+                 .dataTable( {aoColumns: aoColumns,
+                              aaData: aaData
+                             } );
   };
 
   return {
