@@ -3,23 +3,8 @@ var qonsole = function() {
 
   /** The loaded configuration */
   var _config = {};
-  // var _defaults = {};
-  // var _current_query = null;
   var _query_editor = null;
   var _startTime = 0;
-
-  /** Failed to load the configuration */
-  var onConfigFail = function() {
-    alert("Failed to load qonfig.json");
-  };
-
-  var addOrRemovePrefix = function( e ) {
-    var elt = $(e.target);
-    var prefix = $.trim(elt.parent().text()).replace( /:/, "" );
-    var uri = elt.attr("value");
-
-    addPrefixDeclaration( prefix, uri, elt.is( ":checked" ) );
-  };
 
   var isOpera = function() {return !!(window.opera && window.opera.version);};  // Opera 8.0+
   var isFirefox = function() {return testCSS('MozBoxSizing');};                 // FF 0.8+
@@ -35,21 +20,6 @@ var qonsole = function() {
 
   /** Initialisation - only called once */
   var init = function( config ) {
-    // $(".sidebar-nav .btn-group").each( function(i,b) {$(b).button();} );
-    // $("#layout-options .btn").click( onSelectLayout );
-    // $("#queries").click( "input", function( e ) {selectQuery( e.target );} );
-    // $("#prefixes").click( "input", addOrRemovePrefix );
-    // $("#query-chrome2 a").click( runQuery );
-
-    $(document)
-      .ajaxStart(function() {
-        elementVisible( ".loadingSpinner", true );
-        startTimingResults();
-      })
-      .ajaxStop(function() {
-        elementVisible( ".loadingSpinner", false );
-      });
-
     loadConfig( config );
     bindEvents();
   };
@@ -94,7 +64,17 @@ var qonsole = function() {
       var elem = $(e.currentTarget);
       setCurrentEndpoint( elem.text().trim() );
     } );
+
     $("a.run-query").on( "click", runQuery );
+
+    $(document)
+      .ajaxStart(function() {
+        elementVisible( ".loadingSpinner", true );
+        startTimingResults();
+      })
+      .ajaxStop(function() {
+        elementVisible( ".loadingSpinner", false );
+      });
   };
 
   /** List the current defined prefixes from the config */
@@ -307,53 +287,42 @@ var qonsole = function() {
 
   /** Query succeeded - use display type to determine how to render */
   var onQuerySuccess = function( data, format ) {
+    var count, mime;
+
     switch (format) {
       case "text":
-        showPlainTextResult( data, null, null, "errorText" );
+        count = data.split('\n').length - 5;
+        mime = "text/plain";
         break;
       case "json":
-        var count = JSON.parse(data).results.bindings.length;
-        showPlainTextResult( data, count, null, "errorText" );
+        count = JSON.parse(data).results.bindings.length;
+        mime = "application/json";
         break;
       case "xml":
-        var count = $($.parseXML( data )).find("results").children().length
-        showPlainTextResult( data, count, null, "errorText" );
+        count = $($.parseXML( data )).find("results").children().length;
+        mime = "application/xml";
         break;
       case "tsv":
         showTableResult( data );
         break;
     }
+
+    if (mime) {
+      showCodeMirrorResult( data, count, mime );
+    }
   };
 
-  var showPlainTextResult = function( data, count, addClass, removeClass ) {
-    var lineLength = 0;
-    var lineCount = 0;
-    var nextNL = 0;
+  /** Show the given text value in a CodeMirror block with the given language mode */
+  var showCodeMirrorResult = function( code, count, mode ) {
+    showResultsTimeAndCount( count );
 
-    while (nextNL >= 0) {
-      var k = nextNL;
-      nextNL = data.indexOf( "\n", k + 1 );
-      if (nextNL > 0) {
-        lineCount++;
-        lineLength = _.max( [nextNL - k, lineLength] );
-      }
-    }
-
-    // we ignore 4 rows of chrome in the query format
-    showResultsTimeAndCount( (count === null) ? lineCount - 4 : count );
-
-    // versions of IE break the text formatting of pre nodes. Why? FFS
-    if (isIE()) {
-      $("#results").html( "<div></div>" );
-      var n = $("#results").children().get( 0 );
-      n.outerHTML = sprintf( "<pre class='col-md-12 results-plain''>", lineLength * 8 ) + data.replace( /</g, "&lt;" ) + "</pre>";
-    }
-    else {
-      $( "#results" ).html( sprintf( "<pre class='col-md-12 results-plain''></pre>", lineLength * 8 ));
-      $( "#results pre.results-plain" ).text( data );
-    }
-    $( "#results pre.results-plain" ).addClass( addClass )
-                                     .removeClass( removeClass );
+    var editor = CodeMirror( $("#results").get(0), {
+      value: code,
+      mode: mode,
+      lineNumbers: true,
+      extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+      foldGutter: true
+    } );
   };
 
   var showTableResult = function( data, then ) {
