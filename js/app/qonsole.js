@@ -229,6 +229,7 @@ var qonsole = function() {
   /** Perform the query */
   var runQuery = function( e ) {
     e.preventDefault();
+    resetResults();
 
     var url = currentEndpoint();
     var query = currentQueryText();
@@ -293,6 +294,12 @@ var qonsole = function() {
     }
   };
 
+  /** Reset the results display */
+  var resetResults = function() {
+    $("#results").empty();
+    elementVisible( ".timeTaken", false );
+  };
+
   /** Report query failure */
   var onQueryFail = function( jqXHR, textStatus, errorThrown ) {
     showPlainTextResult( jqXHR.responseText || jqXHR.statusText, 0, "errorText", null );
@@ -305,7 +312,8 @@ var qonsole = function() {
         showPlainTextResult( data, null, null, "errorText" );
         break;
       case "json":
-        showPlainTextResult( data, "errorText" );
+        var count = JSON.parse(data).results.bindings.length;
+        showPlainTextResult( data, count, null, "errorText" );
         break;
       case "xml":
         showPlainTextResult( data, "errorText" );
@@ -337,10 +345,10 @@ var qonsole = function() {
     if (isIE()) {
       $("#results").html( "<div></div>" );
       var n = $("#results").children().get( 0 );
-      n.outerHTML = sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'>", lineLength * 8 ) + data.replace( /</g, "&lt;" ) + "</pre>";
+      n.outerHTML = sprintf( "<pre class='col-md-12 results-plain''>", lineLength * 8 ) + data.replace( /</g, "&lt;" ) + "</pre>";
     }
     else {
-      $( "#results" ).html( sprintf( "<pre class='span12 results-plain' style='min-width: %dpx'></pre>", lineLength * 8 ));
+      $( "#results" ).html( sprintf( "<pre class='col-md-12 results-plain''></pre>", lineLength * 8 ));
       $( "#results pre.results-plain" ).text( data );
     }
     $( "#results pre.results-plain" ).addClass( addClass )
@@ -364,7 +372,6 @@ var qonsole = function() {
     } );
 
     // showTimeTaken( lineCount );
-    $("#results").empty();
     var table = new google.visualization.Table(document.getElementById('results'));
     table.draw(data, {
       showRowNumber: true,
