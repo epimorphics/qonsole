@@ -316,7 +316,8 @@ var qonsole = function() {
         showPlainTextResult( data, count, null, "errorText" );
         break;
       case "xml":
-        showPlainTextResult( data, "errorText" );
+        var count = $($.parseXML( data )).find("results").children().length
+        showPlainTextResult( data, count, null, "errorText" );
         break;
       case "tsv":
         showTableResult( data );
