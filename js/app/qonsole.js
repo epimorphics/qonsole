@@ -282,7 +282,8 @@ var qonsole = function() {
 
   /** Report query failure */
   var onQueryFail = function( jqXHR, textStatus, errorThrown ) {
-    showPlainTextResult( jqXHR.responseText || jqXHR.statusText, 0, "errorText", null );
+    showResultsTimeAndCount( 0 );
+    $("#results").html( sprintf( "<pre class='text-danger'>%s</pre>", _.escape(jqXHR.valueOf().responseText) ) );
   };
 
   /** Query succeeded - use display type to determine how to render */
