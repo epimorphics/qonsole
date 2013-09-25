@@ -79,3 +79,9 @@ h2.brand {
   text-transform: none;
   color: #666;
 }
+
+pre.results-plain {
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
+}
