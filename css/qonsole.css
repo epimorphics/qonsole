@@ -31,10 +31,6 @@ a.inline-control {
   border-radius: 4px;
 }
 
-#timeTaken {
-  font-style: italic;
-  text-transform: none;
-}
 
 pre.errorText {
   color: #d02020;
@@ -76,4 +72,10 @@ h2.brand {
 
 .query-chrome {
   margin-top: 1em;
+}
+
+.timeTaken {
+  font-style: italic;
+  text-transform: none;
+  color: #666;
 }
