@@ -18,16 +18,6 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-
     <link rel="shortcut icon" href="img/qonsole.ico">
 
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -116,7 +106,7 @@
             <div class="form-group">
               <label for="sparqlEndpoint"></label>
               <div class="dropdown ">
-                <a data-toggle="dropdown" class="btn btn-info" href="#">
+                <a data-toggle="dropdown" class="btn btn-custom2" href="#">
                   Select endpoint <i class="icon-collapse"></i>
                 </a>
                 <ul class="dropdown-menu endpoints" role="menu" aria-labelledby="dropdownMenu1">
@@ -128,16 +118,30 @@
               <input type="text" class="form-control" id="sparqlEndpoint"></input>
             </div>
             <div class="form-group">
-              <label for="displayFormat">Display format</label>
-              <select type="select" class="form-control" id="displayFormat">
+              <label for="displayFormat">Results</label>
+<!--               <select type="select" class="form-control" id="displayFormat">
                 <option class="" value="tsv" selected>table</option>
                 <option class="" value="text">plain text</option>
                 <option class="" value="json">JSON</option>
                 <option class="" value="xml">XML</option>
               </select>
+ -->
+              <div class="dropdown ">
+                <a data-toggle="dropdown" class="btn btn-custom2 display-format" href="#" data-value="tsv">
+                  <span>table</span> <i class="icon-collapse"></i>
+                </a>
+                <ul class="dropdown-menu formats  " role="menu" aria-labelledby="dropdownMenu2">
+                  <li role='presentation' class="" ><a data-value="tsv" role='menuitem' tabindex='-1' href='#'>table</a></li>
+                  <li role='presentation' class="" ><a data-value="text"role='menuitem' tabindex='-1' href='#'>plain text</a></li>
+                  <li role='presentation' class="" ><a data-value="json"role='menuitem' tabindex='-1' href='#'>JSON</a></li>
+                  <li role='presentation' class="" ><a data-value="xml"role='menuitem' tabindex='-1' href='#'>XML</a></li>
+                </ul>
+              </div>
+
             </div>
             <div class="form-group">
-              <span class="col-md-2"><a href="#" class="btn btn-primary btn-lg run-query">perform query</a></span>
+              <label>&nbsp;</label>
+              <a href="#" class="btn btn-success run-query form-control">perform query</a>
             </div>
 
           </form>

@@ -16,8 +16,6 @@ var qonsole = function() {
       return prop in document.documentElement.style;
   }
 
-  /* ---- new ---- */
-
   /** Initialisation - only called once */
   var init = function( config ) {
     loadConfig( config );
@@ -64,6 +62,10 @@ var qonsole = function() {
       var elem = $(e.currentTarget);
       setCurrentEndpoint( elem.text().trim() );
     } );
+    $("ul.formats").on( "click", "a", function( e ) {
+      var elem = $(e.currentTarget);
+      setCurrentFormat( elem.data( "value" ), elem.text().trim() );
+    } );
 
     $("a.run-query").on( "click", runQuery );
 
@@ -81,7 +83,7 @@ var qonsole = function() {
   var initPrefixes = function( config ) {
     var prefixAdd = $("ul.prefixes li:last" );
     $.each( config.prefixes, function( key, value ) {
-      var html = sprintf( "<li><a class='btn btn-info btn-sm active' data-toggle='button' data-uri='%s'>%s</a></li>", value, key );
+      var html = sprintf( "<li><a class='btn btn-custom2 btn-sm active' data-toggle='button' data-uri='%s'>%s</a></li>", value, key );
       $(html).insertBefore( prefixAdd);
     } );
   };
@@ -92,7 +94,7 @@ var qonsole = function() {
     examples.empty();
 
     $.each( config.queries, function( i, queryDesc ) {
-      var html = sprintf( "<li><a class='btn btn-info btn-sm' data-toggle='button'>%s</a></li>",
+      var html = sprintf( "<li><a class='btn btn-custom2 btn-sm' data-toggle='button'>%s</a></li>",
                           queryDesc.name );
       examples.append( html );
     } );
@@ -169,7 +171,12 @@ var qonsole = function() {
 
   /** Return the currenty selected output format */
   var selectedFormat = function() {
-    return $("#displayFormat").val();
+    return $("a.display-format").data( "value" );
+  };
+
+  /** Update the user's format selection */
+  var setCurrentFormat = function( val, label ) {
+    $("a.display-format").data( "value", val ).find("span").text( label );
   };
 
   /** Return a string comprising the currently selected prefixes */
