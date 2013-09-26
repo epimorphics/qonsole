@@ -55,6 +55,10 @@ pre.results-plain {
   margin-bottom: 0;
 }
 
+a.run-query {
+  margin-left: 10px;
+}
+
 /* Custom buttons */
 
 .btn-custom1, .btn-custom2.active {
