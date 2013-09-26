@@ -49,7 +49,7 @@ var qonsole = function() {
 
   /** Bind events that we want to manage */
   var bindEvents = function() {
-    $("ul.prefixes").on( "click", "a", function( e ) {
+    $("ul.prefixes").on( "click", "a.btn", function( e ) {
       var elem = $(e.currentTarget);
       updatePrefixDeclaration( elem.text().trim(), elem.data( "uri" ), !elem.is(".active") );
     } );
@@ -77,6 +77,14 @@ var qonsole = function() {
       .ajaxStop(function() {
         elementVisible( ".loadingSpinner", false );
       });
+
+    // dialogue events
+    $("#prefixEditor").on( "click", "#lookupPrefix", onLookupPrefix )
+                      .on( "keyup", "#inputPrefix", function( e ) {
+                        var elem = $(e.currentTarget);
+                        $("#lookupPrefix span").text( sprintf( "'%s'", elem.val() ));
+                      } );
+    $("#addPrefix").on( "click", onAddPrefix );
   };
 
   /** List the current defined prefixes from the config */
@@ -360,6 +368,54 @@ var qonsole = function() {
                  .dataTable( {aoColumns: aoColumns,
                               aaData: aaData
                              } );
+  };
+
+  /** Lookup a prefix on prefix.cc */
+  var onLookupPrefix = function( e ) {
+    e.preventDefault();
+
+    var prefix = $("#inputPrefix").val().trim();
+    $("#inputURI").val("");
+
+    if (prefix) {
+      $.getJSON( sprintf( "http://prefix.cc/%s.file.json", prefix ),
+                function( data ) {
+                  $("#inputURI").val( data[prefix] );
+                }
+            );
+    }
+  };
+
+  /** User wishes to add the prefix */
+  var onAddPrefix = function( e ) {
+    var prefix = $("#inputPrefix").val().trim();
+    var uri = $("#inputURI").val().trim();
+
+    if (uri) {
+      _config.prefixes[prefix] = uri;
+    }
+    else {
+      delete _config.prefixes[prefix];
+    }
+
+    // remember the state of current user selections, then re-create the list
+    var selections = {};
+    $("ul.prefixes a.btn").each( function( i, a ) {selections[$(a).text()] = $(a).hasClass("active");} );
+
+    $("ul.prefixes li[class!=keep]").remove();
+    initPrefixes( _config );
+
+    // restore selections state
+    $.each( selections, function( k, v ) {
+      if (!v) {
+        $(sprintf("ul.prefixes a.btn:contains('%s')", k)).removeClass("active");
+      }
+    } );
+
+    var lines = currentQueryText().split("\n");
+    lines = _.reject( lines, function( line ) {return line.match( /^prefix/ );} );
+    var q = sprintf( "%s\n%s", renderCurrentPrefixes(), lines.join( "\n" ) );
+    setCurrentQueryText( q );
   };
 
   return {
