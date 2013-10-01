@@ -337,6 +337,7 @@ var qonsole = function() {
       mode: mode,
       lineNumbers: true,
       extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
       foldGutter: true,
       readOnly: true
     } );
