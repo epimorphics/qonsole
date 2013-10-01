@@ -48,22 +48,23 @@ Qonsole is configured by passing a JSON data structure to the `qonsole.init()` c
 this config object allows you to specify:
 
 <dl>
-  <dt>`elements` &ndash; available SPARQL end-points</dt>
+  <dt><code>elements</code> &ndash; available SPARQL end-points</dt>
   <dd>The value of this config element is a JSON object, whose keys are short
   references to available endpoints and whose values are URLs. One `default` end-point
   should always be provided. The goal here is to allow different example queries potentially
   to be run against different specific SPARQL endpoints. Example:
-
+<pre>
     endpoints: {
       "default":  "http://environment.data.gov.uk/sparql/bwq/query",
     }
-
+</pre>
   </dd>
-  <dt>`prefixes` &ndash; shared list of pre-defined prefixes</dt>
+  <dt><code>prefixes</code> &ndash; shared list of pre-defined prefixes</dt>
   <dd>The prefixes listed in this element will be added to each query, and may be
   selected on or off by a single click. The value is a JSON object, whose keys are the
   prefix short-name, and whose values are URIs. Example:
 
+<pre>
     prefixes: {
       "bw":       "http://environment.data.gov.uk/def/bathing-water/",
       "bwq":      "http://environment.data.gov.uk/def/bathing-water-quality/",
@@ -76,15 +77,15 @@ this config object allows you to specify:
       "owl":      "http://www.w3.org/2002/07/owl#",
       "xsd":      "http://www.w3.org/2001/XMLSchema#"
     },
-
+</pre>
   </dd>
-  <dt>`queries` &ndash; pre-defined example queries</dt>
+  <dt><code>queries</code> &ndash; pre-defined example queries</dt>
   <dd>
   This elemen defines the example queries that users can select run, or
   to base their own queries on. The value is a JSON array, each element of
   which is one example query. Note that prefixes do not need to be
   declared in the example queries:
-
+<pre>
     queries: [
       { "name": "Properties of a named bathing water",
         "query": "select ?predicate ?object\nwhere {\n" +
@@ -98,7 +99,7 @@ this config object allows you to specify:
                  "  optional { ?class rdfs:comment ?description}\n}"
       }
     ]
-
+</pre>
   </dd>
 </dl>
 
