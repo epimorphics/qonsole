@@ -1,3 +1,5 @@
+/* Copyright (c) 2012-2013 Epimorphics Ltd. Released under Apache License 2.0 http://www.apache.org/licenses/ */
+
 var qonsole = function() {
   "use strict";
 
