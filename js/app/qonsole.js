@@ -20,6 +20,10 @@ var qonsole = function() {
   var init = function( config ) {
     loadConfig( config );
     bindEvents();
+
+    $.ajaxSetup( {
+      converters: {"script json": true}
+    } );
   };
 
   /** Load the configuration definition */
@@ -51,7 +55,7 @@ var qonsole = function() {
   var bindEvents = function() {
     $("ul.prefixes").on( "click", "a.btn", function( e ) {
       var elem = $(e.currentTarget);
-      updatePrefixDeclaration( elem.text().trim(), elem.data( "uri" ), !elem.is(".active") );
+      updatePrefixDeclaration( $.trim( elem.text() ), elem.data( "uri" ), !elem.is(".active") );
     } );
     $("ul.examples").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
@@ -60,11 +64,11 @@ var qonsole = function() {
     } );
     $(".endpoints").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
-      setCurrentEndpoint( elem.text().trim() );
+      setCurrentEndpoint( $.trim( elem.text() ) );
     } );
     $("ul.formats").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
-      setCurrentFormat( elem.data( "value" ), elem.text().trim() );
+      setCurrentFormat( elem.data( "value" ), $.trim( elem.text() ) );
     } );
 
     $("a.run-query").on( "click", runQuery );
@@ -146,7 +150,7 @@ var qonsole = function() {
 
   /** Return the currently active named example */
   var currentNamedExample = function() {
-    return namedExample( $("ul.examples a.active").first().text().trim() );
+    return namedExample( $.trim( $("ul.examples a.active").first().text() ) );
   };
 
   /** Return the DOM node representing the query editor */
@@ -190,7 +194,7 @@ var qonsole = function() {
   /** Return a string comprising the currently selected prefixes */
   var renderCurrentPrefixes = function() {
     var l = $("ul.prefixes a.active" ).map( function( i, elt ) {
-      return sprintf( "prefix %s: <%s>", $(elt).text().trim(), $(elt).data( "uri" ) );
+      return sprintf( "prefix %s: <%s>", $.trim( $(elt).text() ), $(elt).data( "uri" ) );
     } );
     return $.makeArray(l).join( "\n" );
   };
@@ -235,14 +239,23 @@ var qonsole = function() {
       success: function( data, xhr ) {
         onQuerySuccess( data, format );
       },
-      error: onQueryFail
+      error: onQueryFail,
+      dataType: ajaxDataType( format )
     };
 
     checkForceTextFormat( format, options );
-    checkForceJsonP( options );
+    checkForceJsonP( options, format );
 
     $.ajax( url, options );
   };
+
+  var ajaxDataType = function( format ) {
+    return {
+      tsv: "html",
+      csv: "html",
+    }[format] || format;
+  };
+
 
   /** Hide or reveal an element using Bootstrap .hidden class */
   var elementVisible = function( elem, visible ) {
@@ -278,14 +291,16 @@ var qonsole = function() {
   /** For display purposes, we want the browser to not parse some formats for us */
   var checkForceTextFormat = function( format, options ) {
     if (format === "xml" || format === "json"){
-      options.data["force-accept"] = "text/plain";
+      // options.data["force-accept"] = "text/plain";
     }
   };
 
   /** Can we use CORS, or do we need to force the use of JsonP? */
-  var checkForceJsonP = function( options ) {
+  var checkForceJsonP = function( options, format ) {
     if (isIE()) {
-      // options.dataType = "jsonp";
+      // TODO: currently disabled, because jQuery insists on parsing non-Json
+      // content as JSON. So rendering XML via JSONp causes an error at the moment
+      // options.dataType = "jsonp " + ajaxDataType( format );
     }
   };
 
@@ -298,43 +313,101 @@ var qonsole = function() {
   /** Report query failure */
   var onQueryFail = function( jqXHR, textStatus, errorThrown ) {
     showResultsTimeAndCount( 0 );
-    $("#results").html( sprintf( "<pre class='text-danger'>%s</pre>", _.escape(jqXHR.valueOf().responseText) ) );
+    var text = jqXHR.valueOf().responseText || sprintf( "Sorry, that didn't work because: '%s'", jqXHR.valueOf().statusText );
+    $("#results").html( sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
   };
 
   /** Query succeeded - use display type to determine how to render */
   var onQuerySuccess = function( data, format ) {
-    var count, mime;
+    var options = null;
 
     switch (format) {
       case "text":
-        count = data.split('\n').length - 5;
-        mime = "text/plain";
+        options = showTextResult( data );
         break;
       case "json":
-        count = JSON.parse(data).results.bindings.length;
-        mime = "application/json";
+        options = showJsonResult( data );
         break;
       case "xml":
-        count = $($.parseXML( data )).find("results").children().length;
-        mime = "application/xml";
+        options = showXmlResult( data );
         break;
       case "tsv":
         showTableResult( data );
         break;
     }
 
-    if (mime) {
-      showCodeMirrorResult( data, count, mime );
+    if (options) {
+      showCodeMirrorResult( options );
     }
   };
 
+  var showTextResult = function( data ) {
+    return {
+      count: data.split('\n').length - 5,
+      data: data,
+      mime: "text/plain"
+    };
+  };
+
+  var showJsonResult = function( data ) {
+    var count, json;
+
+    if (_.isString( data )) {
+      json = data;
+      data = JSON.parse(data);
+    }
+    else {
+      // en bas le Internet Explorer
+      json = JSON.stringify( data, null, 2 );
+    }
+
+    return {
+      count: data.results.bindings.length,
+      data: json,
+      mime: "application/json"
+    };
+  }
+
+  var showXmlResult = function( data ) {
+    var count, xml;
+
+    if (_.isString( data )) {
+      xml = data;
+      data = $.parseXML( data );
+    }
+    else {
+      xml = xmlToString( data );
+    }
+
+    return {
+      count: $( data ).find("results").children().length,
+      data: xml,
+      mime: "application/xml"
+    };
+  };
+
+  /** Return the string representation of the given XML value, which may be a string or a DOM object */
+  var xmlToString = function( xmlData ) {
+    var xs = _.isString( xmlData ) ? xmlData : null;
+
+    if (!xs && window.ActiveXObject && xmlData.xml) {
+      xs = xmlData.xml;
+    }
+
+    if (!xs) {
+      xs = new XMLSerializer().serializeToString( xmlData || xmlData );
+    }
+
+    return xs;
+  };
+
   /** Show the given text value in a CodeMirror block with the given language mode */
-  var showCodeMirrorResult = function( code, count, mode ) {
-    showResultsTimeAndCount( count );
+  var showCodeMirrorResult = function( options ) {
+    showResultsTimeAndCount( options.count );
 
     var editor = CodeMirror( $("#results").get(0), {
-      value: code,
-      mode: mode,
+      value: options.data,
+      mode: options.mime,
       lineNumbers: true,
       extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
       gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
@@ -375,7 +448,7 @@ var qonsole = function() {
   var onLookupPrefix = function( e ) {
     e.preventDefault();
 
-    var prefix = $("#inputPrefix").val().trim();
+    var prefix = $.trim( $("#inputPrefix").val() );
     $("#inputURI").val("");
 
     if (prefix) {
@@ -389,8 +462,8 @@ var qonsole = function() {
 
   /** User wishes to add the prefix */
   var onAddPrefix = function( e ) {
-    var prefix = $("#inputPrefix").val().trim();
-    var uri = $("#inputURI").val().trim();
+    var prefix = $.trim( $("#inputPrefix").val() );
+    var uri = $.trim( $("#inputURI").val() );
 
     if (uri) {
       _config.prefixes[prefix] = uri;

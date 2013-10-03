@@ -7,20 +7,23 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" />
 
     <link href="css/qonsole.css" rel="stylesheet" />
     <link href="css/codemirror.css" rel="stylesheet" />
     <link href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" rel="stylesheet" />
 
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="js/lib/html5shiv.js"></script>
+      <script src="js/lib/respond.min.js"></script>
     <![endif]-->
+
 
     <link rel="shortcut icon" href="img/favicon.ico">
 
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="js/lib/sprintf-0.7-beta1.js"></script>
     <script src="js/lib/underscore.js"></script>
@@ -37,6 +40,11 @@
     <script src="js/app/qonsole.js"></script>
 
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+    <!-- This link provides CORS support in IE8+ -->
+    <!--[if lt IE 10]>
+      <script src="js/lib/jquery.xdomainrequest.js"></script>
+    <![endif]-->
 
     <script type="text/javascript">
       // configuration
@@ -77,17 +85,12 @@
 
   <body>
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="navbar-header col-md-9">
+      <div class="navbar-header col-md-12">
         <h1 class="brand">Qonsole</h1>
         <h2 class="brand">a query console for SPARQL</h2>
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div class="navbar-header col-md-3 text-right">
-        <img src="img/epilogo-dark.48.png" alt="Epimorphics Ltd" />
+        <span class="pull-right">
+          <img src="img/epilogo-dark.48.png" alt="Epimorphics Ltd" />
+        </span>
       </div>
     </nav>
 
