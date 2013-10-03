@@ -64,6 +64,18 @@ a.run-query {
   margin-left: 10px;
 }
 
+footer {
+  font-size: smaller;
+  color: #99999f;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+footer p {
+  margin: 0;
+}
+
 /* Custom buttons */
 
 .btn-custom1, .btn-custom2.active {
