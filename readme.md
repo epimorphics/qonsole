@@ -21,7 +21,8 @@ that helpful for your users, because:
   different application takes your user's focus away from the task of editing the query and
   exploring your data.
 
-See a [demo of qonsole](demo-vertical.html), using the [UK bathing water quality dataset](http://environment.data.gov.uk/bwq/).
+See a [demo of qonsole](http://epimorphics.github.io/qonsole/demo-vertical.html), 
+using the [UK bathing water quality dataset](http://environment.data.gov.uk/bwq/).
 
 Qonsole provides the following features:
 
