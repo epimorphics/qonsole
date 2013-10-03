@@ -1,11 +1,40 @@
+/* Copyright (c) 2012-2013 Epimorphics Ltd. Released under Apache License 2.0 http://www.apache.org/licenses/ */
+
 var qonsole = function() {
   "use strict";
 
+  /* JsLint */
+  /*global sprintf, testCSS, loadConfig, bindEvents, $, onConfigLoaded, updatePrefixDeclaration, _,
+    showCurrentQuery, setCurrentEndpoint, setCurrentFormat, elementVisible, runQuery, onLookupPrefix,
+    startTimingResults, onAddPrefix, initQuery, CodeMirror, renderCurrentPrefixes, onQuerySuccess,
+    onQueryFail, ajaxDataType, checkForceTextFormat, resetResults, checkForceJsonP, XMLSerializer,
+    showTableResult, showCodeMirrorResult
+   */
+
+  /* --- module vars --- */
   /** The loaded configuration */
   var _config = {};
   var _query_editor = null;
   var _startTime = 0;
 
+  /* --- utils --- */
+
+  /** Return the string representation of the given XML value, which may be a string or a DOM object */
+  var xmlToString = function( xmlData ) {
+    var xs = _.isString( xmlData ) ? xmlData : null;
+
+    if (!xs && window.ActiveXObject && xmlData.xml) {
+      xs = xmlData.xml;
+    }
+
+    if (!xs) {
+      xs = new XMLSerializer().serializeToString( xmlData );
+    }
+
+    return xs;
+  };
+
+  /** Browser sniffing */
   var isOpera = function() {return !!(window.opera && window.opera.version);};  // Opera 8.0+
   var isFirefox = function() {return testCSS('MozBoxSizing');};                 // FF 0.8+
   var isSafari = function() {return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;};    // At least Safari 3+: "[object HTMLElementConstructor]"
@@ -13,8 +42,10 @@ var qonsole = function() {
   var isIE = function() {return /*@cc_on!@*/false || testCSS('msTransform');};  // At least IE6
 
   var testCSS =  function(prop) {
-      return prop in document.documentElement.style;
-  }
+    return document.documentElement.style.hasOwnProperty( prop );
+  };
+
+  /* --- application code --- */
 
   /** Initialisation - only called once */
   var init = function( config ) {
@@ -29,21 +60,11 @@ var qonsole = function() {
   /** Load the configuration definition */
   var loadConfig = function( config ) {
     if (config.configURL) {
-      $.getJSON( config.configURL, onConfigLoaded )
-       .error( onConfigFail );
+      $.getJSON( config.configURL, onConfigLoaded );
     }
     else {
-      onConfigLoaded( config )
+      onConfigLoaded( config );
     }
-  };
-
-  /** Successfully loaded the configuration */
-  var onConfigLoaded = function( config, status, jqXHR ) {
-    _config = config;
-    initPrefixes( config );
-    initExamples( config );
-    initEndpoints( config );
-    initQuery( config );
   };
 
   /** Return the current config object */
@@ -60,7 +81,7 @@ var qonsole = function() {
     $("ul.examples").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
       $("ul.examples a").removeClass( "active" );
-      _.defer( function() {showCurrentQuery()} );
+      _.defer( function() {showCurrentQuery();} );
     } );
     $(".endpoints").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
@@ -128,6 +149,15 @@ var qonsole = function() {
     setCurrentEndpoint( config.endpoints["default"] );
   };
 
+  /** Successfully loaded the configuration */
+  var onConfigLoaded = function( config, status, jqXHR ) {
+    _config = config;
+    initPrefixes( config );
+    initExamples( config );
+    initEndpoints( config );
+    initQuery( config );
+  };
+
   /** Set the current endpoint text */
   var setCurrentEndpoint = function( url ) {
     $("[id=sparqlEndpoint]").val( url );
@@ -156,7 +186,7 @@ var qonsole = function() {
   /** Return the DOM node representing the query editor */
   var queryEditor = function() {
     if (!_query_editor) {
-      _query_editor = CodeMirror( $("#query-edit-cm").get(0), {
+      _query_editor = new CodeMirror( $("#query-edit-cm").get(0), {
         lineNumbers: true,
         mode: "sparql"
       } );
@@ -205,8 +235,9 @@ var qonsole = function() {
     var lines = query.split( "\n" );
     var pattern = new RegExp( "^prefix +" + prefix + ":");
     var found = false;
+    var i;
 
-    for (var i = 0; !found && i < lines.length; i++) {
+    for (i = 0; !found && i < lines.length; i++) {
       found = lines[i].match( pattern );
       if (found && !added) {
         lines.splice( i, 1 );
@@ -214,7 +245,7 @@ var qonsole = function() {
     }
 
     if (!found && added) {
-      for (var i = 0; i < lines.length; i++) {
+      for (i = 0; i < lines.length; i++) {
         if (!lines[i].match( /^prefix/ )) {
           lines.splice( i, 0, sprintf( "prefix %s: <%s>", prefix, uri ) );
           break;
@@ -317,6 +348,54 @@ var qonsole = function() {
     $("#results").html( sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
   };
 
+  /** Return options for display query results as text */
+  var showTextResult = function( data ) {
+    return {
+      count: data.split('\n').length - 5,
+      data: data,
+      mime: "text/plain"
+    };
+  };
+
+  /** Return options for displaying query results as JSON */
+  var showJsonResult = function( data ) {
+    var count, json;
+
+    if (_.isString( data )) {
+      json = data;
+      data = JSON.parse(data);
+    }
+    else {
+      // en bas le Internet Explorer
+      json = JSON.stringify( data, null, 2 );
+    }
+
+    return {
+      count: data.results.bindings.length,
+      data: json,
+      mime: "application/json"
+    };
+  };
+
+  /** Return options for displaying results as XML */
+  var showXmlResult = function( data ) {
+    var count, xml;
+
+    if (_.isString( data )) {
+      xml = data;
+      data = $.parseXML( data );
+    }
+    else {
+      xml = xmlToString( data );
+    }
+
+    return {
+      count: $( data ).find("results").children().length,
+      data: xml,
+      mime: "application/xml"
+    };
+  };
+
   /** Query succeeded - use display type to determine how to render */
   var onQuerySuccess = function( data, format ) {
     var options = null;
@@ -341,71 +420,11 @@ var qonsole = function() {
     }
   };
 
-  var showTextResult = function( data ) {
-    return {
-      count: data.split('\n').length - 5,
-      data: data,
-      mime: "text/plain"
-    };
-  };
-
-  var showJsonResult = function( data ) {
-    var count, json;
-
-    if (_.isString( data )) {
-      json = data;
-      data = JSON.parse(data);
-    }
-    else {
-      // en bas le Internet Explorer
-      json = JSON.stringify( data, null, 2 );
-    }
-
-    return {
-      count: data.results.bindings.length,
-      data: json,
-      mime: "application/json"
-    };
-  }
-
-  var showXmlResult = function( data ) {
-    var count, xml;
-
-    if (_.isString( data )) {
-      xml = data;
-      data = $.parseXML( data );
-    }
-    else {
-      xml = xmlToString( data );
-    }
-
-    return {
-      count: $( data ).find("results").children().length,
-      data: xml,
-      mime: "application/xml"
-    };
-  };
-
-  /** Return the string representation of the given XML value, which may be a string or a DOM object */
-  var xmlToString = function( xmlData ) {
-    var xs = _.isString( xmlData ) ? xmlData : null;
-
-    if (!xs && window.ActiveXObject && xmlData.xml) {
-      xs = xmlData.xml;
-    }
-
-    if (!xs) {
-      xs = new XMLSerializer().serializeToString( xmlData || xmlData );
-    }
-
-    return xs;
-  };
-
   /** Show the given text value in a CodeMirror block with the given language mode */
   var showCodeMirrorResult = function( options ) {
     showResultsTimeAndCount( options.count );
 
-    var editor = CodeMirror( $("#results").get(0), {
+    var editor = new CodeMirror( $("#results").get(0), {
       value: options.data,
       mode: options.mime,
       lineNumbers: true,
@@ -427,12 +446,14 @@ var qonsole = function() {
     var aaData = _.map( lines, function( line ) {
       var values = _.flatten( [line.split("\t")] );
       return _.map( values, function( v) {
+        var f;
         if (_.isNumber( v )) {
-          return parseFloat( v );
+          f = parseFloat( v );
         }
         else {
-          return _.escape(v);
+          f = _.escape(v);
         }
+        return f;
       } );
     } );
 
@@ -496,6 +517,6 @@ var qonsole = function() {
 
   return {
     init: init
-  }
+  };
 }();
 
