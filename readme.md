@@ -37,8 +37,9 @@ Qonsole provides the following features:
   display in a structured editor window for easier browsing. By default, results are returned
   in a table control, with sortable columns, paging and search.
 
-Qonsole is provided by [Epimorphics Ltd](http://www.epimorphics.com) at no charge, 
-and is open-source under an Apache license.
+Qonsole is free open-source software under an 
+[Apache license](http://www.apache.org/licenses/LICENSE-2.0.html), and was developed by  
+[Epimorphics Ltd](http://www.epimorphics.com).
 
 ## Adding qonsole to your page
 
