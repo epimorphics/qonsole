@@ -45,6 +45,26 @@ var qonsole = function() {
     return document.documentElement.style.hasOwnProperty( prop );
   };
 
+  /* Shorten a URI to qname form, if possible */
+  var toQName = function( prefixes, uri ) {
+    var result = uri, qname, u = uri;
+
+    if (u.substring( 0, 1 ) === '<') {
+      u = u.substring( 1, u.length - 1 );
+    }
+
+    $.each( prefixes, function( prefix, prefURI ) {
+      if (u.indexOf( prefURI ) === 0) {
+        qname = sprintf( "%s:%s", prefix, u.substring( prefURI.length ) );
+
+        if (qname.length < result.length) {
+          result = qname;
+        }
+      }
+    } );
+    return result;
+  };
+
   /* --- application code --- */
 
   /** Initialisation - only called once */
@@ -435,6 +455,19 @@ var qonsole = function() {
     } );
   };
 
+  /** Format a value for display in the table view */
+  var dataTableValue = function( v ) {
+    var f;
+    if (_.isNumber( v )) {
+      f = parseFloat( v );
+    }
+    else {
+      f = _.escape( toQName( config().prefixes, v ) );
+    }
+
+    return f;
+  };
+
   /** Show the result using jQuery dataTables */
   var showTableResult = function( data ) {
     var lines = _.compact(data.split( "\n" ));
@@ -445,16 +478,7 @@ var qonsole = function() {
     } );
     var aaData = _.map( lines, function( line ) {
       var values = _.flatten( [line.split("\t")] );
-      return _.map( values, function( v) {
-        var f;
-        if (_.isNumber( v )) {
-          f = parseFloat( v );
-        }
-        else {
-          f = _.escape(v);
-        }
-        return f;
-      } );
+      return _.map( values, dataTableValue );
     } );
 
     $("#results").empty()
