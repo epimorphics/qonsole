@@ -11,6 +11,8 @@
 <tr><td><a href="verify-default-table-value.test">verify default table value</a></td></tr>
 <tr><td><a href="verify-json-result.test">verify json result</a></td></tr>
 <tr><td><a href="verify-xml-result.test">verify xml result</a></td></tr>
+<tr><td><a href="verify-extension-selection.test">verify extension selection</a></td></tr>
+<tr><td><a href="verify-example-selection.test">verify example selection</a></td></tr>
 </tbody></table>
 </body>
 </html>
