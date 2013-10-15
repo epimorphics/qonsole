@@ -16,6 +16,7 @@ var qonsole = function() {
   var _config = {};
   var _query_editor = null;
   var _startTime = 0;
+  var _outstandingQueries = 0;
 
   /* --- utils --- */
 
@@ -144,15 +145,51 @@ var qonsole = function() {
   /** List the example queries from the config */
   var initExamples = function( config ) {
     var examples = $("ul.examples");
+
     examples.empty();
 
     $.each( config.queries, function( i, queryDesc ) {
       var html = sprintf( "<li><a class='btn btn-custom2 btn-sm' data-toggle='button'>%s</a></li>",
                           queryDesc.name );
       examples.append( html );
+
+      if (queryDesc.queryURL) {
+        loadRemoteQuery( queryDesc.name, queryDesc.queryURL );
+      }
     } );
 
-    examples.find("a").first().addClass( "active" );
+    setFirstQueryActive();
+  };
+
+  /** Set the default active query */
+  var setFirstQueryActive = function() {
+    if (_outstandingQueries === 0) {
+      $("ul.examples").find("a").first().addClass( "active" );
+      showCurrentQuery();
+    }
+  };
+
+  /** Load a remote query */
+  var loadRemoteQuery = function( name, url ) {
+    _outstandingQueries++;
+
+    var options = {
+      success: function( data, xhr ) {
+        namedExample( name ).query = data;
+
+        _outstandingQueries--;
+        setFirstQueryActive();
+      },
+      failure: function() {
+        namedExample( name ).query = "Not found: " + url;
+
+        _outstandingQueries--;
+        setFirstQueryActive();
+      },
+      dataType: "text"
+    };
+
+    $.ajax( url, options );
   };
 
   /** Set up the drop-down list of end-points */
@@ -175,7 +212,6 @@ var qonsole = function() {
     initPrefixes( config );
     initExamples( config );
     initEndpoints( config );
-    initQuery( config );
   };
 
   /** Set the current endpoint text */
@@ -186,11 +222,6 @@ var qonsole = function() {
   /** Return the current endpoint text */
   var currentEndpoint = function( url ) {
     return $("[id=sparqlEndpoint]").val();
-  };
-
-  /** Set the initial query, which will be the default selection plus the selected prefixes */
-  var initQuery = function( config ) {
-    showCurrentQuery();
   };
 
   /** Return the query definition with the given name */
@@ -227,8 +258,10 @@ var qonsole = function() {
   /** Display the given query, with the currently defined prefixes */
   var showCurrentQuery = function() {
     var query = currentNamedExample();
-    var q = sprintf( "%s\n\n%s", renderCurrentPrefixes(), query.query );
-    setCurrentQueryText( q );
+    if (query) {
+      var q = sprintf( "%s\n\n%s", renderCurrentPrefixes(), query.query );
+      setCurrentQueryText( q );
+    }
   };
 
   /** Return the currenty selected output format */

@@ -88,7 +88,9 @@ this config object allows you to specify:
   This elemen defines the example queries that users can select run, or
   to base their own queries on. The value is a JSON array, each element of
   which is one example query. Note that prefixes do not need to be
-  declared in the example queries:
+  declared in the example queries. The query text can be declared in the config
+  structure itself, with the `query` key, or accessed remotely from a different URL
+  using the `queryURL` key:
 <pre>
     queries: [
       { "name": "Properties of a named bathing water",
@@ -101,6 +103,9 @@ this config object allows you to specify:
                  "  ?class a owl:Class.\n" +
                  "  optional { ?class rdfs:label ?label}\n" +
                  "  optional { ?class rdfs:comment ?description}\n}"
+      },
+      { "name": "Properties of a named bathing water",
+        "queryURL": "list-properties.rq"
       }
     ]
 </pre>
