@@ -258,8 +258,17 @@ var qonsole = function() {
   /** Display the given query, with the currently defined prefixes */
   var showCurrentQuery = function() {
     var query = currentNamedExample();
+    displayQuery( query );
+  };
+
+  /** Display the given query */
+  var displayQuery = function( query ) {
     if (query) {
-      var q = sprintf( "%s\n\n%s", renderCurrentPrefixes(), query.query );
+      var queryBody = query.query ? query.query : query;
+      var prefixes = assemblePrefixes( queryBody, query.prefixes )
+
+      // var q = sprintf( "%s\n\n%s", renderCurrentPrefixes(), query.query );
+      var q = sprintf( "%s\n\n%s", renderPrefixes( prefixes ), stripLeader( queryBody ) );
       setCurrentQueryText( q );
     }
   };
@@ -274,12 +283,62 @@ var qonsole = function() {
     $("a.display-format").data( "value", val ).find("span").text( label );
   };
 
-  /** Return a string comprising the currently selected prefixes */
-  var renderCurrentPrefixes = function() {
+  /** Assemble the set of prefixes to use when initially rendering the query */
+  var assemblePrefixes = function( queryBody, queryDefinitionPrefixes ) {
+    if (queryBody.match( /^prefix/ )) {
+      // strategy 1: there are prefixes encoded in the query body
+      return assemblePrefixesFromQuery( queryBody );
+    }
+    else if (queryDefinitionPrefixes) {
+      // strategy 2: prefixes given in query def
+      return _.map( queryDefinitionPrefixes, function( prefixName ) {
+        return {name: prefixName, uri: config.prefixes[prefixName] };
+      } );
+    }
+    else {
+      return assembleCurrentPrefixes();
+    }
+  };
+
+  /** Return an array comprising the currently selected prefixes */
+  var assembleCurrentPrefixes = function() {
     var l = $("ul.prefixes a.active" ).map( function( i, elt ) {
-      return sprintf( "prefix %s: <%s>", $.trim( $(elt).text() ), $(elt).data( "uri" ) );
+      return {name: $.trim( $(elt).text() ),
+              uri: $(elt).data( "uri" )};
     } );
-    return $.makeArray(l).join( "\n" );
+    return $.makeArray(l);
+  };
+
+  /** Return an array of the prefixes parsed from the given query body */
+  var assemblePrefixesFromQuery = function( queryBody ) {
+    var leader = queryLeader( queryBody )[0].trim();
+    var pairs = _.compact( leader.split( "prefix" ) );
+    var prefixes = [];
+
+    _.each( pairs, function( pair ) {
+      var m = pair.match( "^\s*([^:\s]*)\s*:\s*<([^>]*)>\s*$" );
+      prefixes.push( {name: m[1], uri: m[2]} );
+    } );
+
+    return prefixes;
+  };
+
+  /** Split a query into leader (prefixes and leading blank lines) and body */
+  var queryLeader = function( query ) {
+    var parts = query.match( /^((prefix[^>]+>\s*)*)(.*)$/ );
+    return parts ? [part[1], parts.pop()] : [null, query];
+  };
+
+  /** Remove the query leader */
+  var stripLeader = function( query ) {
+    return queryLeader( query )[1];
+  };
+
+  /** Return a string comprising the given prefixes */
+  var renderPrefixes = function( prefixes ) {
+    return _.map( prefixes, function( p ) {
+      return sprintf( "prefix %s: <%s>", p.name, p.uri );
+    } ).join( "\n" );
   };
 
   /** Add or remove the given prefix declaration from the current query */
