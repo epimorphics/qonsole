@@ -110,12 +110,12 @@ this config object allows you to specify:
     ]
 </pre>
 
-By default, each query gets all of the default prefixes declared in the configuration
-object. However this isn't always necessary. Simpler example queries may be easier
+By default, each query gets all of the shared prefixes declared in the configuration
+object (see above). However this isn't always necessary. Simpler example queries may be easier
 to read if the prefixes shown are only those actually in use. There are two mechanisms
 you can use to control the prefixes used when displaying a query. Firstly, if the query
-itself includes `prefix` declarations, then only those prefixes will be shown. Alternatively,
-you can list the prefix keys that should be used with the query with a `prefixes` key
+itself includes <code>prefix</code> declarations, then only those prefixes will be shown. Alternatively,
+you can list the prefix keys that should be used with the query with a <code>prefixes</code> key
 in the configuration object:
 
 <pre>
