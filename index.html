@@ -35,15 +35,15 @@
 <a name="qonsole---a-simple-console-for-running-sparql-queries" class="anchor" href="#qonsole---a-simple-console-for-running-sparql-queries"><span class="octicon octicon-link"></span></a>Qonsole - a simple console for running SPARQL queries</h1>
 
 <p>Suppose you have a linked-data dataset that you've published on the web, and that
-you'd like to provide your users with the means to run SPARQL queries to explore
+you'd like to provide your users with the means to run SPARQL queries to explore 
 your data. Most SPARQL end-points allow you to use HTTP <code>get</code> and <code>post</code> commands
-to send a query and get back results, so it's easy enough to put up an HTML form for
+to send a query and get back results, so it's easy enough to put up an HTML form for 
 your users to type in a query and get back some results. But that's not necessarily
 that helpful for your users, because:</p>
 
 <ul>
 <li>in some browsers, hitting the 'back' button after posting a query means that the
-text input control is emptied. So your users will lose the query that they have typed,
+text input control is emptied. So your users will lose the query that they have typed, 
 which makes iterative development of the query hard.</li>
 <li>you can provide at most one sample query to get your users started with suggestions
 and ideas.</li>
@@ -55,13 +55,13 @@ using a MIME type (e.g. <code>text/csv</code> that makes your user's computer op
 in another program (e.g. a spreadsheet). Plain text can be hard to explore, while opening a
 different application takes your user's focus away from the task of editing the query and
 exploring your data.</li>
-</ul>
-<p>See a <a href="demo-vertical.html">demo of qonsole</a>, using the UK bathing water quality
-  dataset.</p>
+</ul><p>See a <a href="http://epimorphics.github.io/qonsole/demo-vertical.html">demo of qonsole</a>, 
+using the <a href="http://environment.data.gov.uk/bwq/">UK bathing water quality dataset</a>.</p>
+
 <p>Qonsole provides the following features:</p>
 
 <ul>
-<li>An edit control with SPARQL syntax highlighting, undo, and other familiar code editing
+<li>An edit control with SPARQL syntax highlighting, undo, and other familiar code editing 
 features (courtesy of <a href="http://codemirror.net/">CodeMirror</a>).</li>
 <li>Display of the query and the return result on one page</li>
 <li>A configurable set of example queries your users can select with one click</li>
@@ -71,8 +71,8 @@ remove prefix declarations from the edit window with one click.</li>
 <li>A choice of return formats, including XML, JSON and plain text. XML and JSON results
 display in a structured editor window for easier browsing. By default, results are returned
 in a table control, with sortable columns, paging and search.</li>
-</ul><p>Qonsole is provided by <a href="http://www.epimorphics.com">Epimorphics Ltd</a> at no charge,
-and is open-source under an Apache license.</p>
+</ul><p>Qonsole is free open-source software under an 
+<a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache license</a>, and was developed by<br><a href="http://www.epimorphics.com">Epimorphics Ltd</a>.</p>
 
 <h2>
 <a name="adding-qonsole-to-your-page" class="anchor" href="#adding-qonsole-to-your-page"><span class="octicon octicon-link"></span></a>Adding qonsole to your page</h2>
@@ -122,10 +122,12 @@ this config object allows you to specify:</p>
   <dt>
 <code>queries</code> – pre-defined example queries</dt>
   <dd>
-  This elemen defines the example queries that users can select run, or
+  This element defines the example queries that users can select run, or
   to base their own queries on. The value is a JSON array, each element of
   which is one example query. Note that prefixes do not need to be
-  declared in the example queries:
+  declared in the example queries. The query text can be declared in the config
+  structure itself, with the `query` key, or accessed remotely from a different URL
+  using the `queryURL` key:
 <pre>
     queries: [
       { "name": "Properties of a named bathing water",
@@ -138,8 +140,29 @@ this config object allows you to specify:</p>
                  "  ?class a owl:Class.\n" +
                  "  optional { ?class rdfs:label ?label}\n" +
                  "  optional { ?class rdfs:comment ?description}\n}"
+      },
+      { "name": "Properties of a named bathing water",
+        "queryURL": "list-properties.rq"
       }
     ]
+</pre>
+
+By default, each query gets all of the shared prefixes declared in the configuration
+object (see above). However this isn't always necessary. Simpler example queries may be easier
+to read if the prefixes shown are only those actually in use. There are two mechanisms
+you can use to control the prefixes used when displaying a query. Firstly, if the query
+itself includes <code>prefix</code> declarations, then only those prefixes will be shown. Alternatively,
+you can list the prefix keys that should be used with the query with a <code>prefixes</code> key
+in the configuration object:
+
+<pre>
+  queries: [
+    { "name": "Properties of a named bathing water",
+      "query": "select ?predicate ?object\nwhere {\n" +
+               "  ?bw rdfs:label \"Spittal\"@en ;\n" +
+               "      ?predicate ?object\n}",
+      "prefixes": [rdfs", "bw"]
+    }]
 </pre>
   </dd>
 </dl>
@@ -150,7 +173,7 @@ this config object allows you to specify:</p>
           This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
         </footer>
 
-
+        
       </div>
     </div>
   </body>
