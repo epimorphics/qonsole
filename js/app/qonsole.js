@@ -267,9 +267,10 @@ var qonsole = function() {
       var queryBody = query.query ? query.query : query;
       var prefixes = assemblePrefixes( queryBody, query.prefixes )
 
-      // var q = sprintf( "%s\n\n%s", renderCurrentPrefixes(), query.query );
       var q = sprintf( "%s\n\n%s", renderPrefixes( prefixes ), stripLeader( queryBody ) );
       setCurrentQueryText( q );
+
+      syncPrefixButtonState( prefixes );
     }
   };
 
@@ -292,7 +293,7 @@ var qonsole = function() {
     else if (queryDefinitionPrefixes) {
       // strategy 2: prefixes given in query def
       return _.map( queryDefinitionPrefixes, function( prefixName ) {
-        return {name: prefixName, uri: config.prefixes[prefixName] };
+        return {name: prefixName, uri: config().prefixes[prefixName] };
       } );
     }
     else {
@@ -316,17 +317,41 @@ var qonsole = function() {
     var prefixes = [];
 
     _.each( pairs, function( pair ) {
-      var m = pair.match( "^\s*([^:\s]*)\s*:\s*<([^>]*)>\s*$" );
+      var m = pair.match( "^\\s*(\\w+)\\s*:\\s*<([^>]*)>\\s*$" );
       prefixes.push( {name: m[1], uri: m[2]} );
     } );
 
     return prefixes;
   };
 
+  /** Ensure that the prefix buttons are in sync with the prefixes used in a new query */
+  var syncPrefixButtonState = function( prefixes ) {
+    $("ul.prefixes a" ).each( function( i, elt ) {
+      var name = $.trim( $(elt).text() );
+
+      if (_.find( prefixes, function(p) {return p.name === name;} )) {
+        $(elt).addClass( "active" );
+      }
+      else {
+        $(elt).removeClass( "active" );
+      }
+    } );
+  };
+
   /** Split a query into leader (prefixes and leading blank lines) and body */
   var queryLeader = function( query ) {
-    var parts = query.match( /^((prefix[^>]+>\s*)*)(.*)$/ );
-    return parts ? [part[1], parts.pop()] : [null, query];
+    var pattern = /(prefix[^>]+>[\s\n]*)/;
+    var queryBody = query;
+    var i = 0;
+    var m = queryBody.match( pattern );
+
+    while (m) {
+      i += m[1].length;
+      queryBody = queryBody.substring( i );
+      m = queryBody.match( pattern );
+    }
+
+    return [query.substring( 0, query.length - queryBody.length), queryBody];
   };
 
   /** Remove the query leader */

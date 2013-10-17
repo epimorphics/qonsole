@@ -85,7 +85,7 @@ this config object allows you to specify:
   </dd>
   <dt><code>queries</code> &ndash; pre-defined example queries</dt>
   <dd>
-  This elemen defines the example queries that users can select run, or
+  This element defines the example queries that users can select run, or
   to base their own queries on. The value is a JSON array, each element of
   which is one example query. Note that prefixes do not need to be
   declared in the example queries. The query text can be declared in the config
@@ -108,6 +108,24 @@ this config object allows you to specify:
         "queryURL": "list-properties.rq"
       }
     ]
+</pre>
+
+By default, each query gets all of the default prefixes declared in the configuration
+object. However this isn't always necessary. Simpler example queries may be easier
+to read if the prefixes shown are only those actually in use. There are two mechanisms
+you can use to control the prefixes used when displaying a query. Firstly, if the query
+itself includes `prefix` declarations, then only those prefixes will be shown. Alternatively,
+you can list the prefix keys that should be used with the query with a `prefixes` key
+in the configuration object:
+
+<pre>
+  queries: [
+    { "name": "Properties of a named bathing water",
+      "query": "select ?predicate ?object\nwhere {\n" +
+               "  ?bw rdfs:label \"Spittal\"@en ;\n" +
+               "      ?predicate ?object\n}",
+      "prefixes": [rdfs", "bw"]
+    }]
 </pre>
   </dd>
 </dl>

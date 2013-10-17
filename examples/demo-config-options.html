@@ -70,6 +70,10 @@
           // load a query from a file
           { "name": "Properties of a named bathing water",
             "queryURL": "list-properties.rq"
+          },
+          { "name": "Example with nominated prefixes",
+            "query": "select *\n { ?s ?p ?o }\nlimit 10",
+            "prefixes": ["rdf", "owl"]
           }
         ]
         };
