@@ -574,12 +574,27 @@ var qonsole = function() {
 
   /** Format a value for display in the table view */
   var dataTableValue = function( v ) {
-    var f;
+    var f, parts;
+
     if (_.isNumber( v )) {
       f = parseFloat( v );
     }
+    else if (v.match( /\^\^/ )) {
+      parts = v.match( /^"*([^\\^\\""]*)"*\^\^<*(.*)>*$/m )
+      f = sprintf( "<span title='Type: %s'>%s</span>", parts[2], parts[1])
+    }
+    else if (v.match( /@/ )) {
+      parts = v.match( /^"(.*)"@([^@]*)/ );
+      f = sprintf( "<span title='Language: %s'>%s</span>", parts[2], parts[1] );
+    }
     else {
-      f = _.escape( toQName( config().prefixes, v ) );
+      f = toQName( config().prefixes, v );
+
+      if (f.match( /^</ )) {
+        f = f.slice( 1, -1 );
+      }
+
+      f = _.escape(f );
     }
 
     return f;
