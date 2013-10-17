@@ -14,6 +14,7 @@
 <tr><td><a href="verify-extension-selection.test">verify extension selection</a></td></tr>
 <tr><td><a href="verify-example-selection.test">verify example selection</a></td></tr>
 <tr><td><a href="verify-load-remote-query.test">Verify load remote query</a></td></tr>
+<tr><td><a href="verify-prefix-options-selected.test">verify prefix options selected</a></td></tr>
 </tbody></table>
 </body>
 </html>
