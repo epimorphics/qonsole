@@ -340,7 +340,7 @@ var qonsole = function() {
 
   /** Split a query into leader (prefixes and leading blank lines) and body */
   var queryLeader = function( query ) {
-    var pattern = /(prefix[^>]+>[\s\n]*)/;
+    var pattern = /(prefix [^>]+>[\s\n]*)/;
     var queryBody = query;
     var i = 0;
     var m = queryBody.match( pattern );
