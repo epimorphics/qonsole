@@ -7,7 +7,7 @@ var qonsole = function() {
   /*global sprintf, testCSS, loadConfig, bindEvents, $, onConfigLoaded, updatePrefixDeclaration, _,
     showCurrentQuery, setCurrentEndpoint, setCurrentFormat, elementVisible, runQuery, onLookupPrefix,
     startTimingResults, onAddPrefix, initQuery, CodeMirror, renderCurrentPrefixes, onQuerySuccess,
-    onQueryFail, ajaxDataType, checkForceTextFormat, resetResults, checkForceJsonP, XMLSerializer,
+    onQueryFail, ajaxDataType, resetResults, XMLSerializer,
     showTableResult, showCodeMirrorResult
    */
 
@@ -393,35 +393,36 @@ var qonsole = function() {
     setCurrentQueryText( lines.join( "\n" ) );
   };
 
+  /** Return the sparql service we're querying against */
+  var sparqlService = function() {
+    var service = config().service;
+    if (!service) {
+      // default is the remote service
+      config().service = new RemoteSparqlService();
+      service = config().service;
+    }
+
+    return service;
+  };
+
   /** Perform the query */
   var runQuery = function( e ) {
     e.preventDefault();
     resetResults();
 
-    var url = currentEndpoint();
-    var query = currentQueryText();
     var format = selectedFormat();
+    var query = currentQueryText();
 
     var options = {
-      data: {query: query, output: format},
-      success: function( data, xhr ) {
+      url: currentEndpoint(),
+      format: format,
+      success: function( data ) {
         onQuerySuccess( data, format );
       },
-      error: onQueryFail,
-      dataType: ajaxDataType( format )
+      error: onQueryFail
     };
 
-    checkForceTextFormat( format, options );
-    checkForceJsonP( options, format );
-
-    $.ajax( url, options );
-  };
-
-  var ajaxDataType = function( format ) {
-    return {
-      tsv: "html",
-      csv: "html",
-    }[format] || format;
+    sparqlService().execute( query, options );
   };
 
 
@@ -454,22 +455,6 @@ var qonsole = function() {
 
     $(".timeTaken").html( html );
     elementVisible( ".timeTaken", true );
-  };
-
-  /** For display purposes, we want the browser to not parse some formats for us */
-  var checkForceTextFormat = function( format, options ) {
-    if (format === "xml" || format === "json"){
-      // options.data["force-accept"] = "text/plain";
-    }
-  };
-
-  /** Can we use CORS, or do we need to force the use of JsonP? */
-  var checkForceJsonP = function( options, format ) {
-    if (isIE()) {
-      // TODO: currently disabled, because jQuery insists on parsing non-Json
-      // content as JSON. So rendering XML via JSONp causes an error at the moment
-      // options.dataType = "jsonp " + ajaxDataType( format );
-    }
   };
 
   /** Reset the results display */
