@@ -46,26 +46,6 @@ var qonsole = function() {
     return document.documentElement.style.hasOwnProperty( prop );
   };
 
-  /* Shorten a URI to qname form, if possible */
-  var toQName = function( prefixes, uri ) {
-    var result = uri, qname, u = uri;
-
-    if (u.substring( 0, 1 ) === '<') {
-      u = u.substring( 1, u.length - 1 );
-    }
-
-    $.each( prefixes, function( prefix, prefURI ) {
-      if (u.indexOf( prefURI ) === 0) {
-        qname = sprintf( "%s:%s", prefix, u.substring( prefURI.length ) );
-
-        if (qname.length < result.length) {
-          result = qname;
-        }
-      }
-    } );
-    return result;
-  };
-
   /* --- application code --- */
 
   /** Initialisation - only called once */
@@ -470,75 +450,15 @@ var qonsole = function() {
     $("#results").html( sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
   };
 
-  /** Return options for display query results as text */
-  var showTextResult = function( data ) {
-    return {
-      count: data.split('\n').length - 5,
-      data: data,
-      mime: "text/plain"
-    };
-  };
-
-  /** Return options for displaying query results as JSON */
-  var showJsonResult = function( data ) {
-    var count, json;
-
-    if (_.isString( data )) {
-      json = data;
-      data = JSON.parse(data);
-    }
-    else {
-      // en bas le Internet Explorer
-      json = JSON.stringify( data, null, 2 );
-    }
-
-    return {
-      count: data.results.bindings.length,
-      data: json,
-      mime: "application/json"
-    };
-  };
-
-  /** Return options for displaying results as XML */
-  var showXmlResult = function( data ) {
-    var count, xml;
-
-    if (_.isString( data )) {
-      xml = data;
-      data = $.parseXML( data );
-    }
-    else {
-      xml = xmlToString( data );
-    }
-
-    return {
-      count: $( data ).find("results").children().length,
-      data: xml,
-      mime: "application/xml"
-    };
-  };
-
   /** Query succeeded - use display type to determine how to render */
   var onQuerySuccess = function( data, format ) {
-    var options = null;
+    var options = data.asFormat( format, config() );
 
-    switch (format) {
-      case "text":
-        options = showTextResult( data );
-        break;
-      case "json":
-        options = showJsonResult( data );
-        break;
-      case "xml":
-        options = showXmlResult( data );
-        break;
-      case "tsv":
-        showTableResult( data );
-        break;
-    }
-
-    if (options) {
+    if (options && !options.table) {
       showCodeMirrorResult( options );
+    }
+    else if (options && options.table) {
+      showTableResult( options );
     }
   };
 
@@ -557,55 +477,16 @@ var qonsole = function() {
     } );
   };
 
-  /** Format a value for display in the table view */
-  var dataTableValue = function( v ) {
-    var f, parts;
-
-    if (_.isNumber( v )) {
-      f = parseFloat( v );
-    }
-    else if (v.match( /\^\^/ )) {
-      parts = v.match( /^"*([^\\^\\""]*)"*\^\^<*(.*)>*$/m )
-      f = sprintf( "<span title='Type: %s'>%s</span>", parts[2], parts[1])
-    }
-    else if (v.match( /@/ )) {
-      parts = v.match( /^"(.*)"@([^@]*)/ );
-      f = sprintf( "<span title='Language: %s'>%s</span>", parts[2], parts[1] );
-    }
-    else {
-      f = toQName( config().prefixes, v );
-
-      if (f.match( /^</ )) {
-        f = f.slice( 1, -1 );
-      }
-
-      f = _.escape(f );
-    }
-
-    return f;
-  };
-
   /** Show the result using jQuery dataTables */
-  var showTableResult = function( data ) {
-    var lines = _.compact(data.split( "\n" ));
-    showResultsTimeAndCount( lines.length - 1 );
-
-    var aoColumns = _.map( lines.shift().split("\t"), function( header) {
-      return {sTitle: header};
-    } );
-    var aaData = _.map( lines, function( line ) {
-      var values = _.flatten( [line.split("\t")] );
-      return _.map( values, dataTableValue );
-    } );
+  var showTableResult = function( options ) {
+    showResultsTimeAndCount( options.count );
 
     $("#results").empty()
                  .append( '<div class="auto-overflow"></div>')
                  .children()
                  .append( '<table cellpadding="0" cellspacing="0" border="0" class="display"></table>' )
                  .children()
-                 .dataTable( {aoColumns: aoColumns,
-                              aaData: aaData
-                             } );
+                 .dataTable( options );
   };
 
   /** Lookup a prefix on prefix.cc */
