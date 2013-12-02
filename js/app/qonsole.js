@@ -6,7 +6,7 @@ var qonsole = function() {
   /* JsLint */
   /*global sprintf, testCSS, loadConfig, bindEvents, $, onConfigLoaded, updatePrefixDeclaration, _,
     showCurrentQuery, setCurrentEndpoint, setCurrentFormat, elementVisible, runQuery, onLookupPrefix,
-    startTimingResults, onAddPrefix, initQuery, CodeMirror, renderCurrentPrefixes, onQuerySuccess,
+    startTimingResults, onAddPrefix, initQuery, CodeMirror, onQuerySuccess,
     onQueryFail, ajaxDataType, resetResults, XMLSerializer,
     showTableResult, showCodeMirrorResult
    */
@@ -533,7 +533,7 @@ var qonsole = function() {
 
     var lines = currentQueryText().split("\n");
     lines = _.reject( lines, function( line ) {return line.match( /^prefix/ );} );
-    var q = sprintf( "%s\n%s", renderCurrentPrefixes(), lines.join( "\n" ) );
+    var q = sprintf( "%s\n%s", renderPrefixes( assembleCurrentPrefixes() ), lines.join( "\n" ) );
     setCurrentQueryText( q );
   };
 
