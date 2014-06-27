@@ -481,6 +481,10 @@ var qonsole = function() {
   var showTableResult = function( options ) {
     showResultsTimeAndCount( options.count );
 
+    options.oLanguage = {
+      "sEmptyTable": "Query did not return any results."
+    };
+
     $("#results").empty()
                  .append( '<div class="auto-overflow"></div>')
                  .children()
