@@ -99,9 +99,11 @@ var qonsole = function() {
       .ajaxStart(function() {
         elementVisible( ".loadingSpinner", true );
         startTimingResults();
+        disableSubmit( true );
       })
       .ajaxStop(function() {
         elementVisible( ".loadingSpinner", false );
+        disableSubmit( false );
       });
 
     // dialogue events
@@ -539,6 +541,18 @@ var qonsole = function() {
     lines = _.reject( lines, function( line ) {return line.match( /^prefix/ );} );
     var q = sprintf( "%s\n%s", renderPrefixes( assembleCurrentPrefixes() ), lines.join( "\n" ) );
     setCurrentQueryText( q );
+  };
+
+  /** Disable or enable the button to submit a query */
+  var disableSubmit = function( disable ) {
+    var elem = $("a.run-query");
+    elem.prop( 'disabled', disable );
+    if (disable) {
+      elem.addClass( "disabled" );
+    }
+    else {
+      elem.removeClass( "disabled" );
+    }
   };
 
   return {

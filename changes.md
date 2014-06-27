@@ -4,3 +4,4 @@
 
   * Fix off-by-one error in table counts ([issue #10](https://github.com/epimorphics/qonsole/issues/10))
   * Fix ambiguous warning in JQuery DataTables when no matching results ([issue #6](https://github.com/epimorphics/qonsole/issues/6))
+  * Disable submit button while a query is ongoing ([issue #9](https://github.com/epimorphics/qonsole/issues/9)
