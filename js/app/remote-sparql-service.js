@@ -122,7 +122,7 @@ _.extend( RemoteSparqlServiceResult.prototype, {
     } );
 
     return {
-      count: lines.length - 1,
+      count: lines.length,
       aoColumns: columnHeaders,
       aaData: rows,
       table: true
