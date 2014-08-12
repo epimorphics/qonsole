@@ -77,7 +77,7 @@ var qonsole = function() {
   var bindEvents = function() {
     $("ul.prefixes").on( "click", "a.btn", function( e ) {
       var elem = $(e.currentTarget);
-      updatePrefixDeclaration( $.trim( elem.text() ), elem.data( "uri" ), !elem.is(".active") );
+      updatePrefixDeclaration( $.trim( elem.data( "prefix" ) ), elem.data( "uri" ), !elem.is(".active") );
     } );
     $("ul.examples").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
@@ -119,7 +119,12 @@ var qonsole = function() {
   var initPrefixes = function( config ) {
     var prefixAdd = $("ul.prefixes li:last" );
     $.each( config.prefixes, function( key, value ) {
-      var html = sprintf( "<li><a class='btn btn-custom2 btn-sm active' data-toggle='button' data-uri='%s'>%s</a></li>", value, key );
+      var displayKey = key;
+      if (!key || key === "") {
+        displayKey = ":";
+      }
+      var html = sprintf( "<li><a class='btn btn-custom2 btn-sm active' data-toggle='button' data-uri='%s' data-prefix='%s'>%s</a></li>",
+                          value, key, displayKey );
       $(html).insertBefore( prefixAdd);
     } );
   };
@@ -286,7 +291,7 @@ var qonsole = function() {
   /** Return an array comprising the currently selected prefixes */
   var assembleCurrentPrefixes = function() {
     var l = $("ul.prefixes a.active" ).map( function( i, elt ) {
-      return {name: $.trim( $(elt).text() ),
+      return {name: $.trim( $(elt).data( "prefix" ) ),
               uri: $(elt).data( "uri" )};
     } );
     return $.makeArray(l);
@@ -309,7 +314,7 @@ var qonsole = function() {
   /** Ensure that the prefix buttons are in sync with the prefixes used in a new query */
   var syncPrefixButtonState = function( prefixes ) {
     $("ul.prefixes a" ).each( function( i, elt ) {
-      var name = $.trim( $(elt).text() );
+      var name = $.trim( $(elt).data( "prefix" ) );
 
       if (_.find( prefixes, function(p) {return p.name === name;} )) {
         $(elt).addClass( "active" );
