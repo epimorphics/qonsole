@@ -50,7 +50,7 @@ _.extend( RemoteSparqlServiceResult.prototype, {
       data = $.parseXML( data );
     }
     else {
-      xml = xmlToString( data );
+      xml = this.xmlToString( data );
     }
 
     return {
@@ -148,8 +148,22 @@ _.extend( RemoteSparqlServiceResult.prototype, {
     }
 
     return null;
-  }
+  },
 
+  /** Return the string representation of the given XML value, which may be a string or a DOM object */
+  xmlToString: function( xmlData ) {
+    var xs = _.isString( xmlData ) ? xmlData : null;
+
+    if (!xs && window.ActiveXObject && xmlData.xml) {
+      xs = xmlData.xml;
+    }
+
+    if (!xs) {
+      xs = new XMLSerializer().serializeToString( xmlData );
+    }
+
+    return xs;
+  }
 } );
 
 

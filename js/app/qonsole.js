@@ -18,23 +18,6 @@ var qonsole = function() {
   var _startTime = 0;
   var _outstandingQueries = 0;
 
-  /* --- utils --- */
-
-  /** Return the string representation of the given XML value, which may be a string or a DOM object */
-  var xmlToString = function( xmlData ) {
-    var xs = _.isString( xmlData ) ? xmlData : null;
-
-    if (!xs && window.ActiveXObject && xmlData.xml) {
-      xs = xmlData.xml;
-    }
-
-    if (!xs) {
-      xs = new XMLSerializer().serializeToString( xmlData );
-    }
-
-    return xs;
-  };
-
   /** Browser sniffing */
   var isOpera = function() {return !!(window.opera && window.opera.version);};  // Opera 8.0+
   var isFirefox = function() {return testCSS('MozBoxSizing');};                 // FF 0.8+
