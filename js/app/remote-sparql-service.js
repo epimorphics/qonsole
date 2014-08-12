@@ -97,7 +97,7 @@ _.extend( RemoteSparqlServiceResult.prototype, {
         f = sprintf( "<span title='Language: %s'>%s</span>", parts[2], parts[1] );
       }
       else {
-        f = toQName( config.prefixes, v );
+        f = toQName( config.parsedPrefixes, v );
 
         if (f.match( /^</ )) {
           f = f.slice( 1, -1 );

@@ -70,6 +70,7 @@ var qonsole = function() {
 
   /** Return the current config object */
   var config = function() {
+    _config.parsedPrefixes = parseQueryPrefixes();
     return _config;
   };
 
@@ -271,6 +272,14 @@ var qonsole = function() {
     $("a.display-format").data( "value", val ).find("span").text( label );
   };
 
+  /** Return the prefixes currently defined in the query */
+  var parseQueryPrefixes = function() {
+    var prefixes = {};
+    var prefixPairs = assemblePrefixesFromQuery( currentQueryText() );
+    _.each( prefixPairs, function( pair ) {prefixes[pair.name] = pair.uri;} );
+    return prefixes;
+  };
+
   /** Assemble the set of prefixes to use when initially rendering the query */
   var assemblePrefixes = function( queryBody, queryDefinitionPrefixes ) {
     if (queryBody.match( /^prefix/ )) {
@@ -304,7 +313,7 @@ var qonsole = function() {
     var prefixes = [];
 
     _.each( pairs, function( pair ) {
-      var m = pair.match( "^\\s*(\\w+)\\s*:\\s*<([^>]*)>\\s*$" );
+      var m = pair.match( "^\\s*([\\w\\-]+)\\s*:\\s*<([^>]*)>\\s*$" );
       prefixes.push( {name: m[1], uri: m[2]} );
     } );
 
@@ -334,7 +343,7 @@ var qonsole = function() {
 
     while (m) {
       i += m[1].length;
-      queryBody = queryBody.substring( i );
+      queryBody = query.substring( i );
       m = queryBody.match( pattern );
     }
 
