@@ -78,6 +78,10 @@ footer p {
   margin: 0;
 }
 
+.dataTable a[target=_], .dataTable a[target=_]:visited {
+  color: #333;
+}
+
 /* Custom buttons */
 
 .btn-custom1, .btn-custom2.active {

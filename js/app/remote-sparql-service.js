@@ -103,7 +103,13 @@ _.extend( RemoteSparqlServiceResult.prototype, {
           f = f.slice( 1, -1 );
         }
 
-        f = _.escape(f );
+        if (v.match( /^<http:/ )) {
+          f = sprintf( "<a href='%s' target='_' alt='link to remote resource'>%s</a>",
+                       v.slice( 1, -1 ), _.escape( f ) );
+        }
+        else {
+          f = _.escape(f );
+        }
       }
 
       return f;
