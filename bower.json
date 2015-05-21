@@ -1,37 +1,36 @@
 {
   "name": "qonsole",
-  "version": "0.1.1",
-  "homepage": "https://github.com/epimorphics/qonsole",
-  "authors": [
-    "Ian Dickinson"
-  ],
-  "description": "SPARQL query form page",
+  "private": true,
   "main": [
-    "js/app/qonsole.js",
-    "js/app/remote-sparql-service.js"
-  ],
-  "moduleType": [
-    "amd"
-  ],
-  "keywords": [
-    "sparql",
-    "query",
-    "form"
-  ],
-  "license": "Apache 2",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "app/qonsole.js",
+    "app/remote-sparql-service.js",
+    "img/epilogo-dark.48.png",
+    "img/favicon.ico",
+    "img/favicon.xcf",
+    "img/glyphicons-halflings-white.png",
+    "img/glyphicons-halflings.png",
+    "img/icon-horizontal-stack.20x20.png",
+    "img/icon-vertical-stack.20x20.png",
+    "img/wait30.gif"
   ],
   "dependencies": {
-    "bootstrap": "~3.3.4",
+    "bootstrap": "~3.2.0",
     "codemirror": "~5.3.0",
-    "underscore": "~1.8.3",
-    "html5shiv": "html5shiv#~3.7.2",
+    "html5shiv": "~3.6.2",
+    "jquery": "~2.1.4",
     "jquery.xdomainrequest": "~1.0.4",
-    "sprintf": "~1.0.2"
-  }
+    "sprintf": "~1.0.2",
+    "underscore": "~1.8.3",
+    "respond": "git@github.com:scottjehl/Respond.git#~1.4.2",
+    "datatables": "~1.10.7",
+    "components-font-awesome": "~4.3.0"
+  },
+  "ignore": [
+    "bower_components",
+    "test",
+    ".project",
+    "changes.md",
+    "demo-sidebar.html",
+    "demo-vertical.html"
+  ]
 }
