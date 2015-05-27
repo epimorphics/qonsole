@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+  path = require('path');
 
   // Project configuration.
   grunt.initConfig({
