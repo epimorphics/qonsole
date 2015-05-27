@@ -41,7 +41,7 @@ module.exports = function(grunt) {
             expand: true,
             flatten: true,
             src: ['lib/datatables/*.png'],
-            dest: 'img'
+            dest: 'images'
           }
         ]
       }
