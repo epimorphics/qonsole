@@ -36,6 +36,12 @@ module.exports = function(grunt) {
             flatten: true,
             src: ['lib/bootstrap/*.@(eot|svg|ttf|woff)'], 
             dest: 'font/'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: ['lib/datatables/*.png'],
+            dest: 'img'
           }
         ]
       }
