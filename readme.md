@@ -130,4 +130,8 @@ in the configuration object:
   </dd>
 </dl>
 
+## Developer Info
+
+There is a grunt task, install-dependencies, that will install dependencies
+acording to the versions specified in bower.json.
 
