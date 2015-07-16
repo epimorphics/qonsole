@@ -1,33 +1,27 @@
-/* Copyright (c) 2012-2013 Epimorphics Ltd. Released under Apache License 2.0 http://www.apache.org/licenses/ */
+/* Copyright (c) 2012-2015 Epimorphics Ltd. Released under Apache License 2.0 http://www.apache.org/licenses/ */
 
-var qonsole = function() {
+/* global define */
+
+define( [
+  "lodash",
+  "sprintf",
+  "codemirror",
+  "remote-sparql-service"
+],
+function(
+  _,
+  sprintf,
+  CodeMirror,
+  RemoteSparqlService
+) {
   "use strict";
-
-  /* JsLint */
-  /*global sprintf, testCSS, loadConfig, bindEvents, $, onConfigLoaded, updatePrefixDeclaration, _,
-    showCurrentQuery, setCurrentEndpoint, setCurrentFormat, elementVisible, runQuery, onLookupPrefix,
-    startTimingResults, onAddPrefix, initQuery, CodeMirror, onQuerySuccess,
-    onQueryFail, ajaxDataType, resetResults, XMLSerializer,
-    showTableResult, showCodeMirrorResult
-   */
 
   /* --- module vars --- */
   /** The loaded configuration */
   var _config = {};
-  var _query_editor = null;
+  var _queryEditor = null;
   var _startTime = 0;
   var _outstandingQueries = 0;
-
-  /** Browser sniffing */
-  var isOpera = function() {return !!(window.opera && window.opera.version);};  // Opera 8.0+
-  var isFirefox = function() {return testCSS('MozBoxSizing');};                 // FF 0.8+
-  var isSafari = function() {return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;};    // At least Safari 3+: "[object HTMLElementConstructor]"
-  var isChrome = function() {return !isSafari() && testCSS('WebkitTransform');};  // Chrome 1+
-  var isIE = function() {return /*@cc_on!@*/false || testCSS('msTransform');};  // At least IE6
-
-  var testCSS =  function(prop) {
-    return document.documentElement.style.hasOwnProperty( prop );
-  };
 
   /* --- application code --- */
 
@@ -63,8 +57,7 @@ var qonsole = function() {
       var elem = $(e.currentTarget);
       updatePrefixDeclaration( $.trim( elem.data( "prefix" ) ), elem.data( "uri" ), !elem.is(".active") );
     } );
-    $("ul.examples").on( "click", "a", function( e ) {
-      var elem = $(e.currentTarget);
+    $("ul.examples").on( "click", "a", function() {
       $("ul.examples a").removeClass( "active" );
       _.defer( function() {showCurrentQuery();} );
     } );
@@ -145,7 +138,7 @@ var qonsole = function() {
     _outstandingQueries++;
 
     var options = {
-      success: function( data, xhr ) {
+      success: function( data ) {
         namedExample( name ).query = data;
 
         _outstandingQueries--;
@@ -178,7 +171,7 @@ var qonsole = function() {
   };
 
   /** Successfully loaded the configuration */
-  var onConfigLoaded = function( config, status, jqXHR ) {
+  var onConfigLoaded = function( config ) {
     _config = config;
     initPrefixes( config );
     initExamples( config );
@@ -191,7 +184,7 @@ var qonsole = function() {
   };
 
   /** Return the current endpoint text */
-  var currentEndpoint = function( url ) {
+  var currentEndpoint = function() {
     return $("[id=sparqlEndpoint]").val();
   };
 
@@ -207,13 +200,13 @@ var qonsole = function() {
 
   /** Return the DOM node representing the query editor */
   var queryEditor = function() {
-    if (!_query_editor) {
-      _query_editor = new CodeMirror( $("#query-edit-cm").get(0), {
+    if (!_queryEditor) {
+      _queryEditor = new CodeMirror( $("#query-edit-cm").get(0), {
         lineNumbers: true,
         mode: "sparql"
       } );
     }
-    return _query_editor;
+    return _queryEditor;
   };
 
   /** Return the current value of the query edit area */
@@ -236,7 +229,7 @@ var qonsole = function() {
   var displayQuery = function( query ) {
     if (query) {
       var queryBody = query.query ? query.query : query;
-      var prefixes = assemblePrefixes( queryBody, query.prefixes )
+      var prefixes = assemblePrefixes( queryBody, query.prefixes );
 
       var q = sprintf( "%s\n\n%s", renderPrefixes( prefixes ), stripLeader( queryBody ) );
       setCurrentQueryText( q );
@@ -443,7 +436,7 @@ var qonsole = function() {
   };
 
   /** Report query failure */
-  var onQueryFail = function( jqXHR, textStatus, errorThrown ) {
+  var onQueryFail = function( jqXHR ) {
     showResultsTimeAndCount( 0 );
     var text = jqXHR.valueOf().responseText || sprintf( "Sorry, that didn't work because: '%s'", jqXHR.valueOf().statusText );
     $("#results").html( sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
@@ -465,7 +458,7 @@ var qonsole = function() {
   var showCodeMirrorResult = function( options ) {
     showResultsTimeAndCount( options.count );
 
-    var editor = new CodeMirror( $("#results").get(0), {
+    new CodeMirror( $("#results").get(0), {
       value: options.data,
       mode: options.mime,
       lineNumbers: true,
@@ -485,9 +478,9 @@ var qonsole = function() {
     };
 
     $("#results").empty()
-                 .append( '<div class="auto-overflow"></div>')
+                 .append( "<div class='auto-overflow'></div>")
                  .children()
-                 .append( '<table cellpadding="0" cellspacing="0" border="0" class="display"></table>' )
+                 .append( "<table cellpadding='0' cellspacing='0' border='0' class='display'></table>" )
                  .children()
                  .dataTable( options );
   };
@@ -509,7 +502,7 @@ var qonsole = function() {
   };
 
   /** User wishes to add the prefix */
-  var onAddPrefix = function( e ) {
+  var onAddPrefix = function() {
     var prefix = $.trim( $("#inputPrefix").val() );
     var uri = $.trim( $("#inputURI").val() );
 
@@ -543,7 +536,7 @@ var qonsole = function() {
   /** Disable or enable the button to submit a query */
   var disableSubmit = function( disable ) {
     var elem = $("a.run-query");
-    elem.prop( 'disabled', disable );
+    elem.prop( "disabled", disable );
     if (disable) {
       elem.addClass( "disabled" );
     }
@@ -555,5 +548,6 @@ var qonsole = function() {
   return {
     init: init
   };
-}();
+
+} );
 

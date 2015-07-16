@@ -22,8 +22,9 @@
     "sprintf": "~1.0.2",
     "respond": "~1.4.2",
     "datatables": "~1.10.7",
-    "components-font-awesome": "~4.3.0",
-    "lodash-compat": "~3.10.0"
+    "fontawesome": "~4.3.0",
+    "lodash-compat": "~3.10.0",
+    "spin": "~1.1.6"
   },
   "ignore": [
     "bower_components",
@@ -32,5 +33,7 @@
     "changes.md",
     "demo-sidebar.html",
     "demo-vertical.html"
-  ]
+  ],
+  "devDependencies": {
+  }
 }
