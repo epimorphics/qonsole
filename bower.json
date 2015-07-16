@@ -23,7 +23,7 @@
     "respond": "git@github.com:scottjehl/Respond.git#~1.4.2",
     "datatables": "~1.10.7",
     "components-font-awesome": "~4.3.0",
-    "lodash": "~3.10.0"
+    "lodash-compat": "~3.10.0"
   },
   "ignore": [
     "bower_components",
