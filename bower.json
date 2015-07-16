@@ -20,10 +20,10 @@
     "jquery": "~1.10.2",
     "jquery.xdomainrequest": "~1.0.4",
     "sprintf": "~1.0.2",
-    "underscore": "~1.8.3",
     "respond": "git@github.com:scottjehl/Respond.git#~1.4.2",
     "datatables": "~1.10.7",
-    "components-font-awesome": "~4.3.0"
+    "components-font-awesome": "~4.3.0",
+    "lodash": "~3.10.0"
   },
   "ignore": [
     "bower_components",
@@ -34,8 +34,5 @@
     "demo-vertical.html"
   ],
   "resolutions": {
-    "bootstrap": "~3.3.5",
-    "CodeMirror": "~5.4.0",
-    "html5shiv": "~3.7.2"
   }
 }
