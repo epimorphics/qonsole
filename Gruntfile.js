@@ -1,9 +1,9 @@
 module.exports = function(grunt) {
-  path = require('path');
+  "use strict";
 
   // Project configuration.
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON("package.json"),
     bower: {
       install: {}
     },
@@ -16,9 +16,9 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: true,
-            src: ['bower_components/respond/dest/respond.min.js',
-                  'bower_components/CodeMirror/mode/@(javascript|sparql|xml)/*.js',
-                  'bower_components/CodeMirror/addon/fold/*.js',
+            src: ["bower_components/respond/dest/respond.min.js",
+                  "bower_components/CodeMirror/mode/@(javascript|sparql|xml)/*.js",
+                  "bower_components/CodeMirror/addon/fold/*.js",
                   "bower_components/bootstrap/dist/js/bootstrap.js",
                   "bower_components/jquery/jquery.js",
                   "bower_components/datatables/media/js/jquery.dataTables.js",
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
                   "bower_components/spin/javascripts/jquery.spin.js",
                   "bower_components/sprintf/dist/sprintf.min.js"
                  ],
-            dest: 'lib/js'
+            dest: "lib/js"
           },
           {
             expand: true,
@@ -39,30 +39,30 @@ module.exports = function(grunt) {
                   "bower_components/fontawesome/css/font-awesome.css",
                   "bower_components/spin/stylesheets/jquery.spin.css"
                  ],
-            dest: 'lib/css'
+            dest: "lib/css"
           },
           {
             expand: true,
             flatten: true,
             src: ["bower_components/fontawesome/fonts/*"
             ],
-            dest: 'lib/fonts'
+            dest: "lib/fonts"
           },
           {
             expand: true,
             flatten: true,
-            src: ['bower_components/datatables/media/images/*.png'],
-            dest: 'lib/images'
+            src: ["bower_components/datatables/media/images/*.png"],
+            dest: "lib/images"
           }
         ]
       }
     }
   });
 
-  grunt.loadNpmTasks('grunt-bower-task');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks("grunt-bower-task");
+  grunt.loadNpmTasks("grunt-contrib-copy");
+  grunt.loadNpmTasks("grunt-contrib-clean");
 
-  grunt.registerTask('install-dependencies', ['bower:install', "clean:lib", 'copy:dependencies'] );
+  grunt.registerTask("install-dependencies", ["bower:install", "clean:lib", "copy:dependencies"] );
 
 };
