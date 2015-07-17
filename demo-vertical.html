@@ -110,7 +110,7 @@
         <div class="query-chrome">
           <form class="form-inline" role="form">
             <div class="form-group">
-              <label for="endpoints">SPARQL endpoint</label>
+              <label for="endpoints">SPARQL endpoint:</label>
                 <select class="form-control" id="endpoints">
                 </select>
               </div>
@@ -118,22 +118,15 @@
               <input type="hidden" class="form-control" id="sparqlEndpoint" />
             </div>
             <div class="form-group">
-              <label for="displayFormat">Results</label>
-              <div class="dropdown ">
-                <a data-toggle="dropdown" class="btn btn-custom2 display-format" href="#" data-value="tsv">
-                  <span>table</span> <i class="icon-collapse"></i>
-                </a>
-                <ul class="dropdown-menu formats  " role="menu" aria-labelledby="dropdownMenu2">
-                  <li role='presentation' class="" ><a data-value="tsv" role='menuitem' tabindex='-1' href='#'>table</a></li>
-                  <li role='presentation' class="" ><a data-value="text"role='menuitem' tabindex='-1' href='#'>plain text</a></li>
-                  <li role='presentation' class="" ><a data-value="json"role='menuitem' tabindex='-1' href='#'>JSON</a></li>
-                  <li role='presentation' class="" ><a data-value="xml"role='menuitem' tabindex='-1' href='#'>XML</a></li>
-                </ul>
-              </div>
-
+              <label for="format">Results format:</label>
+              <select class="form-control" name="format">
+                <option value="tsv">table</option>
+                <option value="text">plain text</option>
+                <option value="json">JSON</option>
+                <option value="xml">XML</option>
+              </select>
             </div>
             <div class="form-group">
-              <label>&nbsp;</label>
               <a href="#" class="btn btn-success run-query form-control">perform query</a>
             </div>
 

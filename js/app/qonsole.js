@@ -73,10 +73,6 @@ function(
       var elem = $(e.currentTarget);
       setCurrentEndpoint( $.trim( elem.val() ) );
     } );
-    $("ul.formats").on( "click", "a", function( e ) {
-      var elem = $(e.currentTarget);
-      setCurrentFormat( elem.data( "value" ), $.trim( elem.text() ) );
-    } );
 
     $("a.run-query").on( "click", runQuery );
 
@@ -246,12 +242,7 @@ function(
 
   /** Return the currenty selected output format */
   var selectedFormat = function() {
-    return $("a.display-format").data( "value" );
-  };
-
-  /** Update the user's format selection */
-  var setCurrentFormat = function( val, label ) {
-    $("a.display-format").data( "value", val ).find("span").text( label );
+    return $("[name=format]").val();
   };
 
   /** Return the prefixes currently defined in the query */
