@@ -82,6 +82,18 @@ footer p {
   color: #333;
 }
 
+.prefix {
+  padding-top: 0.5em;
+}
+
+.prefix input {
+  margin-left: 0.5em;
+}
+
+.prefix label {
+  font-weight: normal;
+}
+
 /* Custom buttons */
 
 .btn-custom1, .btn-custom2.active {
@@ -155,26 +167,4 @@ footer p {
 
 .auto-overflow {
   overflow: auto;
-}
-
-.CodeMirror-foldmarker {
-  color: blue;
-  text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
-  font-family: arial;
-  line-height: .3;
-  cursor: pointer;
-}
-.CodeMirror-foldgutter {
-  width: .7em;
-}
-.CodeMirror-foldgutter-open,
-.CodeMirror-foldgutter-folded {
-  color: #555;
-  cursor: pointer;
-}
-.CodeMirror-foldgutter-open:after {
-  content: "\25BE";
-}
-.CodeMirror-foldgutter-folded:after {
-  content: "\25B8";
 }

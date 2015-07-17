@@ -61,9 +61,9 @@ function(
 
   /** Bind events that we want to manage */
   var bindEvents = function() {
-    $("ul.prefixes").on( "click", "a.btn", function( e ) {
+    $("ul.prefixes").on( "change", "input", function( e ) {
       var elem = $(e.currentTarget);
-      updatePrefixDeclaration( $.trim( elem.data( "prefix" ) ), elem.data( "uri" ), !elem.is(".active") );
+      updatePrefixDeclaration( elem.data("prefix"), elem.val(), elem.is(":checked") );
     } );
     $("#examples").on( "change", function( e ) {
       var query = $(e.currentTarget).val();
@@ -100,12 +100,10 @@ function(
   var initPrefixes = function( config ) {
     var prefixAdd = $("ul.prefixes li:last" );
     $.each( config.prefixes, function( key, value ) {
-      var displayKey = key;
-      if (!key || key === "") {
-        displayKey = ":";
-      }
-      var html = sprintf.sprintf( "<li><a class='btn btn-custom2 btn-sm active' data-toggle='button' data-uri='%s' data-prefix='%s'>%s</a></li>",
-                          value, key, displayKey );
+      key = $.trim( key );
+      var displayKey = (!key || key === "") ? ":" : key;
+      var html = sprintf.sprintf( "<li class='prefix'><label><input type='checkbox' value='%s' data-prefix='%s' checked  /> %s</label></li>",
+                                  value, key, displayKey );
       $(html).insertBefore( prefixAdd);
     } );
   };
@@ -271,9 +269,9 @@ function(
 
   /** Return an array comprising the currently selected prefixes */
   var assembleCurrentPrefixes = function() {
-    var l = $("ul.prefixes a.active" ).map( function( i, elt ) {
+    var l = $("ul.prefixes input:checked" ).map( function( i, elt ) {
       return {name: $.trim( $(elt).data( "prefix" ) ),
-              uri: $(elt).data( "uri" )};
+              uri: $(elt).val()};
     } );
     return $.makeArray(l);
   };
@@ -294,14 +292,14 @@ function(
 
   /** Ensure that the prefix buttons are in sync with the prefixes used in a new query */
   var syncPrefixButtonState = function( prefixes ) {
-    $("ul.prefixes a" ).each( function( i, elt ) {
+    $("ul.prefixes input" ).each( function( i, elt ) {
       var name = $.trim( $(elt).data( "prefix" ) );
 
       if (_.find( prefixes, function(p) {return p.name === name;} )) {
-        $(elt).addClass( "active" );
+        $(elt).attr( "checked", true );
       }
       else {
-        $(elt).removeClass( "active" );
+        $(elt).removeAttr( "checked" );
       }
     } );
   };
@@ -511,15 +509,23 @@ function(
 
     // remember the state of current user selections, then re-create the list
     var selections = {};
-    $("ul.prefixes a.btn").each( function( i, a ) {selections[$(a).text()] = $(a).hasClass("active");} );
+    var ul = $("ul.prefixes");
+    ul.find("input")
+      .each( function( i, elem ) {
+        selections[$(elem).data("prefix")] = $(elem).is(":checked");
+      } );
 
-    $("ul.prefixes li[class!=keep]").remove();
+    ul.find("li[class!=keep]").remove();
     initPrefixes( _config );
 
     // restore selections state
     $.each( selections, function( k, v ) {
-      if (!v) {
-        $(sprintf.sprintf("ul.prefixes a.btn:contains('%s')", k)).removeClass("active");
+      var elem = ul.find(sprintf.sprintf("[data-prefix=%s]", k));
+      if (v) {
+        elem.attr( "checked", true );
+      }
+      else {
+        elem.removeAttr("checked");
       }
     } );
 
