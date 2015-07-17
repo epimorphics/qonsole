@@ -65,9 +65,9 @@ function(
       var elem = $(e.currentTarget);
       updatePrefixDeclaration( $.trim( elem.data( "prefix" ) ), elem.data( "uri" ), !elem.is(".active") );
     } );
-    $("ul.examples").on( "click", "a", function() {
-      $("ul.examples a").removeClass( "active" );
-      _.defer( function() {showCurrentQuery();} );
+    $("#examples").on( "change", function( e ) {
+      var query = $(e.currentTarget).val();
+      showCurrentExample( query );
     } );
     $("#endpoints").on( "change", function( e ) {
       var elem = $(e.currentTarget);
@@ -112,13 +112,12 @@ function(
 
   /** List the example queries from the config */
   var initExamples = function( config ) {
-    var examples = $("ul.examples");
+    var examples = $("#examples");
 
     examples.empty();
 
     $.each( config.queries, function( i, queryDesc ) {
-      var html = sprintf.sprintf( "<li><a class='btn btn-custom2 btn-sm' data-toggle='button'>%s</a></li>",
-                          queryDesc.name );
+      var html = sprintf.sprintf( "<option>%s</option>", queryDesc.name );
       examples.append( html );
 
       if (queryDesc.queryURL) {
@@ -126,14 +125,13 @@ function(
       }
     } );
 
-    setFirstQueryActive();
+    setFirstExampleActive();
   };
 
   /** Set the default active query */
-  var setFirstQueryActive = function() {
+  var setFirstExampleActive = function() {
     if (_outstandingQueries === 0) {
-      $("ul.examples").find("a").first().addClass( "active" );
-      showCurrentQuery();
+      showCurrentExample();
     }
   };
 
@@ -146,13 +144,13 @@ function(
         namedExample( name ).query = data;
 
         _outstandingQueries--;
-        setFirstQueryActive();
+        setFirstExampleActive();
       },
       failure: function() {
         namedExample( name ).query = "Not found: " + url;
 
         _outstandingQueries--;
-        setFirstQueryActive();
+        setFirstExampleActive();
       },
       dataType: "text"
     };
@@ -195,11 +193,6 @@ function(
     return _.find( config().queries, function( ex ) {return ex.name === name;} );
   };
 
-  /** Return the currently active named example */
-  var currentNamedExample = function() {
-    return namedExample( $.trim( $("ul.examples a.active").first().text() ) );
-  };
-
   /** Return the DOM node representing the query editor */
   var queryEditor = function() {
     if (!_queryEditor) {
@@ -222,9 +215,15 @@ function(
   };
 
   /** Display the given query, with the currently defined prefixes */
-  var showCurrentQuery = function() {
-    var query = currentNamedExample();
+  var showCurrentExample = function( exampleName ) {
+    var example = exampleName || currentNamedExample();
+    var query = namedExample( example );
     displayQuery( query );
+  };
+
+  /** Return the currently active named example */
+  var currentNamedExample = function() {
+    return $("#examples").val();
   };
 
   /** Display the given query */
