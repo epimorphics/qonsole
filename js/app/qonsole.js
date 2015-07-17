@@ -69,9 +69,9 @@ function(
       $("ul.examples a").removeClass( "active" );
       _.defer( function() {showCurrentQuery();} );
     } );
-    $(".endpoints").on( "click", "a", function( e ) {
+    $("#endpoints").on( "change", function( e ) {
       var elem = $(e.currentTarget);
-      setCurrentEndpoint( $.trim( elem.text() ) );
+      setCurrentEndpoint( $.trim( elem.val() ) );
     } );
     $("ul.formats").on( "click", "a", function( e ) {
       var elem = $(e.currentTarget);
@@ -166,13 +166,11 @@ function(
 
   /** Set up the drop-down list of end-points */
   var initEndpoints = function( config ) {
-    var endpoints = $("ul.endpoints");
+    var endpoints = $("#endpoints");
     endpoints.empty();
 
     $.each( config.endpoints, function( key, url ) {
-      var html = sprintf.sprintf( "<li role='presentation'><a role='menuitem' tabindex='-1' href='#'>%s</a></li>",
-                          url );
-      endpoints.append( html );
+      endpoints.append( sprintf.sprintf( "<option>%s</option>", url ) );
     } );
 
     setCurrentEndpoint( config.endpoints["default"] );
@@ -188,12 +186,12 @@ function(
 
   /** Set the current endpoint text */
   var setCurrentEndpoint = function( url ) {
-    $("[id=sparqlEndpoint]").val( url );
+    $("#sparqlEndpoint").val( url );
   };
 
   /** Return the current endpoint text */
   var currentEndpoint = function() {
-    return $("[id=sparqlEndpoint]").val();
+    return $("#sparqlEndpoint").val();
   };
 
   /** Return the query definition with the given name */

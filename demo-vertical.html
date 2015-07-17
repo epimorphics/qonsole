@@ -110,18 +110,12 @@
         <div class="query-chrome">
           <form class="form-inline" role="form">
             <div class="form-group">
-              <label for="sparqlEndpoint"></label>
-              <div class="dropdown ">
-                <a data-toggle="dropdown" class="btn btn-custom2" href="#">
-                  Select endpoint <i class="icon-collapse"></i>
-                </a>
-                <ul class="dropdown-menu endpoints" role="menu" aria-labelledby="dropdownMenu1">
-                </ul>
+              <label for="endpoints">SPARQL endpoint</label>
+                <select class="form-control" id="endpoints">
+                </select>
               </div>
-            </div>
             <div class="form-group">
-              <label for="sparqlEndpoint">SPARQL endpoint</label>
-              <input type="text" class="form-control" id="sparqlEndpoint" />
+              <input type="hidden" class="form-control" id="sparqlEndpoint" />
             </div>
             <div class="form-group">
               <label for="displayFormat">Results</label>
