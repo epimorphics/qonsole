@@ -83,7 +83,7 @@ function(
 
         $.each( prefixes, function( prefix, prefURI ) {
           if (u.indexOf( prefURI ) === 0) {
-            qname = sprintf( "%s:%s", prefix, u.substring( prefURI.length ) );
+            qname = sprintf.sprintf( "%s:%s", prefix, u.substring( prefURI.length ) );
 
             if (qname.length < result.length) {
               result = qname;
@@ -102,11 +102,11 @@ function(
         }
         else if (v.match( /\^\^/ )) {
           parts = v.match( /^"*([^\\^\\""]*)"*\^\^<*(.*)>*$/m );
-          f = sprintf( "<span title='Type: %s'>%s</span>", parts[2], parts[1]);
+          f = sprintf.sprintf( "<span title='Type: %s'>%s</span>", parts[2], parts[1]);
         }
         else if (v.match( /@/ )) {
           parts = v.match( /^"(.*)"@([^@]*)/ );
-          f = sprintf( "<span title='Language: %s'>%s</span>", parts[2], parts[1] );
+          f = sprintf.sprintf( "<span title='Language: %s'>%s</span>", parts[2], parts[1] );
         }
         else {
           f = toQName( config.parsedPrefixes, v );
@@ -116,7 +116,7 @@ function(
           }
 
           if (v.match( /^<http:/ )) {
-            f = sprintf( "<a href='%s' target='_' alt='link to remote resource'>%s</a>",
+            f = sprintf.sprintf( "<a href='%s' target='_' alt='link to remote resource'>%s</a>",
                          v.slice( 1, -1 ), _.escape( f ) );
           }
           else {

@@ -4,12 +4,20 @@
 
 define( [
   "lodash",
+  "jquery",
   "sprintf",
-  "codemirror",
-  "remote-sparql-service"
+  "lib/js/cm/lib/codemirror",
+  "js/app/remote-sparql-service",
+  "bootstrap",
+  "lib/js/cm/mode/sparql/sparql",
+  "lib/js/cm/mode/xml/xml",
+  "lib/js/cm/mode/javascript/javascript",
+  "jquery.spinjs",
+  "datatables"
 ],
 function(
   _,
+  $,
   sprintf,
   CodeMirror,
   RemoteSparqlService
@@ -87,7 +95,7 @@ function(
     $("#prefixEditor").on( "click", "#lookupPrefix", onLookupPrefix )
                       .on( "keyup", "#inputPrefix", function( e ) {
                         var elem = $(e.currentTarget);
-                        $("#lookupPrefix span").text( sprintf( "'%s'", elem.val() ));
+                        $("#lookupPrefix span").text( sprintf.sprintf( "'%s'", elem.val() ));
                       } );
     $("#addPrefix").on( "click", onAddPrefix );
   };
@@ -100,7 +108,7 @@ function(
       if (!key || key === "") {
         displayKey = ":";
       }
-      var html = sprintf( "<li><a class='btn btn-custom2 btn-sm active' data-toggle='button' data-uri='%s' data-prefix='%s'>%s</a></li>",
+      var html = sprintf.sprintf( "<li><a class='btn btn-custom2 btn-sm active' data-toggle='button' data-uri='%s' data-prefix='%s'>%s</a></li>",
                           value, key, displayKey );
       $(html).insertBefore( prefixAdd);
     } );
@@ -113,7 +121,7 @@ function(
     examples.empty();
 
     $.each( config.queries, function( i, queryDesc ) {
-      var html = sprintf( "<li><a class='btn btn-custom2 btn-sm' data-toggle='button'>%s</a></li>",
+      var html = sprintf.sprintf( "<li><a class='btn btn-custom2 btn-sm' data-toggle='button'>%s</a></li>",
                           queryDesc.name );
       examples.append( html );
 
@@ -162,7 +170,7 @@ function(
     endpoints.empty();
 
     $.each( config.endpoints, function( key, url ) {
-      var html = sprintf( "<li role='presentation'><a role='menuitem' tabindex='-1' href='#'>%s</a></li>",
+      var html = sprintf.sprintf( "<li role='presentation'><a role='menuitem' tabindex='-1' href='#'>%s</a></li>",
                           url );
       endpoints.append( html );
     } );
@@ -231,7 +239,7 @@ function(
       var queryBody = query.query ? query.query : query;
       var prefixes = assemblePrefixes( queryBody, query.prefixes );
 
-      var q = sprintf( "%s\n\n%s", renderPrefixes( prefixes ), stripLeader( queryBody ) );
+      var q = sprintf.sprintf( "%s\n\n%s", renderPrefixes( prefixes ), stripLeader( queryBody ) );
       setCurrentQueryText( q );
 
       syncPrefixButtonState( prefixes );
@@ -334,7 +342,7 @@ function(
   /** Return a string comprising the given prefixes */
   var renderPrefixes = function( prefixes ) {
     return _.map( prefixes, function( p ) {
-      return sprintf( "prefix %s: <%s>", p.name, p.uri );
+      return sprintf.sprintf( "prefix %s: <%s>", p.name, p.uri );
     } ).join( "\n" );
   };
 
@@ -356,7 +364,7 @@ function(
     if (!found && added) {
       for (i = 0; i < lines.length; i++) {
         if (!lines[i].match( /^prefix/ )) {
-          lines.splice( i, 0, sprintf( "prefix %s: <%s>", prefix, uri ) );
+          lines.splice( i, 0, sprintf.sprintf( "prefix %s: <%s>", prefix, uri ) );
           break;
         }
       }
@@ -423,7 +431,7 @@ function(
     var m = Math.floor( duration / 60 );
     var suffix = (count !== 1) ? "s" : "";
 
-    var html = sprintf( "%s result%s in %d min %d.%03d s", count, suffix, m, s, ms );
+    var html = sprintf.sprintf( "%s result%s in %d min %d.%03d s", count, suffix, m, s, ms );
 
     $(".timeTaken").html( html );
     elementVisible( ".timeTaken", true );
@@ -438,8 +446,8 @@ function(
   /** Report query failure */
   var onQueryFail = function( jqXHR ) {
     showResultsTimeAndCount( 0 );
-    var text = jqXHR.valueOf().responseText || sprintf( "Sorry, that didn't work because: '%s'", jqXHR.valueOf().statusText );
-    $("#results").html( sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
+    var text = jqXHR.valueOf().responseText || sprintf.sprintf( "Sorry, that didn't work because: '%s'", jqXHR.valueOf().statusText );
+    $("#results").html( sprintf.sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
   };
 
   /** Query succeeded - use display type to determine how to render */
@@ -493,7 +501,7 @@ function(
     $("#inputURI").val("");
 
     if (prefix) {
-      $.getJSON( sprintf( "http://prefix.cc/%s.file.json", prefix ),
+      $.getJSON( sprintf.sprintf( "http://prefix.cc/%s.file.json", prefix ),
                 function( data ) {
                   $("#inputURI").val( data[prefix] );
                 }
@@ -523,13 +531,13 @@ function(
     // restore selections state
     $.each( selections, function( k, v ) {
       if (!v) {
-        $(sprintf("ul.prefixes a.btn:contains('%s')", k)).removeClass("active");
+        $(sprintf.sprintf("ul.prefixes a.btn:contains('%s')", k)).removeClass("active");
       }
     } );
 
     var lines = currentQueryText().split("\n");
     lines = _.reject( lines, function( line ) {return line.match( /^prefix/ );} );
-    var q = sprintf( "%s\n%s", renderPrefixes( assembleCurrentPrefixes() ), lines.join( "\n" ) );
+    var q = sprintf.sprintf( "%s\n%s", renderPrefixes( assembleCurrentPrefixes() ), lines.join( "\n" ) );
     setCurrentQueryText( q );
   };
 

@@ -24,7 +24,8 @@
     "datatables": "~1.10.7",
     "fontawesome": "~4.3.0",
     "lodash-compat": "~3.10.0",
-    "spin": "~1.1.6"
+    "spin": "~1.1.6",
+    "requirejs": "~2.1.19"
   },
   "ignore": [
     "bower_components",
@@ -34,6 +35,5 @@
     "demo-sidebar.html",
     "demo-vertical.html"
   ],
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

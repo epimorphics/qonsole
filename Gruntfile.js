@@ -17,8 +17,6 @@ module.exports = function(grunt) {
             expand: true,
             flatten: true,
             src: ["bower_components/respond/dest/respond.min.js",
-                  "bower_components/CodeMirror/mode/@(javascript|sparql|xml)/*.js",
-                  "bower_components/CodeMirror/addon/fold/*.js",
                   "bower_components/bootstrap/dist/js/bootstrap.js",
                   "bower_components/jquery/jquery.js",
                   "bower_components/datatables/media/js/jquery.dataTables.js",
@@ -26,14 +24,26 @@ module.exports = function(grunt) {
                   "bower_components/jquery.xdomainrequest/jQuery.XDomainRequest.js",
                   "bower_components/lodash-compat/lodash.js",
                   "bower_components/spin/javascripts/jquery.spin.js",
-                  "bower_components/sprintf/dist/sprintf.min.js"
+                  "bower_components/sprintf/dist/sprintf.min.js",
+                  "bower_components/requirejs/require.js"
                  ],
             dest: "lib/js"
           },
           {
             expand: true,
+            flatten: false,
+            cwd: "bower_components/CodeMirror",
+            src: ["lib/*.js",
+                  "addon/fold/*.js",
+                  "mode/@(javascript|sparql|xml)/*.js"
+            ],
+            dest: "lib/js/cm"
+          },
+          {
+            expand: true,
             flatten: true,
             src: ["bower_components/CodeMirror/addon/fold/*.css",
+                  "bower_components/CodeMirror/lib/codemirror.css",
                   "bower_components/bootstrap/dist/css/bootstrap.css",
                   "bower_components/datatables/media/css/jquery.dataTables.css",
                   "bower_components/fontawesome/css/font-awesome.css",

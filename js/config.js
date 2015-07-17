@@ -10,6 +10,9 @@ require.config({
     jquery: {
       exports: "$"
     },
+    "jquery.spinjs": {
+      deps: ["jquery"]
+    },
     sprintf: {
       exports: "sprintf"
     }
@@ -18,10 +21,14 @@ require.config({
     "bootstrap": "lib/js/bootstrap",
     "jquery": "lib/js/jquery",
     "lodash": "lib/js/lodash",
-    "sprintf": "lib/js/sprintf",
+    "sprintf": "lib/js/sprintf.min",
     "json2": "lib/js/json2",
-    "jquery.spinjs": "../bower_components/jquery.spinjs/dist/jquery.spin",
+    "jquery.spinjs": "lib/js/jquery.spin",
     "datatables": "lib/js/jquery.dataTables",
     "respond": "lib/js/respond.min"
+  },
+  map: {
+    "lib/codemirror": "codemirror"
   }
+
 });

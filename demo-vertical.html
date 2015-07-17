@@ -7,50 +7,34 @@
     <title>SPARQL console</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="" />
-    <meta name="author" content="" />    
+    <meta name="author" content="" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
 
-    <link href="css/bootstrap.css" rel="stylesheet" />
-    <link href="css/font-awesome.css" rel="stylesheet" />
+
+    <link href="lib/css/bootstrap.css" rel="stylesheet" />
+    <link href="lib/css/font-awesome.css" rel="stylesheet" />
+    <link href="lib/css/codemirror.css" rel="stylesheet" />
+    <link href="lib/css/jquery.dataTables.css" rel="stylesheet" />
     <link href="css/qonsole.css" rel="stylesheet" />
-    <link href="css/codemirror.css" rel="stylesheet" />
-    <link href="css/jquery.dataTables.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="js/lib/html5shiv.js"></script>
-      <script src="js/lib/respond.min.js"></script>
+      <script src="lib/js/html5shiv.js"></script>
+      <script src="lib/js/respond.min.js"></script>
     <![endif]-->
 
     <link rel="shortcut icon" href="img/favicon.ico">
 
-    <script src="js/lib/jquery.js"></script>
-    <script src="js/lib/bootstrap.js"></script>
-    <script src="js/lib/sprintf.js"></script>
-    <script src="js/lib/underscore.js"></script>
-    <script src="js/lib/codemirror.js"></script>
-    <script src="js/lib/foldcode.js"></script>
-    <script src="js/lib/foldgutter.js"></script>
-    <script src="js/lib/brace-fold.js"></script>
-    <script src="js/lib/xml-fold.js"></script>
-    <script src="js/lib/comment-fold.js"></script>
-    <script src="js/lib/javascript.js"></script>
-    <script src="js/lib/xml.js"></script>
-    <script src="js/lib/sparql.js"></script>
-    <script src="js/app/remote-sparql-service.js"></script>
-    <script src="js/app/qonsole.js"></script>
-
-    <script src="js/lib/jquery.dataTables.js"></script>
+    <script src="lib/js/require.js"></script>
 
     <!-- This link provides CORS support in IE8+ -->
     <!--[if lt IE 10]>
-      <script src="js/lib/jquery.xdomainrequest.min.js"></script>
+      <script src="lib/js/jquery.xdomainrequest.min.js"></script>
     <![endif]-->
 
     <script type="text/javascript">
       // configuration
-      var config = {
+      var qonfig = {
         endpoints: {
           "default": "http://environment.data.gov.uk/sparql/bwq/query",
         },
@@ -81,7 +65,11 @@
         ]
         };
 
-      $(function(){qonsole.init( config );});
+      require( ["js/config"], function() {
+        require( ["jquery", "js/app/qonsole"], function( $, qonsole ) {
+          $( function() {qonsole.init( qonfig );} );
+        } );
+      } );
     </script>
   </head>
 
