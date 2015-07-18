@@ -26,11 +26,12 @@ require.config({
     "jquery.spinjs": "lib/js/jquery.spin",
     "datatables": "lib/js/jquery.dataTables",
     "respond": "lib/js/respond.min",
-    "codemirror/lib/codemirror": "lib/js/cm/lib/codemirror",
-    "codemirror/mode/sparql/sparql": "lib/js/cm/mode/sparql/sparql",
-    "codemirror/mode/javascript/javascript": "lib/js/cm/mode/javascript/javascript",
-    "codemirror/mode/xml/xml": "lib/js/cm/mode/xml/xml",
     "app/remote-sparql-service": "js/app/remote-sparql-service"
-  }
+  },
+  packages: [{
+    name: "codemirror",
+    location: "lib/js/cm",
+    main: "lib/codemirror"
+  }]
 
 });
