@@ -6,12 +6,12 @@ define( [
   "lodash",
   "jquery",
   "sprintf",
-  "lib/js/cm/lib/codemirror",
-  "js/app/remote-sparql-service",
+  "app/remote-sparql-service",
+  "codemirror/lib/codemirror",
+  "codemirror/mode/sparql/sparql",
+  "codemirror/mode/xml/xml",
+  "codemirror/mode/javascript/javascript",
   "bootstrap",
-  "lib/js/cm/mode/sparql/sparql",
-  "lib/js/cm/mode/xml/xml",
-  "lib/js/cm/mode/javascript/javascript",
   "jquery.spinjs",
   "datatables"
 ],
@@ -19,8 +19,8 @@ function(
   _,
   $,
   sprintf,
-  CodeMirror,
-  RemoteSparqlService
+  RemoteSparqlService,
+  CodeMirror
 ) {
   "use strict";
 

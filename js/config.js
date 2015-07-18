@@ -25,10 +25,12 @@ require.config({
     "json2": "lib/js/json2",
     "jquery.spinjs": "lib/js/jquery.spin",
     "datatables": "lib/js/jquery.dataTables",
-    "respond": "lib/js/respond.min"
-  },
-  map: {
-    "lib/codemirror": "codemirror"
+    "respond": "lib/js/respond.min",
+    "codemirror/lib/codemirror": "lib/js/cm/lib/codemirror",
+    "codemirror/mode/sparql/sparql": "lib/js/cm/mode/sparql/sparql",
+    "codemirror/mode/javascript/javascript": "lib/js/cm/mode/javascript/javascript",
+    "codemirror/mode/xml/xml": "lib/js/cm/mode/xml/xml",
+    "app/remote-sparql-service": "js/app/remote-sparql-service"
   }
 
 });
