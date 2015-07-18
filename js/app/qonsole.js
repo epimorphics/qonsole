@@ -11,7 +11,6 @@ define( [
   "codemirror/mode/sparql/sparql",
   "codemirror/mode/xml/xml",
   "codemirror/mode/javascript/javascript",
-  "bootstrap",
   "jquery.spinjs",
   "datatables"
 ],
