@@ -74,7 +74,7 @@ function(
       setCurrentEndpoint( $.trim( elem.val() ) );
     } );
 
-    $("a.run-query").on( "click", runQuery );
+    $(".run-query").on( "click", runQuery );
 
     $(document)
       .ajaxStart(function() {
