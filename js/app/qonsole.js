@@ -547,7 +547,9 @@ function(
   };
 
   return {
-    init: init
+    currentQueryText: currentQueryText,
+    init: init,
+    setCurrentQueryText: setCurrentQueryText
   };
 
 } );
