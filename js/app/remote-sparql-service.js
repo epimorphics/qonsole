@@ -28,8 +28,11 @@ function(
   _.extend( RemoteSparqlServiceResult.prototype, {
     asText: function() {
       var data = this._val;
+      var isTabular = data.match( /^----/ );
+      var count = isTabular ? (data.split("\n").length - 5) : 1;
+
       return {
-        count: data.split("\n").length - 5,
+        count: count,
         data: data,
         mime: "text/plain"
       };
