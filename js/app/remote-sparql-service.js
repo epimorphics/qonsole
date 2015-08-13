@@ -47,8 +47,10 @@ function(
         json = JSON.stringify( data, null, 2 );
       }
 
+      var singleResult = !data.results;
+
       return {
-        count: data.results.bindings.length,
+        count: singleResult ? 1 : data.results.bindings.length,
         data: json,
         mime: "application/json"
       };
@@ -65,8 +67,11 @@ function(
         xml = this.xmlToString( data );
       }
 
+      var $data = $( data );
+      var singleResult = $data.find( "results" ).length === 0;
+
       return {
-        count: $( data ).find("results").children().length,
+        count: singleResult ? 1 : $data.find("results").children().length,
         data: xml,
         mime: "application/xml"
       };
