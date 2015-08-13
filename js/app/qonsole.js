@@ -241,6 +241,11 @@ function(
     return $("[name=format]").val();
   };
 
+  /** Return the currenty selected output format */
+  var setSelectedFormat = function( format ) {
+    return $("[name=format]").val( format );
+  };
+
   /** Return the prefixes currently defined in the query */
   var parseQueryPrefixes = function() {
     var prefixes = {};
@@ -375,8 +380,8 @@ function(
     e.preventDefault();
     resetResults();
 
-    var format = selectedFormat();
     var query = currentQueryText();
+    var format = checkOutputFormat( query );
 
     var options = {
       url: currentEndpoint(),
@@ -544,6 +549,21 @@ function(
     else {
       elem.removeClass( "disabled" );
     }
+  };
+
+  /** Check the output format. Reset output format to text for describe and construct queries */
+  var checkOutputFormat = function( query ) {
+    if (isDescribeOrConstructQuery( query ) && _.includes( ["tsv"], selectedFormat() )) {
+      setSelectedFormat( "text" );
+    }
+
+    return selectedFormat();
+  };
+
+  /** @return True if this is a describe or construct query */
+  var isDescribeOrConstructQuery = function( query ) {
+    var body = queryLeader( query )[1];
+    return body.match( /^(describe|construct)/i );
   };
 
   return {

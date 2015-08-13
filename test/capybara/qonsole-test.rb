@@ -59,8 +59,7 @@ EOS
     page.execute_script(js)
     page.click_link( "perform query" )
 
-    results_text = page.find( "#results .text-danger" ).text
-    results_text.wont_match( /Error.*/ )
+    page.has_no_selector?( "#results .text-danger" )
   end
 end
 
