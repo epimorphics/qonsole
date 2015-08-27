@@ -23,7 +23,8 @@ module.exports = function(grunt) {
                   "bower_components/html5shiv/dist/html5shiv.js",
                   "bower_components/jquery.xdomainrequest/jQuery.XDomainRequest.js",
                   "bower_components/lodash-compat/lodash.js",
-                  "bower_components/spin/javascripts/jquery.spin.js",
+                  "bower_components/spin.js/spin.js",
+                  "bower_components/jquery.spinjs/dist/jquery.spin.js",
                   "bower_components/sprintf/dist/sprintf.min.js",
                   "bower_components/requirejs/require.js"
                  ],

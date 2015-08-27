@@ -11,7 +11,7 @@ define( [
   "codemirror/mode/sparql/sparql",
   "codemirror/mode/xml/xml",
   "codemirror/mode/javascript/javascript",
-  "jquery.spinjs",
+  "jquery.spin",
   "datatables"
 ],
 function(
@@ -77,13 +77,13 @@ function(
 
     $(document)
       .ajaxStart(function() {
-        elementVisible( ".loadingSpinner", true );
         startTimingResults();
         disableSubmit( true );
+        spinStart();
       })
       .ajaxStop(function() {
-        elementVisible( ".loadingSpinner", false );
         disableSubmit( false );
+        spinStop();
       });
 
     // dialogue events
@@ -564,6 +564,35 @@ function(
   var isDescribeOrConstructQuery = function( query ) {
     var body = queryLeader( query )[1];
     return body.match( /^(describe|construct)/i );
+  };
+
+  /* Jquery spinner */
+
+  var spinCount = 0;
+
+  var DEFAULT_SPIN_OPTIONS = {
+    color:"#ACCD40",
+    lines: 12,
+    radius: 20,
+    length: 10,
+    width: 4,
+    bgColor: "white"
+  };
+
+  /* Start the spinner */
+  var spinStart = function( options ) {
+    spinCount = spinCount + 1;
+    if (spinCount === 1) {
+      $("body").spin( options || DEFAULT_SPIN_OPTIONS );
+    }
+  };
+
+  /** Stop the spinner */
+  var spinStop = function() {
+    spinCount = spinCount - 1;
+    if (spinCount === 0) {
+      $("body").spin( false );
+    }
   };
 
   return {

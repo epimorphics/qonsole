@@ -10,9 +10,6 @@ require.config({
     jquery: {
       exports: "$"
     },
-    "jquery.spinjs": {
-      deps: ["jquery"]
-    },
     sprintf: {
       exports: "sprintf"
     }
@@ -23,7 +20,8 @@ require.config({
     "lodash": "lib/js/lodash",
     "sprintf": "lib/js/sprintf.min",
     "json2": "lib/js/json2",
-    "jquery.spinjs": "lib/js/jquery.spin",
+    "spin": "lib/js/spin",
+    "jquery.spin": "lib/js/jquery.spin",
     "datatables": "lib/js/jquery.dataTables",
     "respond": "lib/js/respond.min",
     "app/remote-sparql-service": "js/app/remote-sparql-service"
