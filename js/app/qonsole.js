@@ -11,7 +11,7 @@ define( [
   "codemirror/mode/sparql/sparql",
   "codemirror/mode/xml/xml",
   "codemirror/mode/javascript/javascript",
-  "jquery.spinjs",
+  "jquery.spin",
   "datatables"
 ],
 function(
