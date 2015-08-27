@@ -24,8 +24,8 @@
     "datatables": "~1.10.7",
     "fontawesome": "~4.3.0",
     "lodash-compat": "~3.10.0",
-    "spin": "~1.1.6",
-    "requirejs": "~2.1.19"
+    "requirejs": "~2.1.19",
+    "jquery.spinjs": "*"
   },
   "ignore": [
     "bower_components",
