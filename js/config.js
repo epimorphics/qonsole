@@ -12,6 +12,11 @@ require.config({
     },
     sprintf: {
       exports: "sprintf"
+    },
+    spin: {
+      deps: [
+        "jquery"
+      ]
     }
   },
   paths: {

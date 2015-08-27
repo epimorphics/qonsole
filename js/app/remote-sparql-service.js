@@ -138,7 +138,7 @@ function(
       var data = this._val;
       var lines = _.compact(data.split( "\n" ));
 
-      var columnHeaders = _.map( lines.shift().split("\t"), function( header) {
+      var columnHeaders = _.map( lines.shift().replace( /\?/g, "" ).split("\t"), function( header) {
         return {sTitle: header};
       } );
 
