@@ -481,6 +481,11 @@ function(
       "sEmptyTable": "Query did not return any results."
     };
 
+    // if user has specified an order, don't let datatables override the sort
+    if (currentQueryText().match( /order by/i )) {
+      options.aaSorting = [];
+    }
+
     $("#results").empty()
                  .append( "<div class='auto-overflow'></div>")
                  .children()
