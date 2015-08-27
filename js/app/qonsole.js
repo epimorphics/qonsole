@@ -214,8 +214,14 @@ function(
   /** Display the given query, with the currently defined prefixes */
   var showCurrentExample = function( exampleName ) {
     var example = exampleName || currentNamedExample();
-    var query = namedExample( example );
+    var query = checkForURLQuery() || namedExample( example );
+
     displayQuery( query );
+  };
+
+  /** Check to see if a query has been passed via the URL */
+  var checkForURLQuery = function() {
+    return config().allowQueriesFromURL ? searchParams().query : null;
   };
 
   /** Return the currently active named example */
@@ -505,10 +511,10 @@ function(
     var uri = $.trim( $("#inputURI").val() );
 
     if (uri) {
-      _config.prefixes[prefix] = uri;
+      config().prefixes[prefix] = uri;
     }
     else {
-      delete _config.prefixes[prefix];
+      delete config().prefixes[prefix];
     }
 
     // remember the state of current user selections, then re-create the list
@@ -520,7 +526,7 @@ function(
       } );
 
     ul.find("li[class!=keep]").remove();
-    initPrefixes( _config );
+    initPrefixes( config() );
 
     // restore selections state
     $.each( selections, function( k, v ) {
@@ -593,6 +599,44 @@ function(
     if (spinCount === 0) {
       $("body").spin( false );
     }
+  };
+
+
+  /* Utils */
+
+  /**
+   * Return an object containing one key for every distinct query
+   * parameter, with also a `_vars` key which lists the query parameter
+   * variables in order. Keys and values will be automatically
+   * unescaped.
+   * @param location The current location object. If null, window.location
+   *                 will be used.
+   */
+  var searchParams = function( location ) {
+    var loc = location || window.location;
+    var env = {};
+
+    if (loc.search) {
+      var url = loc.search.replace( /^\?/, "" );
+      var args = url.split("&");
+
+      for(var i = 0; i < args.length; i++) {
+        var argPair = args[i].split("=");
+
+        var key = decodeURIComponent( argPair[0] );
+        var val = argPair.length > 1 ? decodeURIComponent( argPair[1] ) : null;
+
+        if (env[key]) {
+          env[key] = (env[key].constructor === Array) ? env[key] : [env[key]];
+          env[key].push( val );
+        }
+        else {
+          env[key] = val;
+        }
+      }
+    }
+
+    return env;
   };
 
   return {
