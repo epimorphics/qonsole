@@ -112,7 +112,7 @@ function(
           parts = v.match( /^"*([^\\^\\""]*)"*\^\^<*(.*)>*$/m );
           f = sprintf.sprintf( "<span title='Type: %s'>%s</span>", parts[2], parts[1]);
         }
-        else if (v.match( /@/ )) {
+        else if (v.match( /^"(.*)"@([^@]*)/ )) {
           parts = v.match( /^"(.*)"@([^@]*)/ );
           f = sprintf.sprintf( "<span title='Language: %s'>%s</span>", parts[2], parts[1] );
         }
