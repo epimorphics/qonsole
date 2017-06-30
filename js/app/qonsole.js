@@ -32,9 +32,11 @@ function (
 
   /* --- application code --- */
 
-  /** Initialisation - only called once */
-  var init = function ( config ) {
-    loadConfig( config );
+  /** Initialisation - only called once
+   * @param {object} qonfig The Qonsole configuration object
+   */
+  var init = function ( qonfig ) {
+    loadConfig( qonfig );
     bindEvents();
 
     $.ajaxSetup( {
@@ -42,16 +44,22 @@ function (
     } );
   };
 
-  /** Load the configuration definition */
-  var loadConfig = function ( config ) {
-    if (config.configURL) {
-      $.getJSON( config.configURL, onConfigLoaded );
-    }    else {
-      onConfigLoaded( config );
+  /**
+   * Load the given configuration URL if given
+   * @param  {object} qonfig Qonsole configuratoin
+   */
+  var loadConfig = function ( qonfig ) {
+    if (qonfig.configURL) {
+      $.getJSON( qonfig.configURL, onConfigLoaded );
+    } else {
+      onConfigLoaded( qonfig );
     }
   };
 
-  /** Return the current config object */
+  /**
+   * Return the current config object
+   * @return {object} The current configuration
+   */
   var config = function () {
     _config.parsedPrefixes = parseQueryPrefixes();
     return _config;
@@ -94,25 +102,31 @@ function (
     $('#addPrefix').on( 'click', onAddPrefix );
   };
 
-  /** List the current defined prefixes from the config */
-  var initPrefixes = function ( config ) {
+  /**
+   * List the current defined prefixes from the config
+   * @param  {object} qonfig The Qonsole configuration object
+   */
+  var initPrefixes = function ( qonfig ) {
     var prefixAdd = $('ul.prefixes li:last' );
-    $.each( config.prefixes, function ( key, value ) {
-      key = $.trim( key );
-      var displayKey = (!key || key === '') ? ':' : key;
+    $.each( qonfig.prefixes, function ( key, value ) {
+      var keyTrimmed = $.trim( key );
+      var displayKey = (!keyTrimmed || keyTrimmed === '') ? ':' : key;
       var html = sprintf.sprintf( "<li class='prefix'><label><input type='checkbox' value='%s' data-prefix='%s' checked  /> %s</label></li>",
                                   value, key, displayKey );
       $(html).insertBefore( prefixAdd);
     } );
   };
 
-  /** List the example queries from the config */
-  var initExamples = function ( config ) {
+  /**
+   * List the example queries from the config
+   * @param  {object} qonfig Current configuration
+   */
+  var initExamples = function ( qonfig ) {
     var examples = $('#examples');
 
     examples.empty();
 
-    $.each( config.queries, function ( i, queryDesc ) {
+    $.each( qonfig.queries, function ( i, queryDesc ) {
       var html = sprintf.sprintf( '<option>%s</option>', queryDesc.name );
       examples.append( html );
 
@@ -131,7 +145,11 @@ function (
     }
   };
 
-  /** Load a remote query */
+  /**
+   * Load a remote query
+   * @param  {string} name query name
+   * @param  {string} url  query URL
+   */
   var loadRemoteQuery = function ( name, url ) {
     _outstandingQueries++;
 
@@ -154,42 +172,61 @@ function (
     $.ajax( url, options );
   };
 
-  /** Set up the drop-down list of end-points */
-  var initEndpoints = function ( config ) {
+  /**
+   * Set up the drop-down list of end-points
+   * @param  {object} qonfig Current configuration object
+   */
+  var initEndpoints = function ( qonfig ) {
     var endpoints = $('#endpoints');
     endpoints.empty();
 
-    $.each( config.endpoints, function ( key, url ) {
+    $.each( qonfig.endpoints, function ( key, url ) {
       endpoints.append( sprintf.sprintf( '<option>%s</option>', url ) );
     } );
 
-    setCurrentEndpoint( config.endpoints.default );
+    setCurrentEndpoint( qonfig.endpoints.default );
   };
 
-  /** Successfully loaded the configuration */
-  var onConfigLoaded = function ( config ) {
-    _config = config;
-    initPrefixes( config );
-    initExamples( config );
-    initEndpoints( config );
+  /**
+   * Callback for successfully loaded the configuration
+   * @param  {object} qonfig Currnet configuration object
+   */
+  var onConfigLoaded = function ( qonfig ) {
+    _config = qonfig;
+    initPrefixes( qonfig );
+    initExamples( qonfig );
+    initEndpoints( qonfig );
   };
 
-  /** Set the current endpoint text */
+  /**
+   * Set the current endpoint text
+   * @param  {string} url Query URL
+   */
   var setCurrentEndpoint = function ( url ) {
     $('#sparqlEndpoint').val( url );
   };
 
-  /** Return the current endpoint text */
+  /**
+   * Return the current endpoint text
+   * @return {string} Current endpoint
+   */
   var currentEndpoint = function () {
     return $('#sparqlEndpoint').val();
   };
 
-  /** Return the query definition with the given name */
+  /**
+   * Return the query definition with the given name
+   * @param  {string} name Example name
+   * @return {object}  Query definition
+   */
   var namedExample = function ( name ) {
     return _.find( config().queries, function ( ex ) {return ex.name === name;} );
   };
 
-  /** Return the DOM node representing the query editor */
+  /**
+   * Return the DOM node representing the query editor
+   * @return {DOM} The query editor node
+   */
   var queryEditor = function () {
     if (!_queryEditor) {
       _queryEditor = new CodeMirror( $('#query-edit-cm').get(0), {
@@ -200,17 +237,26 @@ function (
     return _queryEditor;
   };
 
-  /** Return the current value of the query edit area */
+  /**
+   * Return the current value of the query edit area
+   * @return {string} Current query as text
+   */
   var currentQueryText = function () {
     return queryEditor().getValue();
   };
 
-  /** Set the value of the query edit area */
+  /**
+   * Set the value of the query edit area
+   * @param  {string} text New query text
+   */
   var setCurrentQueryText = function ( text ) {
     queryEditor().setValue( text );
   };
 
-  /** Display the given query, with the currently defined prefixes */
+  /**
+   * Display the given query, with the currently defined prefixes
+   * @param  {string} exampleName The name of the example to show
+   */
   var showCurrentExample = function ( exampleName ) {
     var example = exampleName || currentNamedExample();
     var query = checkForURLQuery() || namedExample( example );
@@ -218,17 +264,26 @@ function (
     displayQuery( query );
   };
 
-  /** Check to see if a query has been passed via the URL */
+  /**
+   * Check to see if a query has been passed via the URL
+   * @return {string} The query passed-in via the URL, or null
+   */
   var checkForURLQuery = function () {
     return config().allowQueriesFromURL ? searchParams().query : null;
   };
 
-  /** Return the currently active named example */
+  /**
+   * Return the currently active named example
+   * @return {string} The curently active example name
+   */
   var currentNamedExample = function () {
     return $('#examples').val();
   };
 
-  /** Display the given query */
+  /**
+   * Display the given query
+   * @param  {string} query The query as a string
+   */
   var displayQuery = function ( query ) {
     if (query) {
       var queryBody = query.query ? query.query : query;
@@ -241,17 +296,27 @@ function (
     }
   };
 
-  /** Return the currenty selected output format */
+  /**
+   * Return the currenty selected output format
+   * @return {string} Output format
+   */
   var selectedFormat = function () {
     return $('[name=format]').val();
   };
 
-  /** Return the currenty selected output format */
+  /**
+   * Return the currenty selected output format
+   * @param  {string} format Output format
+   * @return {string} selected format
+   */
   var setSelectedFormat = function ( format ) {
     return $('[name=format]').val( format );
   };
 
-  /** Return the prefixes currently defined in the query */
+  /**
+   * Return the prefixes currently defined in the query
+   * @return {object} The prefixes from the current query
+   */
   var parseQueryPrefixes = function () {
     var prefixes = {};
     var prefixPairs = assemblePrefixesFromQuery( currentQueryText() );
@@ -259,12 +324,17 @@ function (
     return prefixes;
   };
 
-  /** Assemble the set of prefixes to use when initially rendering the query */
+  /**
+   * Assemble the set of prefixes to use when initially rendering the query
+   * @param  {string} queryBody The body of the query
+   * @param  {object} queryDefinitionPrefixes The prefixes from the query config
+   * @return {object} The preferred set of prefixes
+   */
   var assemblePrefixes = function ( queryBody, queryDefinitionPrefixes ) {
     if (queryBody.match( /^prefix/ )) {
       // strategy 1: there are prefixes encoded in the query body
       return assemblePrefixesFromQuery( queryBody );
-    }    else if (queryDefinitionPrefixes) {
+    } else if (queryDefinitionPrefixes) {
       // strategy 2: prefixes given in query def
       return _.map( queryDefinitionPrefixes, function ( prefixName ) {
         return {name: prefixName, uri: config().prefixes[prefixName] };
@@ -274,7 +344,10 @@ function (
     return assembleCurrentPrefixes();
   };
 
-  /** Return an array comprising the currently selected prefixes */
+  /**
+   * Return an array comprising the currently selected prefixes
+   * @return {array} Array of prefixes
+   */
   var assembleCurrentPrefixes = function () {
     var l = $('ul.prefixes input:checked' ).map( function ( i, elt ) {
       return {name: $.trim( $(elt).data( 'prefix' ) ),
@@ -283,7 +356,11 @@ function (
     return $.makeArray(l);
   };
 
-  /** Return an array of the prefixes parsed from the given query body */
+  /**
+   * Return an array of the prefixes parsed from the given query body
+   * @param  {string} queryBody The query body
+   * @return {array} Parsed prefixes
+   */
   var assemblePrefixesFromQuery = function ( queryBody ) {
     var leader = queryLeader( queryBody )[0].trim();
     var pairs = _.compact( leader.split( 'prefix' ) );
@@ -297,7 +374,10 @@ function (
     return prefixes;
   };
 
-  /** Ensure that the prefix buttons are in sync with the prefixes used in a new query */
+  /**
+   * Ensure that the prefix buttons are in sync with the prefixes used in a new query
+   * @param  {object} prefixes The prefixes to be used in rendering
+   */
   var syncPrefixButtonState = function ( prefixes ) {
     $('ul.prefixes input' ).each( function ( i, elt ) {
       var name = $.trim( $(elt).data( 'prefix' ) );
@@ -310,7 +390,11 @@ function (
     } );
   };
 
-  /** Split a query into leader (prefixes and leading blank lines) and body */
+  /**
+   * Split a query into leader (prefixes and leading blank lines) and body
+   * @param  {string} query Input query
+   * @return {array} Length-2 array of header and body
+   */
   var queryLeader = function ( query ) {
     var pattern = /(prefix [^>]+>[\s\n]*)/;
     var queryBody = query;
@@ -326,19 +410,32 @@ function (
     return [query.substring( 0, query.length - queryBody.length), queryBody];
   };
 
-  /** Remove the query leader */
+  /**
+   * Remove the query leader
+   * @param  {string} query Input query
+   * @return {string} The leader part of the query
+   */
   var stripLeader = function ( query ) {
     return queryLeader( query )[1];
   };
 
-  /** Return a string comprising the given prefixes */
+  /**
+   * Return a string comprising the given prefixes in SPARQL format
+   * @param  {object} prefixes Given prefixes
+   * @return {string} SPARQL-format prefixes
+   */
   var renderPrefixes = function ( prefixes ) {
     return _.map( prefixes, function ( p ) {
       return sprintf.sprintf( 'prefix %s: <%s>', p.name, p.uri );
     } ).join( '\n' );
   };
 
-  /** Add or remove the given prefix declaration from the current query */
+  /**
+   * Add or remove the given prefix declaration from the current query
+   * @param  {string} prefix prefix short-name
+   * @param  {uri} uri The full URI
+   * @param  {boolean} added True for add, false for remove
+   */
   var updatePrefixDeclaration = function ( prefix, uri, added ) {
     var query = currentQueryText();
     var lines = query.split( '\n' );
@@ -365,7 +462,10 @@ function (
     setCurrentQueryText( lines.join( '\n' ) );
   };
 
-  /** Return the sparql service we're querying against */
+  /**
+   * Return the sparql service we're querying against
+   * @return {object} Object encapsulting the SPARQL service
+   */
   var sparqlService = function () {
     var service = config().service;
     if (!service) {
@@ -377,7 +477,10 @@ function (
     return service;
   };
 
-  /** Perform the query */
+  /**
+   * [description]
+   * @param  {event} e The triggering event
+   */
   var runQuery = function ( e ) {
     e.preventDefault();
     resetResults();
@@ -398,7 +501,11 @@ function (
   };
 
 
-  /** Hide or reveal an element using Bootstrap .hidden class */
+  /**
+   * Hide or reveal an element using Bootstrap .hidden class
+   * @param  {DOM} elem DOM node to act on
+   * @param  {boolean} visible True to render the node visible
+   */
   var elementVisible = function ( elem, visible ) {
     if (visible) {
       $(elem).removeClass( 'hidden' );
@@ -413,7 +520,10 @@ function (
     elementVisible( '.timeTaken' );
   };
 
-  /** Show results count and time */
+  /**
+   * Show results count and time
+   * @param  {int} count Count of results
+   */
   var showResultsTimeAndCount = function ( count ) {
     var duration = new Date().getTime() - _startTime;
     var ms = duration % 1000;
@@ -434,14 +544,21 @@ function (
     elementVisible( '.timeTaken', false );
   };
 
-  /** Report query failure */
+  /**
+   * Report query failure
+   * @param  {object} jqXHR jQuery response object
+   */
   var onQueryFail = function ( jqXHR ) {
     showResultsTimeAndCount( 0 );
     var text = jqXHR.valueOf().responseText || sprintf.sprintf( "Sorry, that didn't work because: '%s'", jqXHR.valueOf().statusText );
     $('#results').html( sprintf.sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
   };
 
-  /** Query succeeded - use display type to determine how to render */
+  /**
+   * Query succeeded - use display type to determine how to render
+   * @param  {object} data XHR return
+   * @param  {string} format Output format
+   */
   var onQuerySuccess = function ( data, format ) {
     var options = data.asFormat( format, config() );
 
@@ -452,10 +569,14 @@ function (
     }
   };
 
-  /** Show the given text value in a CodeMirror block with the given language mode */
+  /**
+   * Show the given text value in a CodeMirror block with the given language mode
+   * @param  {object} options Display options
+   */
   var showCodeMirrorResult = function ( options ) {
     showResultsTimeAndCount( options.count );
 
+    // eslint-disable-next-line no-new
     new CodeMirror( $('#results').get(0), {
       value: options.data,
       mode: options.mime,
@@ -467,7 +588,10 @@ function (
     } );
   };
 
-  /** Show the result using jQuery dataTables */
+  /**
+   * Show the result using jQuery dataTables
+   * @param  {object} options Display options
+   */
   var showTableResult = function ( options ) {
     showResultsTimeAndCount( options.count );
 
@@ -488,7 +612,10 @@ function (
                  .dataTable( options );
   };
 
-  /** Lookup a prefix on prefix.cc */
+  /**
+   * Lookup a prefix on prefix.cc
+   * @param  {event} e Input event
+   */
   var onLookupPrefix = function ( e ) {
     e.preventDefault();
 
@@ -542,7 +669,10 @@ function (
     setCurrentQueryText( q );
   };
 
-  /** Disable or enable the button to submit a query */
+  /**
+   * Disable or enable the button to submit a query
+   * @param  {boolean} disable Flag
+   */
   var disableSubmit = function ( disable ) {
     var elem = $('a.run-query');
     elem.prop( 'disabled', disable );
@@ -553,7 +683,11 @@ function (
     }
   };
 
-  /** Check the output format. Reset output format to text for describe and construct queries */
+  /**
+   * Check the output format. Reset output format to text for describe and construct queries
+   * @param  {string} query The current query
+   * @return {string} The preferred output format
+   */
   var checkOutputFormat = function ( query ) {
     if (isDescribeOrConstructQuery( query ) && _.includes( ['tsv'], selectedFormat() )) {
       setSelectedFormat( 'text' );
@@ -562,7 +696,11 @@ function (
     return selectedFormat();
   };
 
-  /** @return True if this is a describe or construct query */
+  /**
+   * Check for describe or constuct query
+   * @param  {string} query The current query
+   * @return {boolean} True if this is a describe or construct query
+   */
   var isDescribeOrConstructQuery = function ( query ) {
     var body = queryLeader( query )[1];
     return body.match( /^(describe|construct)/i );
@@ -605,8 +743,9 @@ function (
    * parameter, with also a `_vars` key which lists the query parameter
    * variables in order. Keys and values will be automatically
    * unescaped.
-   * @param location The current location object. If null, window.location
+   * @param {string} location The current location object. If null, window.location
    *                 will be used.
+   * @return {object} environment
    */
   var searchParams = function ( location ) {
     var loc = location || window.location;
@@ -640,4 +779,3 @@ function (
     setCurrentQueryText: setCurrentQueryText
   };
 } );
-

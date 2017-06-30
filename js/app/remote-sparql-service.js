@@ -9,7 +9,6 @@
  * asTable - returns the result as an array of objects, with one key per object per query variable
  */
 
-/* global define */
 define( [
   'lodash',
   'sprintf'
@@ -39,7 +38,8 @@ function (
     },
 
     asJSON: function () {
-      var json, data = this._val;
+      var json = null;
+      var data = this._val;
 
       if (_.isString( data )) {
         json = data;
@@ -59,7 +59,8 @@ function (
     },
 
     asXML: function () {
-      var xml, data = this._val;
+      var xml = null;
+      var data = this._val;
 
       if (_.isString( data )) {
         xml = data;
@@ -81,7 +82,9 @@ function (
     asTable: function ( config ) {
       /* Shorten a URI to qname form, if possible */
       var toQName = function ( prefixes, uri ) {
-        var result = uri, qname, u = uri;
+        var result = uri;
+        var qname;
+        var u = uri;
 
         if (u.substring( 0, 1 ) === '<') {
           u = u.substring( 1, u.length - 1 );
@@ -99,9 +102,14 @@ function (
         return result;
       };
 
-      /** Format a value for display in the table view */
+      /**
+       * Format a value for display in the table view
+       * @param  {any} v Value to format
+       * @return {string} Value formatted for datatables
+      */
       var dataTableValue = function ( v ) {
-        var f, parts;
+        var f;
+        var parts;
 
         if (_.isNumber( v )) {
           f = parseFloat( v );
@@ -159,12 +167,16 @@ function (
         return this.asXML();
       case 'tsv':
         return this.asTable( config );
+      default:
+        return null;
       }
-
-      return null;
     },
 
-    /** Return the string representation of the given XML value, which may be a string or a DOM object */
+    /**
+     * Return the string representation of the given XML value, which may be a string or a DOM object
+     * @param  {object} xmlData XML data
+     * @return {string} XML formatted as a string
+     */
     xmlToString: function ( xmlData ) {
       var xs = _.isString( xmlData ) ? xmlData : null;
 

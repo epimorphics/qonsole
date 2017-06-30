@@ -8,6 +8,8 @@ module.exports = {
   env: {
     browser: true,
     es6: false,
+    jquery: true,
+    amd: true
   },
   extends: 'airbnb-es5',
   // required to lint *.vue files
@@ -23,16 +25,11 @@ module.exports = {
   },
   // add your custom rules here
   'rules': {
-    // don't require .vue extension when importing
-    'import/extensions': ['error', 'always', {
-      'js': 'never',
-      'vue': 'never'
-    }],
-    // allow optionalDependencies
-    'import/no-extraneous-dependencies': ['error', {
-      'optionalDependencies': ['test/unit/index.js']
-    }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    // don't require return in jsdoc
+    'valid-jsdoc': ["error", { "requireReturn": false }],
+    // allow anonymous functions
+    'func-names': 0,
   }
 }
