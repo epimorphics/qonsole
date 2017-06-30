@@ -18,7 +18,7 @@ module.exports = function(grunt) {
             flatten: true,
             src: ["bower_components/respond/dest/respond.min.js",
                   "bower_components/bootstrap/dist/js/bootstrap.js",
-                  "bower_components/jquery/jquery.js",
+                  "bower_components/jquery/dist/jquery.js",
                   "bower_components/datatables/media/js/jquery.dataTables.js",
                   "bower_components/html5shiv/dist/html5shiv.js",
                   "bower_components/jquery.xdomainrequest/jQuery.XDomainRequest.js",
