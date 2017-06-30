@@ -1,6 +1,6 @@
 {
   "name": "qonsole",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A web console for issuing SPARQL queries.",
   "repository": {
     "type": "git",
@@ -12,9 +12,15 @@
     "url": "https://github.com/epimorphics/qonsole/issues"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-config-airbnb-es5": "^1.1.0",
+    "eslint-plugin-import": "^2.6.1",
+    "eslint-plugin-react": "^7.1.0",
     "grunt": "~0.4.5",
     "grunt-bower-task": "~0.4.0",
-    "grunt-contrib-copy": "~0.8.0",
-    "grunt-contrib-clean": "~0.6.0"
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-copy": "~0.8.0"
   }
 }

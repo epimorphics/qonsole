@@ -3,25 +3,25 @@
 /* global define */
 
 define( [
-  "lodash",
-  "jquery",
-  "sprintf",
-  "app/remote-sparql-service",
-  "codemirror/lib/codemirror",
-  "codemirror/mode/sparql/sparql",
-  "codemirror/mode/xml/xml",
-  "codemirror/mode/javascript/javascript",
-  "jquery.spinjs",
-  "datatables"
+  'lodash',
+  'jquery',
+  'sprintf',
+  'app/remote-sparql-service',
+  'codemirror/lib/codemirror',
+  'codemirror/mode/sparql/sparql',
+  'codemirror/mode/xml/xml',
+  'codemirror/mode/javascript/javascript',
+  'jquery.spinjs',
+  'datatables'
 ],
-function(
+function (
   _,
   $,
   sprintf,
   RemoteSparqlService,
   CodeMirror
 ) {
-  "use strict";
+  'use strict';
 
   /* --- module vars --- */
   /** The loaded configuration */
@@ -33,74 +33,73 @@ function(
   /* --- application code --- */
 
   /** Initialisation - only called once */
-  var init = function( config ) {
+  var init = function ( config ) {
     loadConfig( config );
     bindEvents();
 
     $.ajaxSetup( {
-      converters: {"script json": true}
+      converters: {'script json': true}
     } );
   };
 
   /** Load the configuration definition */
-  var loadConfig = function( config ) {
+  var loadConfig = function ( config ) {
     if (config.configURL) {
       $.getJSON( config.configURL, onConfigLoaded );
-    }
-    else {
+    }    else {
       onConfigLoaded( config );
     }
   };
 
   /** Return the current config object */
-  var config = function() {
+  var config = function () {
     _config.parsedPrefixes = parseQueryPrefixes();
     return _config;
   };
 
   /** Bind events that we want to manage */
-  var bindEvents = function() {
-    $("ul.prefixes").on( "change", "input", function( e ) {
+  var bindEvents = function () {
+    $('ul.prefixes').on( 'change', 'input', function ( e ) {
       var elem = $(e.currentTarget);
-      updatePrefixDeclaration( elem.data("prefix"), elem.val(), elem.is(":checked") );
+      updatePrefixDeclaration( elem.data('prefix'), elem.val(), elem.is(':checked') );
     } );
-    $("#examples").on( "change", function( e ) {
+    $('#examples').on( 'change', function ( e ) {
       var query = $(e.currentTarget).val();
       showCurrentExample( query );
     } );
-    $("#endpoints").on( "change", function( e ) {
+    $('#endpoints').on( 'change', function ( e ) {
       var elem = $(e.currentTarget);
       setCurrentEndpoint( $.trim( elem.val() ) );
     } );
 
-    $(".run-query").on( "click", runQuery );
+    $('.run-query').on( 'click', runQuery );
 
     $(document)
-      .ajaxStart(function() {
+      .ajaxStart(function () {
         startTimingResults();
         disableSubmit( true );
         spinStart();
       })
-      .ajaxStop(function() {
+      .ajaxStop(function () {
         disableSubmit( false );
         spinStop();
       });
 
     // dialogue events
-    $("#prefixEditor").on( "click", "#lookupPrefix", onLookupPrefix )
-                      .on( "keyup", "#inputPrefix", function( e ) {
+    $('#prefixEditor').on( 'click', '#lookupPrefix', onLookupPrefix )
+                      .on( 'keyup', '#inputPrefix', function ( e ) {
                         var elem = $(e.currentTarget);
-                        $("#lookupPrefix span").text( sprintf.sprintf( "'%s'", elem.val() ));
+                        $('#lookupPrefix span').text( sprintf.sprintf( "'%s'", elem.val() ));
                       } );
-    $("#addPrefix").on( "click", onAddPrefix );
+    $('#addPrefix').on( 'click', onAddPrefix );
   };
 
   /** List the current defined prefixes from the config */
-  var initPrefixes = function( config ) {
-    var prefixAdd = $("ul.prefixes li:last" );
-    $.each( config.prefixes, function( key, value ) {
+  var initPrefixes = function ( config ) {
+    var prefixAdd = $('ul.prefixes li:last' );
+    $.each( config.prefixes, function ( key, value ) {
       key = $.trim( key );
-      var displayKey = (!key || key === "") ? ":" : key;
+      var displayKey = (!key || key === '') ? ':' : key;
       var html = sprintf.sprintf( "<li class='prefix'><label><input type='checkbox' value='%s' data-prefix='%s' checked  /> %s</label></li>",
                                   value, key, displayKey );
       $(html).insertBefore( prefixAdd);
@@ -108,13 +107,13 @@ function(
   };
 
   /** List the example queries from the config */
-  var initExamples = function( config ) {
-    var examples = $("#examples");
+  var initExamples = function ( config ) {
+    var examples = $('#examples');
 
     examples.empty();
 
-    $.each( config.queries, function( i, queryDesc ) {
-      var html = sprintf.sprintf( "<option>%s</option>", queryDesc.name );
+    $.each( config.queries, function ( i, queryDesc ) {
+      var html = sprintf.sprintf( '<option>%s</option>', queryDesc.name );
       examples.append( html );
 
       if (queryDesc.queryURL) {
@@ -126,49 +125,49 @@ function(
   };
 
   /** Set the default active query */
-  var setFirstExampleActive = function() {
+  var setFirstExampleActive = function () {
     if (_outstandingQueries === 0) {
       showCurrentExample();
     }
   };
 
   /** Load a remote query */
-  var loadRemoteQuery = function( name, url ) {
+  var loadRemoteQuery = function ( name, url ) {
     _outstandingQueries++;
 
     var options = {
-      success: function( data ) {
+      success: function ( data ) {
         namedExample( name ).query = data;
 
         _outstandingQueries--;
         setFirstExampleActive();
       },
-      failure: function() {
-        namedExample( name ).query = "Not found: " + url;
+      failure: function () {
+        namedExample( name ).query = 'Not found: ' + url;
 
         _outstandingQueries--;
         setFirstExampleActive();
       },
-      dataType: "text"
+      dataType: 'text'
     };
 
     $.ajax( url, options );
   };
 
   /** Set up the drop-down list of end-points */
-  var initEndpoints = function( config ) {
-    var endpoints = $("#endpoints");
+  var initEndpoints = function ( config ) {
+    var endpoints = $('#endpoints');
     endpoints.empty();
 
-    $.each( config.endpoints, function( key, url ) {
-      endpoints.append( sprintf.sprintf( "<option>%s</option>", url ) );
+    $.each( config.endpoints, function ( key, url ) {
+      endpoints.append( sprintf.sprintf( '<option>%s</option>', url ) );
     } );
 
-    setCurrentEndpoint( config.endpoints["default"] );
+    setCurrentEndpoint( config.endpoints.default );
   };
 
   /** Successfully loaded the configuration */
-  var onConfigLoaded = function( config ) {
+  var onConfigLoaded = function ( config ) {
     _config = config;
     initPrefixes( config );
     initExamples( config );
@@ -176,43 +175,43 @@ function(
   };
 
   /** Set the current endpoint text */
-  var setCurrentEndpoint = function( url ) {
-    $("#sparqlEndpoint").val( url );
+  var setCurrentEndpoint = function ( url ) {
+    $('#sparqlEndpoint').val( url );
   };
 
   /** Return the current endpoint text */
-  var currentEndpoint = function() {
-    return $("#sparqlEndpoint").val();
+  var currentEndpoint = function () {
+    return $('#sparqlEndpoint').val();
   };
 
   /** Return the query definition with the given name */
-  var namedExample = function( name ) {
-    return _.find( config().queries, function( ex ) {return ex.name === name;} );
+  var namedExample = function ( name ) {
+    return _.find( config().queries, function ( ex ) {return ex.name === name;} );
   };
 
   /** Return the DOM node representing the query editor */
-  var queryEditor = function() {
+  var queryEditor = function () {
     if (!_queryEditor) {
-      _queryEditor = new CodeMirror( $("#query-edit-cm").get(0), {
+      _queryEditor = new CodeMirror( $('#query-edit-cm').get(0), {
         lineNumbers: true,
-        mode: "sparql"
+        mode: 'sparql'
       } );
     }
     return _queryEditor;
   };
 
   /** Return the current value of the query edit area */
-  var currentQueryText = function() {
+  var currentQueryText = function () {
     return queryEditor().getValue();
   };
 
   /** Set the value of the query edit area */
-  var setCurrentQueryText = function( text ) {
+  var setCurrentQueryText = function ( text ) {
     queryEditor().setValue( text );
   };
 
   /** Display the given query, with the currently defined prefixes */
-  var showCurrentExample = function( exampleName ) {
+  var showCurrentExample = function ( exampleName ) {
     var example = exampleName || currentNamedExample();
     var query = checkForURLQuery() || namedExample( example );
 
@@ -220,22 +219,22 @@ function(
   };
 
   /** Check to see if a query has been passed via the URL */
-  var checkForURLQuery = function() {
+  var checkForURLQuery = function () {
     return config().allowQueriesFromURL ? searchParams().query : null;
   };
 
   /** Return the currently active named example */
-  var currentNamedExample = function() {
-    return $("#examples").val();
+  var currentNamedExample = function () {
+    return $('#examples').val();
   };
 
   /** Display the given query */
-  var displayQuery = function( query ) {
+  var displayQuery = function ( query ) {
     if (query) {
       var queryBody = query.query ? query.query : query;
       var prefixes = assemblePrefixes( queryBody, query.prefixes );
 
-      var q = sprintf.sprintf( "%s\n\n%s", renderPrefixes( prefixes ), stripLeader( queryBody ) );
+      var q = sprintf.sprintf( '%s\n\n%s', renderPrefixes( prefixes ), stripLeader( queryBody ) );
       setCurrentQueryText( q );
 
       syncPrefixButtonState( prefixes );
@@ -243,57 +242,55 @@ function(
   };
 
   /** Return the currenty selected output format */
-  var selectedFormat = function() {
-    return $("[name=format]").val();
+  var selectedFormat = function () {
+    return $('[name=format]').val();
   };
 
   /** Return the currenty selected output format */
-  var setSelectedFormat = function( format ) {
-    return $("[name=format]").val( format );
+  var setSelectedFormat = function ( format ) {
+    return $('[name=format]').val( format );
   };
 
   /** Return the prefixes currently defined in the query */
-  var parseQueryPrefixes = function() {
+  var parseQueryPrefixes = function () {
     var prefixes = {};
     var prefixPairs = assemblePrefixesFromQuery( currentQueryText() );
-    _.each( prefixPairs, function( pair ) {prefixes[pair.name] = pair.uri;} );
+    _.each( prefixPairs, function ( pair ) {prefixes[pair.name] = pair.uri;} );
     return prefixes;
   };
 
   /** Assemble the set of prefixes to use when initially rendering the query */
-  var assemblePrefixes = function( queryBody, queryDefinitionPrefixes ) {
+  var assemblePrefixes = function ( queryBody, queryDefinitionPrefixes ) {
     if (queryBody.match( /^prefix/ )) {
       // strategy 1: there are prefixes encoded in the query body
       return assemblePrefixesFromQuery( queryBody );
-    }
-    else if (queryDefinitionPrefixes) {
+    }    else if (queryDefinitionPrefixes) {
       // strategy 2: prefixes given in query def
-      return _.map( queryDefinitionPrefixes, function( prefixName ) {
+      return _.map( queryDefinitionPrefixes, function ( prefixName ) {
         return {name: prefixName, uri: config().prefixes[prefixName] };
       } );
     }
-    else {
-      return assembleCurrentPrefixes();
-    }
+
+    return assembleCurrentPrefixes();
   };
 
   /** Return an array comprising the currently selected prefixes */
-  var assembleCurrentPrefixes = function() {
-    var l = $("ul.prefixes input:checked" ).map( function( i, elt ) {
-      return {name: $.trim( $(elt).data( "prefix" ) ),
-              uri: $(elt).val()};
+  var assembleCurrentPrefixes = function () {
+    var l = $('ul.prefixes input:checked' ).map( function ( i, elt ) {
+      return {name: $.trim( $(elt).data( 'prefix' ) ),
+        uri: $(elt).val()};
     } );
     return $.makeArray(l);
   };
 
   /** Return an array of the prefixes parsed from the given query body */
-  var assemblePrefixesFromQuery = function( queryBody ) {
+  var assemblePrefixesFromQuery = function ( queryBody ) {
     var leader = queryLeader( queryBody )[0].trim();
-    var pairs = _.compact( leader.split( "prefix" ) );
+    var pairs = _.compact( leader.split( 'prefix' ) );
     var prefixes = [];
 
-    _.each( pairs, function( pair ) {
-      var m = pair.match( "^\\s*([\\w\\-]+)\\s*:\\s*<([^>]*)>\\s*$" );
+    _.each( pairs, function ( pair ) {
+      var m = pair.match( '^\\s*([\\w\\-]+)\\s*:\\s*<([^>]*)>\\s*$' );
       prefixes.push( {name: m[1], uri: m[2]} );
     } );
 
@@ -301,21 +298,20 @@ function(
   };
 
   /** Ensure that the prefix buttons are in sync with the prefixes used in a new query */
-  var syncPrefixButtonState = function( prefixes ) {
-    $("ul.prefixes input" ).each( function( i, elt ) {
-      var name = $.trim( $(elt).data( "prefix" ) );
+  var syncPrefixButtonState = function ( prefixes ) {
+    $('ul.prefixes input' ).each( function ( i, elt ) {
+      var name = $.trim( $(elt).data( 'prefix' ) );
 
-      if (_.find( prefixes, function(p) {return p.name === name;} )) {
-        $(elt).attr( "checked", true );
-      }
-      else {
-        $(elt).removeAttr( "checked" );
+      if (_.find( prefixes, function (p) {return p.name === name;} )) {
+        $(elt).attr( 'checked', true );
+      }      else {
+        $(elt).removeAttr( 'checked' );
       }
     } );
   };
 
   /** Split a query into leader (prefixes and leading blank lines) and body */
-  var queryLeader = function( query ) {
+  var queryLeader = function ( query ) {
     var pattern = /(prefix [^>]+>[\s\n]*)/;
     var queryBody = query;
     var i = 0;
@@ -331,22 +327,22 @@ function(
   };
 
   /** Remove the query leader */
-  var stripLeader = function( query ) {
+  var stripLeader = function ( query ) {
     return queryLeader( query )[1];
   };
 
   /** Return a string comprising the given prefixes */
-  var renderPrefixes = function( prefixes ) {
-    return _.map( prefixes, function( p ) {
-      return sprintf.sprintf( "prefix %s: <%s>", p.name, p.uri );
-    } ).join( "\n" );
+  var renderPrefixes = function ( prefixes ) {
+    return _.map( prefixes, function ( p ) {
+      return sprintf.sprintf( 'prefix %s: <%s>', p.name, p.uri );
+    } ).join( '\n' );
   };
 
   /** Add or remove the given prefix declaration from the current query */
-  var updatePrefixDeclaration = function( prefix, uri, added ) {
+  var updatePrefixDeclaration = function ( prefix, uri, added ) {
     var query = currentQueryText();
-    var lines = query.split( "\n" );
-    var pattern = new RegExp( "^prefix +" + prefix + ":");
+    var lines = query.split( '\n' );
+    var pattern = new RegExp( '^prefix +' + prefix + ':');
     var found = false;
     var i;
 
@@ -360,17 +356,17 @@ function(
     if (!found && added) {
       for (i = 0; i < lines.length; i++) {
         if (!lines[i].match( /^prefix/ )) {
-          lines.splice( i, 0, sprintf.sprintf( "prefix %s: <%s>", prefix, uri ) );
+          lines.splice( i, 0, sprintf.sprintf( 'prefix %s: <%s>', prefix, uri ) );
           break;
         }
       }
     }
 
-    setCurrentQueryText( lines.join( "\n" ) );
+    setCurrentQueryText( lines.join( '\n' ) );
   };
 
   /** Return the sparql service we're querying against */
-  var sparqlService = function() {
+  var sparqlService = function () {
     var service = config().service;
     if (!service) {
       // default is the remote service
@@ -382,7 +378,7 @@ function(
   };
 
   /** Perform the query */
-  var runQuery = function( e ) {
+  var runQuery = function ( e ) {
     e.preventDefault();
     resetResults();
 
@@ -392,7 +388,7 @@ function(
     var options = {
       url: currentEndpoint(),
       format: format,
-      success: function( data ) {
+      success: function ( data ) {
         onQuerySuccess( data, format );
       },
       error: onQueryFail
@@ -403,82 +399,80 @@ function(
 
 
   /** Hide or reveal an element using Bootstrap .hidden class */
-  var elementVisible = function( elem, visible ) {
+  var elementVisible = function ( elem, visible ) {
     if (visible) {
-      $(elem).removeClass( "hidden" );
-    }
-    else {
-      $(elem).addClass( "hidden" );
+      $(elem).removeClass( 'hidden' );
+    }    else {
+      $(elem).addClass( 'hidden' );
     }
   };
 
   /** Prepare to show query time taken */
-  var startTimingResults = function() {
+  var startTimingResults = function () {
     _startTime = new Date().getTime();
-    elementVisible( ".timeTaken" );
+    elementVisible( '.timeTaken' );
   };
 
   /** Show results count and time */
-  var showResultsTimeAndCount = function( count ) {
+  var showResultsTimeAndCount = function ( count ) {
     var duration = new Date().getTime() - _startTime;
     var ms = duration % 1000;
     duration = Math.floor( duration / 1000 );
     var s = duration % 60;
     var m = Math.floor( duration / 60 );
-    var suffix = (count !== 1) ? "s" : "";
+    var suffix = (count !== 1) ? 's' : '';
 
-    var html = sprintf.sprintf( "%s result%s in %d min %d.%03d s", count, suffix, m, s, ms );
+    var html = sprintf.sprintf( '%s result%s in %d min %d.%03d s', count, suffix, m, s, ms );
 
-    $(".timeTaken").html( html );
-    elementVisible( ".timeTaken", true );
+    $('.timeTaken').html( html );
+    elementVisible( '.timeTaken', true );
   };
 
   /** Reset the results display */
-  var resetResults = function() {
-    $("#results").empty();
-    elementVisible( ".timeTaken", false );
+  var resetResults = function () {
+    $('#results').empty();
+    elementVisible( '.timeTaken', false );
   };
 
   /** Report query failure */
-  var onQueryFail = function( jqXHR ) {
+  var onQueryFail = function ( jqXHR ) {
     showResultsTimeAndCount( 0 );
     var text = jqXHR.valueOf().responseText || sprintf.sprintf( "Sorry, that didn't work because: '%s'", jqXHR.valueOf().statusText );
-    $("#results").html( sprintf.sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
+    $('#results').html( sprintf.sprintf( "<pre class='text-danger'>%s</pre>", _.escape(text) ) );
   };
 
   /** Query succeeded - use display type to determine how to render */
-  var onQuerySuccess = function( data, format ) {
+  var onQuerySuccess = function ( data, format ) {
     var options = data.asFormat( format, config() );
 
     if (options && !options.table) {
       showCodeMirrorResult( options );
-    }
-    else if (options && options.table) {
+    }    else if (options && options.table) {
       showTableResult( options );
     }
   };
 
   /** Show the given text value in a CodeMirror block with the given language mode */
-  var showCodeMirrorResult = function( options ) {
+  var showCodeMirrorResult = function ( options ) {
     showResultsTimeAndCount( options.count );
 
-    new CodeMirror( $("#results").get(0), {
+    new CodeMirror( $('#results').get(0), {
       value: options.data,
       mode: options.mime,
       lineNumbers: true,
-      extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
-      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+      extraKeys: {'Ctrl-Q': function (cm) { cm.foldCode(cm.getCursor()); }},
+      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
       foldGutter: true,
       readOnly: true
     } );
   };
 
   /** Show the result using jQuery dataTables */
-  var showTableResult = function( options ) {
+  var showTableResult = function ( options ) {
     showResultsTimeAndCount( options.count );
 
     options.oLanguage = {
-      "sEmptyTable": "Query did not return any results."
+      'sEmptyTable': 'Query did not return any results.'
     };
 
     // if user has specified an order, don't let datatables override the sort
@@ -486,7 +480,7 @@ function(
       options.aaSorting = [];
     }
 
-    $("#results").empty()
+    $('#results').empty()
                  .append( "<div class='auto-overflow'></div>")
                  .children()
                  .append( "<table cellpadding='0' cellspacing='0' border='0' class='display'></table>" )
@@ -495,84 +489,81 @@ function(
   };
 
   /** Lookup a prefix on prefix.cc */
-  var onLookupPrefix = function( e ) {
+  var onLookupPrefix = function ( e ) {
     e.preventDefault();
 
-    var prefix = $.trim( $("#inputPrefix").val() );
-    $("#inputURI").val("");
+    var prefix = $.trim( $('#inputPrefix').val() );
+    $('#inputURI').val('');
 
     if (prefix) {
-      $.getJSON( sprintf.sprintf( "http://prefix.cc/%s.file.json", prefix ),
-                function( data ) {
-                  $("#inputURI").val( data[prefix] );
+      $.getJSON( sprintf.sprintf( 'http://prefix.cc/%s.file.json', prefix ),
+                function ( data ) {
+                  $('#inputURI').val( data[prefix] );
                 }
             );
     }
   };
 
   /** User wishes to add the prefix */
-  var onAddPrefix = function() {
-    var prefix = $.trim( $("#inputPrefix").val() );
-    var uri = $.trim( $("#inputURI").val() );
+  var onAddPrefix = function () {
+    var prefix = $.trim( $('#inputPrefix').val() );
+    var uri = $.trim( $('#inputURI').val() );
 
     if (uri) {
       config().prefixes[prefix] = uri;
-    }
-    else {
+    }    else {
       delete config().prefixes[prefix];
     }
 
     // remember the state of current user selections, then re-create the list
     var selections = {};
-    var ul = $("ul.prefixes");
-    ul.find("input")
-      .each( function( i, elem ) {
-        selections[$(elem).data("prefix")] = $(elem).is(":checked");
+    var ul = $('ul.prefixes');
+    ul.find('input')
+      .each( function ( i, elem ) {
+        selections[$(elem).data('prefix')] = $(elem).is(':checked');
       } );
 
-    ul.find("li[class!=keep]").remove();
+    ul.find('li[class!=keep]').remove();
     initPrefixes( config() );
 
     // restore selections state
-    $.each( selections, function( k, v ) {
-      var elem = ul.find(sprintf.sprintf("[data-prefix=%s]", k));
+    $.each( selections, function ( k, v ) {
+      var elem = ul.find(sprintf.sprintf('[data-prefix=%s]', k));
       if (v) {
-        elem.attr( "checked", true );
-      }
-      else {
-        elem.removeAttr("checked");
+        elem.attr( 'checked', true );
+      }      else {
+        elem.removeAttr('checked');
       }
     } );
 
-    var lines = currentQueryText().split("\n");
-    lines = _.reject( lines, function( line ) {return line.match( /^prefix/ );} );
-    var q = sprintf.sprintf( "%s\n%s", renderPrefixes( assembleCurrentPrefixes() ), lines.join( "\n" ) );
+    var lines = currentQueryText().split('\n');
+    lines = _.reject( lines, function ( line ) {return line.match( /^prefix/ );} );
+    var q = sprintf.sprintf( '%s\n%s', renderPrefixes( assembleCurrentPrefixes() ), lines.join( '\n' ) );
     setCurrentQueryText( q );
   };
 
   /** Disable or enable the button to submit a query */
-  var disableSubmit = function( disable ) {
-    var elem = $("a.run-query");
-    elem.prop( "disabled", disable );
+  var disableSubmit = function ( disable ) {
+    var elem = $('a.run-query');
+    elem.prop( 'disabled', disable );
     if (disable) {
-      elem.addClass( "disabled" );
-    }
-    else {
-      elem.removeClass( "disabled" );
+      elem.addClass( 'disabled' );
+    }    else {
+      elem.removeClass( 'disabled' );
     }
   };
 
   /** Check the output format. Reset output format to text for describe and construct queries */
-  var checkOutputFormat = function( query ) {
-    if (isDescribeOrConstructQuery( query ) && _.includes( ["tsv"], selectedFormat() )) {
-      setSelectedFormat( "text" );
+  var checkOutputFormat = function ( query ) {
+    if (isDescribeOrConstructQuery( query ) && _.includes( ['tsv'], selectedFormat() )) {
+      setSelectedFormat( 'text' );
     }
 
     return selectedFormat();
   };
 
   /** @return True if this is a describe or construct query */
-  var isDescribeOrConstructQuery = function( query ) {
+  var isDescribeOrConstructQuery = function ( query ) {
     var body = queryLeader( query )[1];
     return body.match( /^(describe|construct)/i );
   };
@@ -582,27 +573,27 @@ function(
   var spinCount = 0;
 
   var DEFAULT_SPIN_OPTIONS = {
-    color:"#ACCD40",
+    color: '#ACCD40',
     lines: 12,
     radius: 20,
     length: 10,
     width: 4,
-    bgColor: "white"
+    bgColor: 'white'
   };
 
   /* Start the spinner */
-  var spinStart = function( options ) {
+  var spinStart = function ( options ) {
     spinCount = spinCount + 1;
     if (spinCount === 1) {
-      $("body").spin( options || DEFAULT_SPIN_OPTIONS );
+      $('body').spin( options || DEFAULT_SPIN_OPTIONS );
     }
   };
 
   /** Stop the spinner */
-  var spinStop = function() {
+  var spinStop = function () {
     spinCount = spinCount - 1;
     if (spinCount === 0) {
-      $("body").spin( false );
+      $('body').spin( false );
     }
   };
 
@@ -617,16 +608,16 @@ function(
    * @param location The current location object. If null, window.location
    *                 will be used.
    */
-  var searchParams = function( location ) {
+  var searchParams = function ( location ) {
     var loc = location || window.location;
     var env = {};
 
     if (loc.search) {
-      var url = loc.search.replace( /^\?/, "" );
-      var args = url.split("&");
+      var url = loc.search.replace( /^\?/, '' );
+      var args = url.split('&');
 
-      for(var i = 0; i < args.length; i++) {
-        var argPair = args[i].split("=");
+      for (var i = 0; i < args.length; i++) {
+        var argPair = args[i].split('=');
 
         var key = decodeURIComponent( argPair[0] );
         var val = argPair.length > 1 ? decodeURIComponent( argPair[1] ) : null;
@@ -634,8 +625,7 @@ function(
         if (env[key]) {
           env[key] = (env[key].constructor === Array) ? env[key] : [env[key]];
           env[key].push( val );
-        }
-        else {
+        }        else {
           env[key] = val;
         }
       }
@@ -649,6 +639,5 @@ function(
     init: init,
     setCurrentQueryText: setCurrentQueryText
   };
-
 } );
 
