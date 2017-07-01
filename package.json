@@ -1,6 +1,6 @@
 {
   "name": "qonsole",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A web console for issuing SPARQL queries.",
   "keywords": ["SPARQL", "web", "form"],
   "homepage": "https://github.com/epimorphics/qonsole",
