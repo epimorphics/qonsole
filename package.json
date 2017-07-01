@@ -2,14 +2,18 @@
   "name": "qonsole",
   "version": "0.2.0",
   "description": "A web console for issuing SPARQL queries.",
+  "keywords": ["SPARQL", "web", "form"],
+  "homepage": "https://github.com/epimorphics/qonsole",
   "repository": {
     "type": "git",
     "url": "git://github.com/epimorphics/qonsole.git"
   },
-  "author": "Ian Dickinson",
-  "license": "Apache 2",
+  "author": {"name": "Ian Dickinson", "email": "ian.dickinson@epimorphics.com"},
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/epimorphics/qonsole/issues"
+  },
+  "dependencies": {
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
