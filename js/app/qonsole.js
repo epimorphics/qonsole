@@ -331,7 +331,7 @@ function (
    * @return {object} The preferred set of prefixes
    */
   var assemblePrefixes = function ( queryBody, queryDefinitionPrefixes ) {
-    if (queryBody.match( /^prefix/ )) {
+    if (queryBody.match( /\@?prefix\s/g )) {
       // strategy 1: there are prefixes encoded in the query body
       return assemblePrefixesFromQuery( queryBody );
     } else if (queryDefinitionPrefixes) {
@@ -363,15 +363,14 @@ function (
    */
   var assemblePrefixesFromQuery = function ( queryBody ) {
     var leader = queryLeader( queryBody )[0].trim();
-    var pairs = _.compact( leader.split( 'prefix' ) );
-    var prefixes = [];
+    var leaderLines = leader.split('\n');
+    var prefixLines = _.filter(leaderLines, function (line) { return line.match(/prefix/); });
+    var declarations = _.map(prefixLines, function (line) { return line.split(/\@?prefix/); });
 
-    _.each( pairs, function ( pair ) {
-      var m = pair.match( '^\\s*([\\w\\-]+)\\s*:\\s*<([^>]*)>\\s*$' );
-      prefixes.push( {name: m[1], uri: m[2]} );
+    return _.map( declarations, function ( pair ) {
+      var m = pair[1].match( /^\s*([\w\-]+)\s*:\s*<([^>]*)>\s*\.?\s*$/ );
+      return ( {name: m[1], uri: m[2]} );
     } );
-
-    return prefixes;
   };
 
   /**
@@ -396,18 +395,22 @@ function (
    * @return {array} Length-2 array of header and body
    */
   var queryLeader = function ( query ) {
-    var pattern = /(prefix [^>]+>[\s\n]*)/;
-    var queryBody = query;
-    var i = 0;
-    var m = queryBody.match( pattern );
+    var isLeaderLine = function (line) {
+      return line.match(/(^\s*\@?prefix)|(^\s*\#)|(^\s*$)/);
+    };
 
-    while (m) {
-      i += m[1].length;
-      queryBody = query.substring( i );
-      m = queryBody.match( pattern );
+    var lines = query.split( '\n' );
+    var leaderLines = [];
+    var leader = true;
+
+    while (leader && !_.isEmpty(lines)) {
+      leader = isLeaderLine(lines[0]);
+      if (leader) {
+        leaderLines.push(lines.shift());
+      }
     }
 
-    return [query.substring( 0, query.length - queryBody.length), queryBody];
+    return [leaderLines.join('\n'), lines.join('\n')];
   };
 
   /**

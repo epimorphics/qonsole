@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <!-- Copyright (c) 2012-2013 Epimorphics Ltd. Released under Apache License 2.0 http://www.apache.org/licenses/ -->
 
 <html lang="en">
@@ -72,6 +71,10 @@
           { "name": "Example with nominated prefixes",
             "query": "select *\n { ?s ?p ?o }\nlimit 10",
             "prefixes": ["rdf", "owl"]
+          },
+          {
+            'name': 'Example with embedded comments',
+            'query': '# comment 1\n@prefix foo: <http://fubar.com/foo>.\n@prefix bar: <http://fubar.com/bar>.\n#comment 2\nselect * {}'
           }
         ]
         };

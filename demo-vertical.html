@@ -61,6 +61,10 @@
                      "  ?class a owl:Class.\n" +
                      "  optional { ?class rdfs:label ?label}\n" +
                      "  optional { ?class rdfs:comment ?description}\n}"
+          },
+          {
+            'name': 'Example with embedded comments',
+            'query': '# comment 1\n@prefix foo: <http://fubar.com/foo>.\n@prefix bar: <http://fubar.com/bar>.\n#comment 2\nselect * {}'
           }
         ],
         allowQueriesFromURL: true
