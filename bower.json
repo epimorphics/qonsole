@@ -4,7 +4,7 @@
   "main": "app/qonsole.js",
   "dependencies": {
     "bootstrap": "~3.3.7",
-    "CodeMirror": "~5.27.4",
+    "CodeMirror": "5.19.0",
     "html5shiv": "~3.7.2",
     "jquery": "~3.2.1",
     "jquery.xdomainrequest": "~1.0.4",
