@@ -25,7 +25,7 @@ require.config({
     'lodash': 'lib/js/lodash',
     'sprintf': 'lib/js/sprintf.min',
     'json2': 'lib/js/json2',
-    'spin': 'lib/js/spin',
+    'spin': 'lib/js/jquery.spin',
     'jquery.spinjs': 'lib/js/jquery.spin',
     'datatables': 'lib/js/jquery.dataTables',
     'respond': 'lib/js/respond.min',
