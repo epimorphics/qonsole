@@ -1,30 +1,103 @@
 {
-  "name": "qonsole",
-  "version": "0.3.0",
-  "description": "A web console for issuing SPARQL queries.",
-  "keywords": ["SPARQL", "web", "form"],
-  "homepage": "https://github.com/epimorphics/qonsole",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/epimorphics/qonsole.git"
-  },
-  "author": {"name": "Ian Dickinson", "email": "ian.dickinson@epimorphics.com"},
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/epimorphics/qonsole/issues"
+  "name": "qonsole-vue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test:unit": "vue-cli-service test:unit",
+    "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
+    "bootstrap": "3.3",
+    "codemirror": "5.19",
+    "datatables": "1.10",
+    "fontawesome": "4.7",
+    "html5shiv": "3.7",
+    "jquery": "3.2",
+    "lodash-compat": "3.10",
+    "respond": "^0.9.0",
+    "sprintf": "^0.1.5",
+    "superagent": "^3.8.3",
+    "vue": "^2.5.16",
+    "vue-codemirror": "^4.0.5",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-config-airbnb-es5": "^1.1.0",
-    "eslint-plugin-import": "^2.6.1",
-    "eslint-plugin-react": "^7.1.0",
-    "grunt": "~0.4.5",
-    "grunt-bower-task": "~0.4.0",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-copy": "~0.8.0"
-  }
+    "@vue/cli-plugin-babel": "^3.0.0-rc.10",
+    "@vue/cli-plugin-e2e-cypress": "^3.0.0-rc.10",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.10",
+    "@vue/cli-plugin-unit-jest": "^3.0.0-rc.10",
+    "@vue/cli-service": "^3.0.0-rc.10",
+    "@vue/eslint-config-standard": "^3.0.0-rc.10",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.0.1",
+    "lint-staged": "^7.2.0",
+    "vue-template-compiler": "^2.5.16"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/standard"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.vue$": "vue-jest",
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "snapshotSerializers": [
+      "jest-serializer-vue"
+    ],
+    "testMatch": [
+      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+    ],
+    "testURL": "http://localhost/"
+  },
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "eslintIgnore": [
+    "public/"
+  ]
 }
