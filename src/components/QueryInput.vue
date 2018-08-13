@@ -42,6 +42,10 @@ export default {
 
 </script>
 
-<style scoped>
-  @import "~codemirror/theme/base16-light.css"
+<style>
+  @import "~codemirror/theme/base16-light.css";
+
+  .CodeMirror {
+    text-align: left!important;
+  }
 </style>
