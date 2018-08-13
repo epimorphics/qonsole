@@ -32,7 +32,12 @@ describe('ExampleQueries.vue', () => {
               return {}
             },
             query (state) {
-              return ''
+              return [
+                {
+                  'name': 'Properties of a named bathing water',
+                  'query': 'select ?predicate ?object\nwhere'
+                }
+              ]
             }
           },
           mutations
