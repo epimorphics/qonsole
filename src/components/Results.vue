@@ -18,7 +18,7 @@
               </pre>
             </h2>
             <h2 v-if="!results" class="col-md-12">Query results</h2>
-            <codemirror v-if="showIn === 'codemirror'" v-model="stringResults" :options="codeMirrorOptions"></codemirror>
+            <codemirror v-if="showIn === 'codemirror'" v-model="results._val" :options="codeMirrorOptions"></codemirror>
             <div id="table" v-if="showIn === 'table'">
               Table
             </div>
@@ -33,6 +33,19 @@
 // Uses either codeMirror or $DataTables to display result
 /* global $ */
 import { codemirror } from 'vue-codemirror'
+
+// foldGutter
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/fold/brace-fold.js'
+import 'codemirror/addon/fold/comment-fold.js'
+import 'codemirror/addon/fold/foldcode.js'
+import 'codemirror/addon/fold/foldgutter.js'
+import 'codemirror/addon/fold/indent-fold.js'
+import 'codemirror/addon/fold/markdown-fold.js'
+import 'codemirror/addon/fold/xml-fold.js'
+import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/mode/xml/xml.js'
+
 import timing from './Timing'
 
 export default {
@@ -42,9 +55,8 @@ export default {
   data () {
     return {
       showIn: 'codemirror',
-      stringResults: '',
       codeMirrorOptions: {
-        mode: 'JSON',
+        mode: 'text/javascript',
         lineNumbers: true,
         extraKeys: {'Ctrl-Q': function (cm) { cm.foldCode(cm.getCursor()) }},
         gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
@@ -89,12 +101,11 @@ export default {
     results () {
       if (!this.results || !this.results.asFormat) return
       var options = this.results.asFormat(this.selectedFormat, this.config)
-      this.stringResults = JSON.stringify(this.results)
-
       if (options && options.table) {
         this.showTableResult(options)
       } else {
-        this.showCodeMirrorResult(options)
+        this.codeMirrorOptions.mode = options.mime
+        this.showIn = 'codemirror' // Adds codemirror to page
       }
     }
   },
@@ -104,7 +115,6 @@ export default {
        * @param  {object} options Display options
        */
     showTableResult (options) {
-      console.log('options', options)
       // showResultsTimeAndCount(options.count)
       this.showIn = 'table'
 
@@ -126,16 +136,16 @@ export default {
           .children()
           .dataTable(options)
       }, 500)
-    },
-    /**
-       * Show the given text value in a CodeMirror block with the given language mode
-       * @param  {object} options Display options
-       */
-    showCodeMirrorResult (options) {
-      // showResultsTimeAndCount(options.count)
-      this.showIn = 'codemirror'
     }
   }
 }
 
 </script>
+
+<style>
+  @import "~codemirror/theme/base16-light.css";
+
+  .CodeMirror {
+    text-align: left!important;
+  }
+</style>
