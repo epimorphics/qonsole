@@ -64,7 +64,7 @@ import Results from './components/Results.vue'
 import QueryInput from './components/QueryInput.vue'
 import { mapActions } from 'vuex'
 
-import qonfig from './qonfig'
+import defaults from './default-config'
 /* TODO
 ** Add loading amimation
 ** Support passing in query or config as module
@@ -87,7 +87,7 @@ export default {
   },
   mounted () {
     // TODO - Look in to the URL to see if we have additional config. Look at props to see if we have additional config
-    this.initialise(qonfig)
+    this.initialise(defaults)
   },
   methods: {
     ...mapActions([
