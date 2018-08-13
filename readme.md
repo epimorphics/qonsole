@@ -1,14 +1,14 @@
 # Qonsole - a simple console for running SPARQL queries
 
 Suppose you have a linked-data dataset that you've published on the web, and that
-you'd like to provide your users with the means to run SPARQL queries to explore 
+you'd like to provide your users with the means to run SPARQL queries to explore
 your data. Most SPARQL end-points allow you to use HTTP `get` and `post` commands
-to send a query and get back results, so it's easy enough to put up an HTML form for 
+to send a query and get back results, so it's easy enough to put up an HTML form for
 your users to type in a query and get back some results. But that's not necessarily
 that helpful for your users, because:
 
   * in some browsers, hitting the 'back' button after posting a query means that the
-  text input control is emptied. So your users will lose the query that they have typed, 
+  text input control is emptied. So your users will lose the query that they have typed,
   which makes iterative development of the query hard.
   * you can provide at most one sample query to get your users started with suggestions
   and ideas.
@@ -21,12 +21,12 @@ that helpful for your users, because:
   different application takes your user's focus away from the task of editing the query and
   exploring your data.
 
-See a [demo of qonsole](http://epimorphics.github.io/qonsole/demo-vertical.html), 
+See a [demo of qonsole](http://epimorphics.github.io/qonsole/demo-vertical.html),
 using the [UK bathing water quality dataset](http://environment.data.gov.uk/bwq/).
 
 Qonsole provides the following features:
 
-  * An edit control with SPARQL syntax highlighting, undo, and other familiar code editing 
+  * An edit control with SPARQL syntax highlighting, undo, and other familiar code editing
   features (courtesy of [CodeMirror](http://codemirror.net/)).
   * Display of the query and the return result on one page
   * A configurable set of example queries your users can select with one click
@@ -37,7 +37,7 @@ Qonsole provides the following features:
   display in a structured editor window for easier browsing. By default, results are returned
   in a table control, with sortable columns, paging and search.
 
-Qonsole is free open-source software under an 
+Qonsole is free open-source software under an
 [Apache license](http://www.apache.org/licenses/LICENSE-2.0.html), and was developed by  
 [Epimorphics Ltd](http://www.epimorphics.com).
 
@@ -130,3 +130,35 @@ in the configuration object:
   </dd>
 </dl>
 
+
+#Development
+
+## Project setup
+```
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn run serve
+```
+
+### Compiles and minifies for production
+```
+yarn run build
+```
+
+### Lints and fixes files
+```
+yarn run lint
+```
+
+### Run your unit tests
+```
+yarn run test:unit
+```
+
+### Run your end-to-end tests
+```
+yarn run test:e2e
+```
