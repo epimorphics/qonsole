@@ -10,8 +10,6 @@ import { codemirror } from 'vue-codemirror'
 
 // language sparql
 import 'codemirror/mode/sparql/sparql.js'
-// theme css
-import 'codemirror/theme/base16-light.css'
 
 export default {
   components: {
@@ -43,3 +41,7 @@ export default {
 }
 
 </script>
+
+<style scoped>
+  @import "~codemirror/theme/base16-light.css"
+</style>
