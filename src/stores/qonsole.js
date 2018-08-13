@@ -1,6 +1,10 @@
 import RemoteSparqlService from '../remote-sparql-service'
 import {getPrefixesFromQuery, renderPrefixes, getQueryBody} from '../query'
 import Vue from 'vue'
+import _ from 'lodash'
+
+var SparqlParser = require('sparqljs').Parser
+var parser = new SparqlParser()
 
 const sparqlService = new RemoteSparqlService()
 
@@ -13,6 +17,7 @@ const state = {
   'selectedPrefixes': {},
   'timeTaken': 0,
   'results': '',
+  'error': {},
   'formats': [
     {
       name: 'table',
@@ -60,8 +65,8 @@ const getters = {
   query: state => {
     return state.query
   },
-  resultsError: state => {
-    return state.resultsError
+  error: state => {
+    return state.error
   }
 }
 
@@ -108,6 +113,7 @@ const mutations = {
   set_query (state, query) {
     // TODO
     state.selectedPrefixes = getPrefixesFromQuery(query)
+    // Check for errors in Query
     // Parse out the selected Prefixes.
     // Update the selected Prefixes Obj
     // state.selectedPrefixes = selectedPrefixes
@@ -121,10 +127,21 @@ const mutations = {
   },
   set_resultsError (state, resultsError) {
     state.resultsError = resultsError
+  },
+  set_error (state, error) {
+    state.error = error
   }
 }
 
 const actions = {
+  checkQuery: _.debounce(({ commit, state }, query) => {
+    try {
+      parser.parse(query)
+      commit('set_error', null) // Didn't error. Remove
+    } catch (e) {
+      commit('set_error', e)
+    }
+  }, 800),
   initialise ({ commit, state }, config) {
     commit('set_config', config)
     commit('set_endpoint', config.endpoints.default)

@@ -18,6 +18,7 @@
     "jquery": "3.3.1",
     "lodash": "4.17.10",
     "respond": "^0.9.0",
+    "sparqljs": "^2.0.3",
     "sprintf": "^0.1.5",
     "superagent": "^3.8.3",
     "vue": "^2.5.16",
