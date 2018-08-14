@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!config.hideEndpoints">
     <label for="endpoints">SPARQL endpoint:</label>
     <input type="text" v-model="endpoint" list="endpoints" />
     <datalist id="endpoints">

@@ -1,4 +1,5 @@
 export default {
+  hideEndpoints: false,
   endpoints: {
     'default': 'http://environment.data.gov.uk/sparql/bwq/query'
   },
