@@ -1,9 +1,10 @@
 <template>
   <div>
     <label for="endpoints">SPARQL endpoint:</label>
-    <select class="form-control" v-model="endpoint" id="endpoints">
-      <option v-for="item of config.endpoints" :value="item" :key="item">{{item}}</option>
-    </select>
+    <input type="text" v-model="endpoint" list="endpoints" />
+    <datalist id="endpoints">
+        <option v-for="item of config.endpoints" :value="item" :key="item">{{item}}</option>
+    </datalist>
   </div>
 </template>
 <script>
