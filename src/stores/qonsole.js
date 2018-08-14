@@ -17,7 +17,7 @@ const state = {
   'selectedPrefixes': {},
   'timeTaken': 0,
   'results': '',
-  'error': {},
+  'error': null,
   'formats': [
     {
       name: 'table',
@@ -135,6 +135,9 @@ const mutations = {
 
 const actions = {
   checkQuery: _.debounce(({ commit, state }, query) => {
+    if (!query) { // Empty query
+      commit('set_error', null)
+    }
     try {
       parser.parse(query)
       commit('set_error', null) // Didn't error. Remove
