@@ -101,7 +101,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss'>
+
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome.scss';
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

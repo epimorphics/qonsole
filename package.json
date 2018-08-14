@@ -13,6 +13,7 @@
     "bootstrap": "3.3",
     "codemirror": "5.39.2",
     "datatables": "1.10.18",
+    "font-awesome": "4.x",
     "fontawesome": "4.7.2",
     "html5shiv": "3.7",
     "jquery": "3.3.1",
