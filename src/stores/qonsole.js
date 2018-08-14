@@ -1,15 +1,13 @@
-import {renderPrefixes, getQueryBody} from '../query'
 import query from './qonsole.query'
 import example from './qonsole.example'
 import history from './qonsole.history'
-import Vue from 'vue'
+import prefixes from './qonsole.prefixes'
 
 const state = {
   'config': {},
   'endpoint': '',
   'selectedFormat': 'tsv',
   'isLoading': false,
-  'selectedPrefixes': {},
   'timeTaken': 0,
   'results': '',
   'error': null,
@@ -34,7 +32,8 @@ const state = {
   resultsError: '',
   ...query.state,
   ...example.state,
-  ...history.state
+  ...history.state,
+  ...prefixes.state
 }
 
 const getters = {
@@ -47,9 +46,6 @@ const getters = {
   config: state => {
     return state.config
   },
-  selectedPrefixes: state => {
-    return state.selectedPrefixes
-  },
   selectedFormat: state => {
     return state.selectedFormat
   },
@@ -61,18 +57,11 @@ const getters = {
   },
   ...query.getters,
   ...example.getters,
-  ...history.getters
+  ...history.getters,
+  ...prefixes.getters
 }
 
 const mutations = {
-  add_prefix (state, prefixObj) {
-    Vue.set(state.config.prefixes, prefixObj.prefix, prefixObj.uri)
-  },
-  add_selectedPrefix (state, prefixObj) {
-    Vue.set(state.selectedPrefixes, prefixObj.prefix, prefixObj.uri)
-    // Also update the query and remove any prefixes not selected
-    state.query = renderPrefixes(state.selectedPrefixes) + '\n\n' + getQueryBody(state.query) // TODO DRY
-  },
   set_isLoading (state, isLoading) {
     state.isLoading = isLoading
   },
@@ -83,12 +72,6 @@ const mutations = {
     state.config = config
     state.selectedExample = config.queries[0]
     this.commit('set_selectedExample', state.config.queries[0])
-  },
-  set_selectedPrefixes (state, selectedPrefixes) {
-    state.selectedPrefixes = selectedPrefixes
-    // Also update the query and remove any prefixes not selected
-    // let queryPrefixes = getPrefixesFromQuery(state.query)
-    state.query = renderPrefixes(state.selectedPrefixes) + '\n\n' + getQueryBody(state.query)
   },
   set_timeTaken (state, timeTaken) {
     state.timeTaken = timeTaken
@@ -107,7 +90,8 @@ const mutations = {
   },
   ...query.mutations,
   ...example.mutations,
-  ...history.mutations
+  ...history.mutations,
+  ...prefixes.mutations
 }
 
 const actions = {
@@ -117,7 +101,8 @@ const actions = {
   },
   ...query.actions,
   ...example.actions,
-  ...history.actions
+  ...history.actions,
+  ...prefixes.actions
 }
 
 /**
