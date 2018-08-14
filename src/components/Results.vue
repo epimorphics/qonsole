@@ -4,7 +4,7 @@
       <div class="well">
         <div class="row">
           <div class="col-md-12">
-            <timing/>
+            <timing :timeTaken="timeTaken" :resultsCount="resultsCount"/>
             <div v-if="isLoading">
               Loading...
             </div>
@@ -47,6 +47,7 @@ import 'codemirror/mode/javascript/javascript.js'
 import 'codemirror/mode/xml/xml.js'
 
 import timing from './Timing'
+import {mapState} from 'vuex'
 
 export default {
   components: {
@@ -66,6 +67,11 @@ export default {
     }
   },
   computed: {
+    resultsCount () {
+      if (this.results) {
+        return this.results.asFormat(this.selectedFormat, this.config).count
+      }
+    },
     results: {
       get () {
         return this.$store.getters.results
@@ -95,7 +101,10 @@ export default {
       get () {
         return this.$store.getters.resultsError
       }
-    }
+    },
+    ...mapState({
+      timeTaken: state => state.qonsole.timeTaken
+    })
   },
   watch: {
     results () {

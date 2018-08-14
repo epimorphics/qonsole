@@ -1,12 +1,10 @@
 <template>
   <span>
-    {{timeTaken}} ms
-    {{resultsCount}} result${suffix} in ${duration} ${min} min ${sec}.${ms} s
+    {{resultsCount}} result(s) in {{timeTaken}}ms
   </span>
 </template>
 <script>
 // Display the query count and timing
-import { mapState } from 'vuex'
 
 /*
 var duration = new Date().getTime() - _startTime
@@ -17,11 +15,6 @@ var min = Math.floor(duration / 60)
 var suffix = (count !== 1) ? 's' : ''
 */
 export default {
-  props: ['resultsCount'],
-  computed: {
-    ...mapState({
-      timeTaken: state => state.qonsole.timeTaken
-    })
-  }
+  props: ['resultsCount', 'timeTaken']
 }
 </script>
