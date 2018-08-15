@@ -45,6 +45,8 @@
       <!-- results -->
       <Results/>
 
+      <History/>
+
       <div class="row clearfix"></div>
 
       <QonsoleFooter/>
@@ -64,6 +66,7 @@ import PrefixModal from './components/PrefixModal.vue'
 import Results from './components/Results.vue'
 import QueryInput from './components/QueryInput.vue'
 import ErrorView from './components/Error.vue'
+import History from './components/History.vue'
 
 import { mapActions } from 'vuex'
 
@@ -86,7 +89,7 @@ import defaults from './default-config'
 export default {
   name: 'app',
   components: {
-    Endpoints, PrefixInput, FormatInput, ExampleQueries, QonsoleFooter, PrefixModal, Results, QueryInput, ErrorView
+    Endpoints, PrefixInput, FormatInput, ExampleQueries, QonsoleFooter, PrefixModal, Results, QueryInput, ErrorView, History
   },
   mounted () {
     // TODO - Look in to the URL to see if we have additional config. Look at props to see if we have additional config
