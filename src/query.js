@@ -8,12 +8,12 @@ import _ from 'lodash'
 const getPrefixesFromQuery = function (queryBody) {
   var leader = queryLeader(queryBody)[0].trim()
   var leaderLines = leader.split('\n')
-  var prefixLines = _.filter(leaderLines, function (line) { return line.match(/prefix/) })
-  var declarations = _.map(prefixLines, function (line) { return line.split(/@?prefix/) })
+  var prefixLines = _.filter(leaderLines, function (line) { return line.match(/prefix/i) })
+  var declarations = _.map(prefixLines, function (line) { return line.split(/@?prefix/i) })
 
   let rtn = {}
   declarations.forEach((pair) => {
-    var m = pair[1].match(/^\s*([\w-]+)\s*:\s*<([^>]*)>\s*\.?\s*$/)
+    var m = pair[1].match(/^\s*([\w-]+)\s*:\s*<([^>]*)>\s*\.?\s*$/i)
     rtn[m[1]] = m[2]
   })
   return rtn
@@ -33,7 +33,7 @@ const parseQueryPrefixes = function (queryText) {
    */
 const queryLeader = function (query) {
   var isLeaderLine = function (line) {
-    return line.match(/(^\s*@?prefix)|(^\s*#)|(^\s*$)/)
+    return line.match(/(^\s*@?prefix)|(^\s*#)|(^\s*$)/i)
   }
 
   var lines = query.split('\n')
