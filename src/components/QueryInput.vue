@@ -1,13 +1,14 @@
 <template>
   <div class="query-edit">
     <div id="query-edit-cm" class=""></div>
+    <button @click="format_query">Format Query</button>
     <codemirror v-model="query" :options="cmOptions"></codemirror>
   </div>
 </template>
 <script>
 // Support user editing of the current query
 import { codemirror } from 'vue-codemirror'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 // language sparql
 import 'codemirror/mode/sparql/sparql.js'
@@ -46,6 +47,9 @@ export default {
   methods: {
     ...mapActions([
       'checkQuery'
+    ]),
+    ...mapMutations([
+      'format_query'
     ])
   }
 }

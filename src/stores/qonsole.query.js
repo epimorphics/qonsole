@@ -3,7 +3,9 @@ import {getPrefixesFromQuery} from '../query'
 import _ from 'lodash'
 
 var SparqlParser = require('sparqljs').Parser
+var SparqlGenerator = require('sparqljs').Generator
 var parser = new SparqlParser()
+var generator = new SparqlGenerator()
 
 const sparqlService = new RemoteSparqlService()
 
@@ -25,6 +27,15 @@ export default {
       // Update the selected Prefixes Obj
       // state.selectedPrefixes = selectedPrefixes
       state.query = query
+    },
+    format_query (state) {
+      if (!state.query) { // Empty query
+        return
+      }
+      try {
+        let parsedQuery = parser.parse(state.query)
+        state.query = generator.stringify(parsedQuery)
+      } catch (e) {}
     }
   },
   actions: {
@@ -49,7 +60,7 @@ export default {
       commit('set_results', '')
       commit('set_timeTaken', 0)
       // Timer for total time taken
-      let startTime = new Date().getTime()
+      let startDate = new Date()
 
       var query = state.query
       var format = state.selectedFormat
@@ -60,14 +71,28 @@ export default {
         url: state.endpoint,
         format: format,
         success: function (data) {
+          let elapsed = (new Date().getTime()) - startDate.getTime()
           commit('set_isLoading', false)
           commit('set_results', data)
-          commit('set_timeTaken', (new Date().getTime()) - startTime)
+          commit('set_timeTaken', elapsed)
+          commit('add_history', {
+            date: startDate.toISOString(),
+            query,
+            elapsed,
+            count: 11 // TODO Fix count
+          })
         },
         error: function (err) {
+          let elapsed = (new Date().getTime()) - startDate.getTime()
           console.error(err)
           commit('set_isLoading', false)
           commit('set_resultsError', err.message)
+          commit('add_history', {
+            date: startDate.toISOString(),
+            query,
+            elapsed,
+            count: 0
+          })
         }
       }
 
