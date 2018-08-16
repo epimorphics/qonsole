@@ -1,11 +1,9 @@
 <template>
   <div>
     <h2 class="">Example queries</h2>
-    <span class="form-inline">
-      <select v-model="selectedExample" class="form-control" id="examples">
-        <option v-for="query in config.queries" :value="query" :key="query.name">{{query.name}}</option>
-      </select>
-    </span>
+    <div v-for="query in config.queries" :key="query.name" class="example">
+      <a href="#" @click.prevent="selectedExample = query">{{query.name}}</a>
+    </div>
   </div>
 </template>
 <script>
@@ -38,3 +36,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .example {
+    border-bottom: 1px solid #DDD;
+  }
+</style>
