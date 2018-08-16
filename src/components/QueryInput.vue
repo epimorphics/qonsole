@@ -1,7 +1,5 @@
 <template>
   <div class="query-edit">
-    <div id="query-edit-cm" class=""></div>
-    <button @click="format_query">Format Query</button>
     <codemirror v-model="query" :options="cmOptions"></codemirror>
   </div>
 </template>
