@@ -27,18 +27,22 @@ export default {
       // Update the selected Prefixes Obj
       // state.selectedPrefixes = selectedPrefixes
       state.query = query
-    },
-    format_query (state) {
+    }
+  },
+  actions: {
+    format_query ({ dispatch, commit, state }) {
       if (!state.query) { // Empty query
         return
       }
       try {
         let parsedQuery = parser.parse(state.query)
         state.query = generator.stringify(parsedQuery)
-      } catch (e) {}
-    }
-  },
-  actions: {
+        dispatch('add_message', 'Query formatted')
+      } catch (e) {
+        dispatch('add_message', 'Failed to format query')
+      }
+    },
+
     checkQuery: _.debounce(({ commit, state }, query) => {
       if (!query) { // Empty query
         commit('set_error', null)
@@ -73,6 +77,7 @@ export default {
         format: format,
         success: function (data) {
           let elapsed = (new Date().getTime()) - startDate.getTime()
+          dispatch('add_message', 'Query loaded')
           commit('set_isLoading', false)
           commit('set_results', data)
           commit('set_timeTaken', elapsed)
@@ -85,7 +90,7 @@ export default {
         },
         error: function (err) {
           let elapsed = (new Date().getTime()) - startDate.getTime()
-          console.error(err)
+          dispatch('add_message', 'Failed to run query')
           commit('set_isLoading', false)
           commit('set_resultsError', err.message)
           commit('add_history', {

@@ -8,7 +8,7 @@
 <script>
 // Support user editing of the current query
 import { codemirror } from 'vue-codemirror'
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 // language sparql
 import 'codemirror/mode/sparql/sparql.js'
@@ -46,9 +46,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'checkQuery'
-    ]),
-    ...mapMutations([
+      'checkQuery',
       'format_query'
     ])
   }
