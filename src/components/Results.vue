@@ -4,7 +4,7 @@
       <div class="well">
         <div class="row">
           <div class="col-md-12">
-            <timing :timeTaken="timeTaken" :resultsCount="resultsCount"/>
+            <timing v-if="results" :timeTaken="timeTaken" :resultsCount="resultsCount"/>
             <div v-if="isLoading">
               Loading...
             </div>
