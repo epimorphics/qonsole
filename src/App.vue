@@ -3,61 +3,55 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="row">
-        <div class="navbar-header col-md-12">
-          <h1 class="brand">Qonsole</h1>
-          <h2 class="brand">a query console for SPARQL</h2>
-        </div>
+          <div class="navbar-header col-md-12">
+            <headerVue/>
+          </div>
         </div>
       </div>
     </nav>
 
-    <div class="container qonsole">
-      <div class="col-md-12 well">
-        <ExampleQueries/>
-      </div>
+    <div class="container-fluid qonsole">
+      <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar"> <!-- Left column -->
+          <div class="col-md-12 well vertical">
+            <PrefixInput/>
+          </div>
+          <div class="col-md-12 well">
+            <ExampleQueries/>
+          </div>
+        </div> <!-- End left column -->
 
-      <div class="col-md-12 well vertical">
-        <PrefixInput/>
-      </div>
+        <div class="d-none d-xl-block col-xl-2 bd-toc"> <!-- right column -->
+          <Endpoints/>
 
-      <div class="col-md-12 well">
-        <QueryInput/>
-        <div class="query-chrome">
-          <form class="form-inline" role="form">
-            <div class="form-group">
-                <Endpoints/>
-            </div>
-            <div class="form-group">
-              <input type="hidden" class="form-control" id="sparqlEndpoint" />
-            </div>
-            <div class="form-group">
-              <FormatInput/>
-            </div>
-            <div class="form-group">
-              <a @click="runQuery" class="btn btn-success run-query form-control">perform query</a>
-            </div>
+          <FormatInput/>
 
-          </form>
-        </div>
-      </div>
+          <History/>
+        </div> <!-- End right column -->
 
-      <ErrorView/>
-      <!-- results -->
-      <Results/>
+        <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content"> <!-- Middle column -->
 
-      <History/>
+          <button @click="format_query" class="btn btn-info">Format Query</button>
+          <button @click="runQuery" class="btn btn-success">perform query</button>
+          <QueryInput/>
 
-      <div class="row clearfix"></div>
+          <Results/>
+        </div>  <!-- End middle column -->
 
-      <QonsoleFooter/>
-    </div><!-- .container-->
+        <ErrorView/>
+        <!-- results -->
 
-    <PrefixModal/>
-    <Messages/>
+      </div><!-- .container-->
+
+  </div>
+  <!-- <QonsoleFooter/> -->
+  <PrefixModal/>
+  <Messages/>
   </div>
 </template>
 
 <script>
+import Header from './components/Header.vue'
 import Endpoints from './components/Endpoints.vue'
 import PrefixInput from './components/PrefixInput.vue'
 import FormatInput from './components/FormatInput.vue'
@@ -101,7 +95,8 @@ export default {
     QueryInput,
     ErrorView,
     History,
-    Messages
+    Messages,
+    HeaderVue: Header
   },
   mounted () {
     // TODO - Look in to the URL to see if we have additional config. Look at props to see if we have additional config
@@ -110,23 +105,38 @@ export default {
   methods: {
     ...mapActions([
       'runQuery',
-      'initialise'
+      'initialise',
+      'format_query'
     ])
   }
 }
 </script>
 
 <style lang='scss'>
+@import '~bootstrap/scss/bootstrap.scss';
 
 $fa-font-path: "~font-awesome/fonts";
 @import '~font-awesome/scss/font-awesome.scss';
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.bd-toc {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 4rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    border-left: 1px solid #DDD;
+}
+
+.bd-toc {
+    -ms-flex-order: 2;
+    order: 2;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    font-size: .875rem;
+}
+
+.bd-sidebar {
+    border-right: 1px solid #DDD;
+    padding: 1em;
 }
 </style>
