@@ -52,6 +52,7 @@ export default {
     grid-template-columns: 30% 50% 20%;
     grid-gap: 0%;
     border: 1px solid #000;
+    margin-bottom: 2px;
   }
   .date {
     grid-column-start: 1;
