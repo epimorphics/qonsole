@@ -2,6 +2,7 @@ import query from './qonsole.query'
 import example from './qonsole.example'
 import history from './qonsole.history'
 import prefixes from './qonsole.prefixes'
+import messages from './qonsole.messages'
 
 const state = {
   'config': {},
@@ -33,7 +34,8 @@ const state = {
   ...query.state,
   ...example.state,
   ...history.state,
-  ...prefixes.state
+  ...prefixes.state,
+  ...messages.state
 }
 
 const getters = {
@@ -58,7 +60,8 @@ const getters = {
   ...query.getters,
   ...example.getters,
   ...history.getters,
-  ...prefixes.getters
+  ...prefixes.getters,
+  ...messages.getters
 }
 
 const mutations = {
@@ -91,7 +94,8 @@ const mutations = {
   ...query.mutations,
   ...example.mutations,
   ...history.mutations,
-  ...prefixes.mutations
+  ...prefixes.mutations,
+  ...messages.mutations
 }
 
 const actions = {
@@ -102,7 +106,8 @@ const actions = {
   ...query.actions,
   ...example.actions,
   ...history.actions,
-  ...prefixes.actions
+  ...prefixes.actions,
+  ...messages.actions
 }
 
 /**

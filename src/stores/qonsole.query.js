@@ -55,10 +55,11 @@ export default {
       Run the query on a remote server.
       Listen to the results
     */
-    runQuery ({ commit, state }) {
+    runQuery ({ dispatch, commit, state }) {
       // Clear the results
       commit('set_results', '')
       commit('set_timeTaken', 0)
+      dispatch('add_message', 'Running Query')
       // Timer for total time taken
       let startDate = new Date()
 
