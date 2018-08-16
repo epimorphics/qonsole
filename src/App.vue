@@ -53,6 +53,7 @@
     </div><!-- .container-->
 
     <PrefixModal/>
+    <Messages/>
   </div>
 </template>
 
@@ -67,6 +68,7 @@ import Results from './components/Results.vue'
 import QueryInput from './components/QueryInput.vue'
 import ErrorView from './components/Error.vue'
 import History from './components/History.vue'
+import Messages from './components/Messages.vue'
 
 import { mapActions } from 'vuex'
 
@@ -89,7 +91,17 @@ import defaults from './default-config'
 export default {
   name: 'app',
   components: {
-    Endpoints, PrefixInput, FormatInput, ExampleQueries, QonsoleFooter, PrefixModal, Results, QueryInput, ErrorView, History
+    Endpoints,
+    PrefixInput,
+    FormatInput,
+    ExampleQueries,
+    QonsoleFooter,
+    PrefixModal,
+    Results,
+    QueryInput,
+    ErrorView,
+    History,
+    Messages
   },
   mounted () {
     // TODO - Look in to the URL to see if we have additional config. Look at props to see if we have additional config
