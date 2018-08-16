@@ -1,7 +1,7 @@
 <template>
   <div v-if="!config.hideEndpoints">
-    <label for="endpoints">SPARQL endpoint:</label>
-    <input type="text" v-model="endpoint" list="endpoints" />
+    <h2>Endpoints</h2>
+    <input type="text" v-model="endpoint" class="form-control" list="endpoints" />
     <datalist id="endpoints">
         <option v-for="item of config.endpoints" :value="item" :key="item">{{item}}</option>
     </datalist>
