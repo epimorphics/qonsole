@@ -1,5 +1,6 @@
 <template>
   <div id="results-block" class="row sparql sparql-results">
+    <h2> Results </h2>
     <div class="col-md-12">
       <div class="well">
         <div class="row">
@@ -130,6 +131,8 @@ export default {
       options.oLanguage = {
         'sEmptyTable': 'Query did not return any results.'
       }
+
+      options.scrollX = '100%'
 
       // if user has specified an order, don't let datatables override the sort
       if (this.query.match(/order by/i)) {
