@@ -2,8 +2,8 @@
   <div>
     <h2> History </h2>
     <historyItem v-for="hstryItm in historyItems" :key="hstryItm.date" :historyItem="hstryItm"/>
-    <template v-if="!historyItems">
-        Sorry nothing in history yet
+    <template v-if="!historyItems.length">
+        Sorry, nothing in history yet
     </template>
   </div>
 </template>
