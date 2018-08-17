@@ -8,7 +8,6 @@ const state = {
   'config': {},
   'endpoint': '',
   'selectedFormat': 'tsv',
-  'isLoading': false,
   'timeTaken': 0,
   'results': '',
   'error': null,
@@ -42,9 +41,6 @@ const getters = {
   endpoint: state => {
     return state.endpoint
   },
-  isLoading: state => {
-    return state.isLoading
-  },
   config: state => {
     return state.config
   },
@@ -65,9 +61,6 @@ const getters = {
 }
 
 const mutations = {
-  set_isLoading (state, isLoading) {
-    state.isLoading = isLoading
-  },
   set_endpoint (state, endpoint) {
     state.endpoint = endpoint
   },

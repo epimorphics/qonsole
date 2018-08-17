@@ -9,16 +9,25 @@ var generator = new SparqlGenerator()
 
 const sparqlService = new RemoteSparqlService()
 
+let outstandingQuery // Used to store query for aborting
+
 export default {
   state: {
-    'query': ''
+    'query': '',
+    'isLoading': false
   },
   getters: {
     query: state => {
       return state.query
+    },
+    isLoading: state => {
+      return state.isLoading
     }
   },
   mutations: {
+    set_isLoading (state, isLoading) {
+      state.isLoading = isLoading
+    },
     set_query (state, query) {
       // TODO
       state.selectedPrefixes = getPrefixesFromQuery(query)
@@ -30,6 +39,9 @@ export default {
     }
   },
   actions: {
+    save_query ({ dispatch, commit, state }) {
+      commit('add_saved') // TODO
+    },
     format_query ({ dispatch, commit, state }) {
       if (!state.query) { // Empty query
         return
@@ -60,6 +72,12 @@ export default {
       Listen to the results
     */
     runQuery ({ dispatch, commit, state }) {
+      if (outstandingQuery) {
+        console.log('Aborting query')
+        outstandingQuery.abort()
+        return
+      }
+
       // Clear the results
       commit('set_results', '')
       commit('set_timeTaken', 0)
@@ -87,6 +105,7 @@ export default {
             elapsed,
             count: 11 // TODO Fix count
           })
+          outstandingQuery = null
         },
         error: function (err) {
           let elapsed = (new Date().getTime()) - startDate.getTime()
@@ -99,10 +118,11 @@ export default {
             elapsed,
             count: 0
           })
+          outstandingQuery = null
         }
       }
 
-      sparqlService.execute(query, options)
+      outstandingQuery = sparqlService.execute(query, options)
     }
   }
 }
