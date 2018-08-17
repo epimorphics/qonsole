@@ -31,18 +31,22 @@ export default {
   .messages {
     position: fixed;
     bottom: 10px;
-    left: 0px;
+    text-align: center;
     width: 100%;
+    z-index: 1000;
   }
   .message {
     background: rgba(100,100,100, 0.7);
-    opacity: 0.7;
+    opacity: 0.85;
     border: 1px solid #BBB;
     border-radius: 5px;
     padding: 5px;
     margin: 5px;
     color: #FFF;
     text-shadow: 1px 1px 1px #DDD;
+    width: 50%;
+    text-align: center;
+    margin:auto;
   }
   .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
