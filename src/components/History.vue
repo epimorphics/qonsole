@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2> History </h2>
-    <historyItem v-for="hstryItm in historyItems" :key="hstryItm.date" :historyItem="hstryItm"/>
+    <historyItem v-for="hstryItm in historyItems.slice().reverse()" :key="hstryItm.date" :historyItem="hstryItm"/>
     <template v-if="!historyItems.length">
         Sorry, nothing in history yet
     </template>
@@ -17,7 +17,6 @@ export default {
   },
   name: 'History',
   data () { return {} },
-  mounted () {},
   params: {
     historyItem: Object
   },
