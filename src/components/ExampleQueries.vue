@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="">Example queries</h2>
+    <h2 class="">Saved queries</h2>
     <div v-for="query in config.queries" :key="query.name" class="example">
       <a href="#" @click.prevent="selectedExample = query">{{query.name}}</a>
     </div>
