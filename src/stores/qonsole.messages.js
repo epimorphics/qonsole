@@ -10,7 +10,6 @@ export default {
     remove_message (state, message) {
       // Find message place in array
       let indx = state.messages.indexOf(message)
-      console.log(indx)
       if (indx > -1) {
         state.messages.splice(indx, 1)
       }
