@@ -22,17 +22,13 @@
         </div> <!-- End left column -->
 
         <div class="d-none d-xl-block col-xl-2 bd-toc"> <!-- right column -->
-          <Endpoints/>
-
-          <FormatInput/>
-
+            <Endpoints/>
+            <FormatInput/>
           <History/>
         </div> <!-- End right column -->
 
         <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content"> <!-- Middle column -->
-
-          <button @click="format_query" class="btn btn-info">Format Query</button>
-          <button @click="runQuery" class="btn btn-success">perform query</button>
+          <QueryButtons/>
           <QueryInput/>
 
           <Results/>
@@ -63,6 +59,7 @@ import QueryInput from './components/QueryInput.vue'
 import ErrorView from './components/Error.vue'
 import History from './components/History.vue'
 import Messages from './components/Messages.vue'
+import QueryButtons from './components/QueryButtons.vue'
 
 import { mapActions } from 'vuex'
 
@@ -96,6 +93,7 @@ export default {
     ErrorView,
     History,
     Messages,
+    QueryButtons,
     HeaderVue: Header
   },
   mounted () {
@@ -104,9 +102,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'runQuery',
-      'initialise',
-      'format_query'
+      'initialise'
     ])
   }
 }
@@ -138,5 +134,15 @@ $fa-font-path: "~font-awesome/fonts";
 .bd-sidebar {
     border-right: 1px solid #DDD;
     padding: 1em;
+}
+
+.query-buttons button {
+    margin-left: 0.4em;
+    margin-bottom: 0.4em;
+}
+
+.query-buttons {
+  display: flex;
+  flex-direction: row-reverse;
 }
 </style>
