@@ -73,8 +73,10 @@ export default {
     */
     runQuery ({ dispatch, commit, state }) {
       if (outstandingQuery) {
-        console.log('Aborting query')
+        dispatch('add_message', 'Aborting Query')
+        commit('set_isLoading', false)
         outstandingQuery.abort()
+        outstandingQuery = null
         return
       }
 
