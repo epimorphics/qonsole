@@ -2,7 +2,7 @@
   <div>
     <h2 class="">Saved queries</h2>
     <div v-for="query in config.queries" :key="query.name" class="example">
-      <a href="#" @click.prevent="selectedExample = query">{{query.name}}</a>
+      <a href="#" @click.prevent="$store.commit('set_selectedSaved', query)">{{query.name}}</a>
     </div>
   </div>
 </template>
@@ -18,14 +18,6 @@ export default {
       },
       set (value) {
         this.$store.commit('set_query', value)
-      }
-    },
-    selectedExample: {
-      get () {
-        return this.$store.getters.selectedExample
-      },
-      set (value) {
-        this.$store.commit('set_selectedExample', value)
       }
     },
     config: {

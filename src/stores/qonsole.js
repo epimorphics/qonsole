@@ -1,5 +1,5 @@
 import query from './qonsole.query'
-import example from './qonsole.example'
+import saved from './qonsole.saved'
 import history from './qonsole.history'
 import prefixes from './qonsole.prefixes'
 import messages from './qonsole.messages'
@@ -31,7 +31,7 @@ const state = {
   ],
   resultsError: '',
   ...query.state,
-  ...example.state,
+  ...saved.state,
   ...history.state,
   ...prefixes.state,
   ...messages.state
@@ -54,7 +54,7 @@ const getters = {
     return state.error
   },
   ...query.getters,
-  ...example.getters,
+  ...saved.getters,
   ...history.getters,
   ...prefixes.getters,
   ...messages.getters
@@ -85,7 +85,7 @@ const mutations = {
     state.error = error
   },
   ...query.mutations,
-  ...example.mutations,
+  ...saved.mutations,
   ...history.mutations,
   ...prefixes.mutations,
   ...messages.mutations
@@ -97,7 +97,7 @@ const actions = {
     commit('set_endpoint', config.endpoints.default)
   },
   ...query.actions,
-  ...example.actions,
+  ...saved.actions,
   ...history.actions,
   ...prefixes.actions,
   ...messages.actions

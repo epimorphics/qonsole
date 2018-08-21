@@ -17,11 +17,13 @@ export default {
   },
   queries: [
     { 'name': 'Properties of a named bathing water',
+      'endpoint': 'http://environment.data.gov.uk/sparql/bwq/query',
       'query': 'select ?predicate ?object\nwhere {\n' +
                '  ?bw rdfs:label "Spittal"@en ;\n' +
                '      ?predicate ?object\n}'
     },
     { 'name': 'all OWL classes',
+      'endpoint': 'http://environment.data.gov.uk/sparql/bwq/query',
       'query': 'select ?class ?label ?description\nwhere {\n' +
                '  ?class a owl:Class.\n' +
                '  optional { ?class rdfs:label ?label}\n' +
@@ -29,6 +31,7 @@ export default {
     },
     {
       'name': 'Example with embedded comments',
+      'endpoint': 'http://environment.data.gov.uk/sparql/bwq/query',
       'query': '# comment 1\nprefix foo: <http://fubar.com/foo>\nprefix bar: <http://fubar.com/bar>\n#comment 2\nselect * {}'
     }
   ],
