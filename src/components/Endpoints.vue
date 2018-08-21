@@ -22,7 +22,7 @@ export default {
     },
     endpoint: {
       get () {
-        return this.$store.state.endpoint
+        return this.$store.state.qonsole.endpoint
       },
       set (value) {
         this.$store.commit('set_endpoint', value)
