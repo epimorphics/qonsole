@@ -17,7 +17,7 @@
             <PrefixInput/>
           </div>
           <div class="col-md-12 well">
-            <ExampleQueries/>
+            <SavedQueries/>
           </div>
         </div> <!-- End left column -->
 
@@ -51,7 +51,7 @@ import Header from './components/Header.vue'
 import Endpoints from './components/Endpoints.vue'
 import PrefixInput from './components/PrefixInput.vue'
 import FormatInput from './components/FormatInput.vue'
-import ExampleQueries from './components/ExampleQueries.vue'
+import SavedQueries from './components/SavedQueries.vue'
 import QonsoleFooter from './components/QonsoleFooter.vue'
 import PrefixModal from './components/PrefixModal.vue'
 import Results from './components/Results.vue'
@@ -85,7 +85,7 @@ export default {
     Endpoints,
     PrefixInput,
     FormatInput,
-    ExampleQueries,
+    SavedQueries,
     QonsoleFooter,
     PrefixModal,
     Results,
