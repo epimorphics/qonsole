@@ -2,7 +2,7 @@
   <div>
     <h2 class="">Saved queries</h2>
     <div v-for="query in config.queries" :key="query.name" class="example">
-      <a href="#" @click.prevent="$store.commit('set_selectedSaved', query)">{{query.name}}</a>
+      <a href="#" @click.prevent="$store.commit('load_saved', query)">{{query.name}}</a>
     </div>
   </div>
 </template>

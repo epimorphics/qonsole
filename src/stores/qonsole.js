@@ -67,7 +67,7 @@ const mutations = {
   set_config (state, config) {
     state.config = config
     state.selectedExample = config.queries[0]
-    this.commit('set_selectedExample', state.config.queries[0])
+    this.commit('load_saved', state.config.queries[0])
   },
   set_timeTaken (state, timeTaken) {
     state.timeTaken = timeTaken

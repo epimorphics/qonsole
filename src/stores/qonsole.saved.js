@@ -4,7 +4,7 @@ export default {
   state: {},
   getters: {},
   mutations: {
-    set_selectedSaved (state, selectedSaved) {
+    load_saved (state, selectedSaved) {
       // Check if the selectedExample has prefixes already
       if (Object.keys(getPrefixesFromQuery(selectedSaved.query)).length < 1) { // If no prefixes in example query
         state.selectedPrefixes = state.config.prefixes
@@ -16,6 +16,14 @@ export default {
       } else {
         state.query = state.selectedExample.query
       }
+    },
+    set_addSaved (state) {
+      // Take elements from the state and move them in to saved
+      state.config.queries.push({
+        query: state.query,
+        endpoint: state.endpoint,
+        name: 'New saved'
+      })
     }
   },
   actions: {}

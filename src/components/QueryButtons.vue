@@ -9,7 +9,7 @@
       Format
     </button>
 
-    <button @click="save_query" class="btn btn-info">
+    <button @click="$store.commit('set_addSaved')" class="btn btn-info">
       Save
     </button>
   </div>
