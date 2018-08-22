@@ -17,13 +17,20 @@ export default {
         state.query = state.selectedExample.query
       }
     },
-    set_addSaved (state) {
-      // Take elements from the state and move them in to saved
+    add_saved (state) {
+      // Add current query to saved queries
       state.config.queries.push({
         query: state.query,
         endpoint: state.endpoint,
         name: 'New saved'
       })
+    },
+    remove_saved (state, remove) {
+      // Remove query from saved
+      let indx = state.config.queries.indexOf(remove)
+      if (indx > -1) {
+        state.config.queries.splice(indx, 1)
+      }
     }
   },
   actions: {}
