@@ -14,6 +14,13 @@ export default {
     add_prefix (state, prefixObj) {
       Vue.set(state.config.prefixes, prefixObj.prefix, prefixObj.uri)
     },
+    remove_prefix (state, remove) {
+      // Remove prefix from available
+      let indx = state.config.prefixes.indexOf(remove)
+      if (indx > -1) {
+        state.config.prefixes.splice(indx, 1)
+      }
+    },
     add_selectedPrefix (state, prefixObj) {
       Vue.set(state.selectedPrefixes, prefixObj.prefix, prefixObj.uri)
       // Also update the query and remove any prefixes not selected
