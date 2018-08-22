@@ -18,7 +18,6 @@
                 {{resultsError}}
               </pre>
             </h2>
-            <h2 v-if="!results" class="col-md-12">Query results</h2>
             <codemirror v-if="showIn === 'codemirror'" v-model="results._val" :options="codeMirrorOptions"></codemirror>
             <div id="table" v-if="showIn === 'table'">
               Table
@@ -109,7 +108,10 @@ export default {
   },
   watch: {
     results () {
-      if (!this.results || !this.results.asFormat) return
+      if (!this.results || !this.results.asFormat) {
+        this.showIn = null
+        return
+      }
       var options = this.results.asFormat(this.selectedFormat, this.config)
       if (options && options.table) {
         this.showTableResult(options)
