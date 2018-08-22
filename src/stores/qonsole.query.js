@@ -39,9 +39,6 @@ export default {
     }
   },
   actions: {
-    save_query ({ dispatch, commit, state }) {
-      commit('add_saved') // TODO
-    },
     format_query ({ dispatch, commit, state }) {
       if (!state.query) { // Empty query
         return
@@ -81,7 +78,7 @@ export default {
       }
 
       // Clear the results
-      commit('set_results', '')
+      commit('set_results', null)
       commit('set_timeTaken', 0)
       dispatch('add_message', 'Running Query')
       // Timer for total time taken
@@ -114,6 +111,7 @@ export default {
           dispatch('add_message', 'Failed to run query')
           commit('set_isLoading', false)
           commit('set_resultsError', err.message)
+          commit('set_results', null)
           commit('add_history', {
             date: startDate.toISOString(),
             query,
