@@ -1,18 +1,16 @@
 <template>
-  <div class="query-buttons">
-    <transition name="running">
-      <button @click="runQuery" class="btn btn-success">
-        {{isLoading ? 'Cancel' : 'Run'}}
-      </button>
-    </transition>
-    <button @click="format_query" class="btn btn-info">
-      Format
-    </button>
+  <el-row>
+    <el-button @click="$store.commit('add_saved')" type="warning" icon="el-icon-star-off"/>
 
-    <button @click="$store.commit('set_addSaved')" class="btn btn-info">
-      Save
-    </button>
-  </div>
+    <el-button @click="format_query" icon="el-icon-check"/>
+
+    <transition name="running">
+      <el-button @click="runQuery" :type="isLoading ? 'danger' : 'success'">
+        {{isLoading ? 'Cancel' : 'Run'}}
+      </el-button>
+    </transition>
+
+  </el-row>
 </template>
 <script>
 import { mapActions } from 'vuex'

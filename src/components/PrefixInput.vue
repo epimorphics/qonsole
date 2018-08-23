@@ -1,26 +1,36 @@
 <template>
   <div>
     <h2 class="">Prefixes</h2>
-    <a data-toggle="modal" href="#prefixEditor" class="btn" title="Add a SPARQL prefix">
+    <a href="#" @click.prevent="showModal = true" title="Add a SPARQL prefix">
       <i class="fa fa-plus-circle"></i>
     </a>
     <div class="list-inline prefixes">
       <div v-for="(prefix, key) of config.prefixes" class='prefix-holder' :key="prefix">
         <div class="prefix">{{key}}</div>
-        <div :title="prefix" class="uri">{{prefix}}</div>
+        <a href="#" @click="updateSelectedPrefixes(key)" :title="prefix" class="uri">{{prefix}}</a>
         <!-- <label>
           <input type='checkbox' @change="updateSelectedPrefixes(key)" :checked="!!selectedPrefixes[key]"  :data-prefix='key' />
           {{key}}
         </label> -->
       </div>
     </div>
+    <PrefixModal v-bind:visible.sync="showModal"/>
   </div>
 </template>
 <script>
+import PrefixModal from './PrefixModal.vue'
 // Display all available prefixes as checkboxes
 // Tick prefixes on and off
 export default {
   name: 'Prefix-Input',
+  components: {
+    PrefixModal
+  },
+  data () {
+    return {
+      showModal: false
+    }
+  },
   computed: {
     config: {
       get () {
@@ -55,6 +65,7 @@ export default {
     text-align: right;
   }
   .uri {
+    display: block;
     text-overflow: ellipsis;
     text-align: left;
     overflow: hidden;

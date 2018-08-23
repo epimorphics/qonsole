@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="">Saved queries</h2>
-    <div v-for="query in config.queries" :key="query.name" class="example">
+    <div v-for="query in config.queries" :key="query.name" class="saved">
       <a href="#" @click.prevent="$store.commit('load_saved', query)">{{query.name}}</a>
       <a href="#" @click.prevent="$store.commit('remove_saved', query)"> x </a>
     </div>
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style>
-  .example {
+  .saved {
     border-bottom: 1px solid #DDD;
   }
 </style>

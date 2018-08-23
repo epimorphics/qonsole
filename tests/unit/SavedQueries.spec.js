@@ -1,5 +1,5 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import component from '@/components/ExampleQueries.vue'
+import component from '@/components/SavedQueries.vue'
 import Vuex from 'vuex'
 
 const localVue = createLocalVue()
@@ -9,7 +9,7 @@ describe('ExampleQueries.vue', () => {
   let store
 
   const mutations = {
-    set_selectedExample: jest.fn()
+    load_saved: jest.fn()
   }
 
   beforeEach(() => {
@@ -58,8 +58,8 @@ describe('ExampleQueries.vue', () => {
       localVue,
       store
     })
-    let options = wrapper.find('select').findAll('option')
-    options.at(0).setSelected()
-    expect(mutations.set_selectedExample).toHaveBeenCalled()
+    let options = wrapper.find('.saved').findAll('a')
+    options.at(0).trigger('click')
+    expect(mutations.load_saved).toHaveBeenCalled()
   })
 })

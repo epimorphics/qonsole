@@ -1,9 +1,9 @@
 <template>
   <div>
     <h2> Format </h2>
-    <select class="form-control" v-model="selectedFormat" name="format">
-      <option v-for="format in formats" :key="format.name" :value="format.format">{{format.name}}</option>
-    </select>
+    <el-select class="form-control" v-model="selectedFormat" name="format">
+      <el-option v-for="format in formats" :key="format.name" :value="format.format">{{format.name}}</el-option>
+    </el-select>
   </div>
 </template>
 <script>

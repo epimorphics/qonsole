@@ -1,9 +1,11 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { mount, createLocalVue } from '@vue/test-utils'
 import component from '@/components/Endpoints.vue'
 import Vuex from 'vuex'
+import Element from 'element-ui'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+localVue.use(Element)
 
 describe('Endpoints.vue', () => {
   let store
@@ -33,19 +35,19 @@ describe('Endpoints.vue', () => {
   })
 
   it('renders value from store', () => {
-    const wrapper = shallowMount(component, {
+    const wrapper = mount(component, {
       localVue,
       store
     })
     expect(wrapper.html()).toContain('http://')
   })
   it('updates value in store', () => {
-    const wrapper = shallowMount(component, {
+    const wrapper = mount(component, {
       localVue,
       store
     })
-    let options = wrapper.find('select').findAll('option')
-    options.at(0).setSelected()
+    let options = wrapper.find('input')
+    options.setValue('example.com')
     expect(mutations.set_endpoint).toHaveBeenCalled()
   })
 })

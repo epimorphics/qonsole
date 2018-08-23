@@ -6,25 +6,15 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Timing.vue', () => {
-  let store
-
-  beforeEach(() => {
-    store = new Vuex.Store({
-      modules: {
-        qonsole: {
-          state: {
-            timeTaken: 10
-          }
-        }
-      }
-    })
-  })
-
   it('renders timing value from store', () => {
     const wrapper = shallowMount(Timing, {
       localVue,
-      store
+      propsData: {
+        timeTaken: 10,
+        resultsCount: 11
+      }
     })
-    expect(wrapper.text()).toMatch('10 ms')
+    expect(wrapper.text()).toContain('10ms')
+    expect(wrapper.text()).toContain('11 result(s)')
   })
 })

@@ -1,48 +1,29 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="row">
-          <div class="navbar-header col-md-12">
-            <headerVue/>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container-fluid qonsole">
-      <div class="row flex-xl-nowrap">
-        <div class="col-12 col-md-3 col-xl-2 bd-sidebar"> <!-- Left column -->
-          <div class="col-md-12 well vertical">
-            <PrefixInput/>
-          </div>
-          <div class="col-md-12 well">
-            <SavedQueries/>
-          </div>
-        </div> <!-- End left column -->
-
-        <div class="d-none d-xl-block col-xl-2 bd-toc"> <!-- right column -->
-            <Endpoints/>
-            <FormatInput/>
-          <History/>
-        </div> <!-- End right column -->
-
-        <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content"> <!-- Middle column -->
+    <el-container>
+      <el-header>
+        <headerVue/>
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <PrefixInput/>
+          <SavedQueries/>
+        </el-aside>
+        <el-main>
           <QueryButtons/>
           <QueryInput/>
-
+          <ErrorView/>
           <Results/>
-        </div>  <!-- End middle column -->
-
-        <ErrorView/>
-        <!-- results -->
-
-      </div><!-- .container-->
-
-  </div>
-  <!-- <QonsoleFooter/> -->
-  <PrefixModal/>
-  <Messages/>
+        </el-main>
+        <el-aside width="200px">
+          <Endpoints/>
+          <FormatInput/>
+          <History/>
+        </el-aside>
+      </el-container>
+    </el-container>
+    <!-- <QonsoleFooter/> -->
+    <Messages/>
   </div>
 </template>
 
@@ -53,7 +34,6 @@ import PrefixInput from './components/PrefixInput.vue'
 import FormatInput from './components/FormatInput.vue'
 import SavedQueries from './components/SavedQueries.vue'
 import QonsoleFooter from './components/QonsoleFooter.vue'
-import PrefixModal from './components/PrefixModal.vue'
 import Results from './components/Results.vue'
 import QueryInput from './components/QueryInput.vue'
 import ErrorView from './components/Error.vue'
@@ -65,10 +45,7 @@ import { mapActions } from 'vuex'
 
 import defaults from './default-config'
 /* TODO
-** Add loading amimation
 ** Support passing in query or config as module
-**
-**
 */
 
 /**
@@ -87,7 +64,6 @@ export default {
     FormatInput,
     SavedQueries,
     QonsoleFooter,
-    PrefixModal,
     Results,
     QueryInput,
     ErrorView,
@@ -109,10 +85,13 @@ export default {
 </script>
 
 <style lang='scss'>
-@import '~bootstrap/scss/bootstrap.scss';
-
 $fa-font-path: "~font-awesome/fonts";
 @import '~font-awesome/scss/font-awesome.scss';
+
+/* icon font path, required */
+// import 'element-ui/lib/theme-chalk/index.css'
+
+@import "~element-ui/lib/theme-chalk/index.css";
 
 .bd-toc {
     position: -webkit-sticky;

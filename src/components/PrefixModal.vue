@@ -1,39 +1,34 @@
 <template>
-  <div class="modal fade" id="prefixEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Add a SPARQL prefix</h4>
+<el-dialog
+  title="Add a SPARQL prefix"
+  :visible.sync="visible"
+  width="30%">
+  <div class="modal-body">
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label for="inputPrefix" class="col-lg-2 control-label">Prefix</label>
+        <div class="col-lg-10">
+          <el-input type="text" class="form-control" id="inputPrefix" v-model="prefix" placeholder="Prefix" autofocus/>
         </div>
-        <div class="modal-body">
-          <form class="form-horizontal" role="form">
-            <div class="form-group">
-              <label for="inputPrefix" class="col-lg-2 control-label">Prefix</label>
-              <div class="col-lg-10">
-                <input type="text" class="form-control" id="inputPrefix" v-model="prefix" placeholder="Prefix" autofocus>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-lg-offset-2 col-lg-10">
-                <button class="btn btn-sm btn-primary" @click.prevent="lookupPrefix(prefix)" id="lookupPrefix">Lookup <span></span> on prefix.cc</button>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputURI" class="col-lg-2 control-label">URI</label>
-              <div class="col-lg-10">
-                <input type="text" class="form-control" id="inputURI" v-model="uri" placeholder="URI">
-              </div>
-            </div>
-          </form>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+          <el-button class="btn btn-sm btn-primary" @click.prevent="lookupPrefix(prefix)" id="lookupPrefix">Lookup <span></span> on prefix.cc</el-button>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-          <button type="button" class="btn btn-primary" @click.prevent="addPrefix" data-dismiss="modal" id="addPrefix">add prefix</button>
+      </div>
+      <div class="form-group">
+        <label for="inputURI" class="col-lg-2 control-label">URI</label>
+        <div class="col-lg-10">
+          <el-input type="text" class="form-control" id="inputURI" v-model="uri" placeholder="URI"/>
         </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+      </div>
+    </form>
+  </div>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="button" class="btn btn-default" @click="close">cancel</el-button>
+    <el-button type="button" class="btn btn-primary" @click="addPrefix" data-dismiss="modal" id="addPrefix">add prefix</el-button>
+  </span>
+</el-dialog>
 </template>
 <script>
 // Support adding a new prefix to selection
@@ -41,11 +36,15 @@
 import superagent from 'superagent'
 
 export default {
+  name: 'Prefix-Modal',
   data () {
     return {
       prefix: '',
       uri: ''
     }
+  },
+  props: {
+    visible: Boolean
   },
   computed: {
     config: {
@@ -76,6 +75,9 @@ export default {
           mVue.uri = res.body[prefix]
         })
     },
+    close () {
+      this.$emit('update:visible', false)
+    },
     addPrefix () {
       // Add to globally available prefixes
       // Add to selected prefixes
@@ -84,6 +86,7 @@ export default {
       // Clean modal
       this.prefix = ''
       this.uri = ''
+      this.close()
     }
   }
 }

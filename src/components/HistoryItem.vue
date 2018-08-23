@@ -24,10 +24,22 @@
 import { mapMutations } from 'vuex'
 import { getQueryBody } from '../query'
 // Display a single item in the history
+let intervalId
+
 export default {
   name: 'HistoryItem',
   data () { return {} },
-  mounted () {},
+  mounted () {
+    let vm = this
+    // Every 5 seconds re-draw all history. updates timers
+    intervalId = setInterval(function () {
+      vm.historyItem.date = vm.historyItem.date
+      // vm.$forceUpdate()
+    }, 5000)
+  },
+  beforeDestroy () {
+    clearInterval(intervalId)
+  },
   props: {
     historyItem: Object
   },
@@ -53,6 +65,7 @@ export default {
     grid-gap: 0%;
     border: 1px solid #000;
     margin-bottom: 2px;
+    cursor: pointer;
   }
   .date {
     grid-column-start: 1;

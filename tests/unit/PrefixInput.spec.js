@@ -45,8 +45,7 @@ describe('PrefixInput.vue', () => {
   })
   it('updates value in store', () => {
     const wrapper = shallowMount(component, { localVue, store })
-    let options = wrapper.find('input')
-    options.setChecked()
+    wrapper.findAll('.prefixes a').at(0).trigger('click')
     expect(mutations.set_selectedPrefixes).toHaveBeenCalled()
   })
 })
