@@ -9,6 +9,6 @@
 <script>
 // Footer text holder
 export default {
-  name: 'QonsoleFooter'
+  name: 'Footer'
 }
 </script>

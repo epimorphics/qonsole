@@ -22,7 +22,7 @@
         </el-aside>
       </el-container>
     </el-container>
-    <!-- <QonsoleFooter/> -->
+    <!-- <Footer/> -->
     <Messages/>
   </div>
 </template>
@@ -33,7 +33,7 @@ import Endpoints from './components/Endpoints.vue'
 import PrefixInput from './components/PrefixInput.vue'
 import FormatInput from './components/FormatInput.vue'
 import SavedQueries from './components/SavedQueries.vue'
-import QonsoleFooter from './components/QonsoleFooter.vue'
+import Footer from './components/Footer.vue'
 import Results from './components/Results.vue'
 import QueryInput from './components/QueryInput.vue'
 import ErrorView from './components/Error.vue'
@@ -63,7 +63,7 @@ export default {
     PrefixInput,
     FormatInput,
     SavedQueries,
-    QonsoleFooter,
+    Footer,
     Results,
     QueryInput,
     ErrorView,

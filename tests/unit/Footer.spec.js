@@ -1,9 +1,9 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import component from '@/components/QonsoleFooter.vue'
+import component from '@/components/Footer.vue'
 
 const localVue = createLocalVue()
 
-describe('QonsoleFooter.vue', () => {
+describe('Footer.vue', () => {
   it('renders', () => {
     const wrapper = shallowMount(component, { localVue })
     expect(wrapper.html()).toContain('Epimorphics')
