@@ -8,22 +8,16 @@ localVue.use(Vuex)
 describe('QueryInput.vue', () => {
   let store
 
-  const mutations = {
-    add_selectedPrefix: jest.fn(),
-    set_selectedPrefixes: jest.fn()
-  }
+  const mutations = {}
 
   beforeEach(() => {
     store = new Vuex.Store({
       modules: {
         qonsole: {
-          state: {
-            query: 'prefix bw: <http://environment.data.gov.uk/def/bathing-water/>'
-          },
+          state: {},
           mutations,
           getters: {
-            query: state => {
-            }
+            query: state => {}
           }
         }
       }

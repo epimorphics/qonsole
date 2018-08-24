@@ -1,5 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils'
-import component from '@/components/History.vue'
+import component from '@/components/Messages.vue'
 import Vuex from 'vuex'
 import Element from 'element-ui'
 
@@ -7,7 +7,7 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.use(Element)
 
-describe('History.vue', () => {
+describe('Messages.vue', () => {
   let store
 
   const mutations = {
@@ -19,7 +19,7 @@ describe('History.vue', () => {
       modules: {
         qonsole: {
           state: {
-            history: []
+            messages: ['Message 1', 'Message 2']
           },
           mutations
         }
@@ -27,12 +27,13 @@ describe('History.vue', () => {
     })
   })
 
-  it('renders empty value', () => {
+  it('renders messages value', () => {
     const wrapper = mount(component, {
       localVue,
       store
     })
-    expect(wrapper.html()).toContain('Sorry')
+    expect(wrapper.findAll('.message').at(0).text()).toContain('Message 1')
+    expect(wrapper.findAll('.message').length).toBe(2)
   })
   // TODO support checking of rendering values
   // TODO support checking reloading values from history
