@@ -35,7 +35,6 @@
 import { codemirror } from 'vue-codemirror'
 
 // foldGutter
-import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/addon/fold/brace-fold.js'
 import 'codemirror/addon/fold/comment-fold.js'
 import 'codemirror/addon/fold/foldcode.js'
@@ -158,6 +157,7 @@ export default {
 
 <style>
   @import "~codemirror/theme/base16-light.css";
+  @import '~codemirror/addon/fold/foldgutter.css';
 
   .CodeMirror {
     text-align: left!important;
