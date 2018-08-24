@@ -9,16 +9,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
-// Display the query count and timing
-
-/*
-var duration = new Date().getTime() - _startTime
-var ms = duration % 1000
-duration = Math.floor(duration / 1000)
-var sec = duration % 60
-var min = Math.floor(duration / 60)
-var suffix = (count !== 1) ? 's' : ''
-*/
+// Display messages to the user
 export default {
   computed: {
     ...mapState({
