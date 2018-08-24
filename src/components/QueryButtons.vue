@@ -20,7 +20,7 @@ export default {
     ...mapActions([
       'runQuery',
       'format_query',
-      'save_query'
+      'add_saved'
     ])
   },
   computed: {
