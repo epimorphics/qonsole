@@ -8,6 +8,25 @@ var RemoteSparqlServiceResult = function (val, format) {
 }
 
 _.extend(RemoteSparqlServiceResult.prototype, {
+  asRaw: function () {
+    return this._val
+  },
+
+  getExtension: function () {
+    switch (this._format) {
+      case 'text':
+        return 'txt'
+      case 'json':
+        return 'json'
+      case 'xml':
+        return 'xml'
+      case 'tsv':
+        return 'tsv'
+      default:
+        return 'txt'
+    }
+  },
+
   asText: function () {
     var data = this._val
     var isTabular = data.match(/^----/)

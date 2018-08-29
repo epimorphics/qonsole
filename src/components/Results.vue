@@ -18,6 +18,9 @@
                 {{resultsError}}
               </pre>
             </h2>
+            <div class="save">
+              <el-button @click="saveResults">Save</el-button>
+            </div>
             <codemirror v-if="showIn === 'codemirror'" v-model="results._val" :options="codeMirrorOptions"></codemirror>
             <div id="table" v-if="showIn === 'table'">
               Table
@@ -32,6 +35,7 @@
 // Display the current query results
 // Uses either codeMirror or $DataTables to display result
 /* global $ */
+import { saveAs } from 'file-saver/FileSaver'
 import { codemirror } from 'vue-codemirror'
 
 // foldGutter
@@ -121,6 +125,15 @@ export default {
     }
   },
   methods: {
+    saveResults () {
+      this.$prompt('Please choose file name', 'Tip', {
+        confirmButtonText: 'Save',
+        cancelButtonText: 'Cancel'
+      }).then(({value}) => {
+        var blob = new Blob(['' + this.results.asRaw()], {type: 'text/plain;charset=utf-8'})
+        saveAs(blob, value + '.' + this.results.getExtension())
+      }).catch(() => {})
+    },
     /**
        * Show the result using jQuery dataTables
        * @param  {object} options Display options
