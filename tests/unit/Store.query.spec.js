@@ -18,11 +18,6 @@ beforeEach(() => {
   store = new Vuex.Store(cloneDeep(storeConfig))
 })
 
-/*
- // NOTE: there's an issue here with global variables iniside the imported store that isn't refreshed
- // between runs - hence the need for dynamic imports in later tests.
-*/
-
 test('set_query sets the query', () => {
   let query = 'select subject'
   store.commit('set_query', query)
@@ -86,18 +81,16 @@ test('format_query formats the current query', () => {
   expect(store.state.query).toEqual(correctQuery)
 })
 
-test('runQuery sets loading state for correct query', () => {
+test('runQuery sets loading state for query', () => {
   store.commit('set_query', correctQuery)
-  store.commit('set_endpoint', 'http://example.ccc')
-  expect(() => {
-    store.dispatch('runQuery')
-    expect(store.state.messages.length).toBe(1)
-    expect(store.state.isLoading).toBe(true)
-  }).not.toThrow()
+  store.commit('set_endpoint', 'http://example.com')
+  store.dispatch('runQuery')
+  expect(store.state.messages.length).toBe(1)
+  expect(store.state.isLoading).toBe(true)
 })
 
 test('runQuery errors if no query set', () => {
-  store.commit('set_endpoint', 'http://example.mmm')
+  store.commit('set_endpoint', 'http://example.com')
   expect(() => {
     store.dispatch('runQuery')
   }).toThrow()
@@ -110,11 +103,27 @@ test('runQuery errors if no endpoint set', () => {
   }).toThrow()
 })
 
+test('runQuery aborts a currently running query', () => {
+  store.commit('set_query', correctQuery)
+  store.commit('set_endpoint', 'http://example.com')
+  store.dispatch('runQuery')
+  expect(store.state.isLoading).toBe(true)
+  store.dispatch('runQuery')
+  expect(store.state.isLoading).toBe(false)
+})
+
+// test('runQuery returns results for a query', (done) => {
+//   store.commit('set_query', correctQuery)
+//   store.commit('set_endpoint', 'http://example.com')
+//   store.dispatch('runQuery')
+//   expect(store.state.isLoading).toBe(true)
+//   setTimeout(() => {
+//     store.dispatch('runQuery')
+//     console.log(store.state.resultsError)
+//     expect(store.state.results).toBe({})
+//     done()
+//   }, 4000)
+// })
+
 // test('runQuery correctly fails with a status error for errornous query', () => {
-// })
-//
-// test('runQuery aborts a currently running query', () => {
-// })
-//
-// test('runQuery returns results for a query', () => {
 // })

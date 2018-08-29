@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-button @click="$store.commit('add_saved')" type="warning" icon="el-icon-star-off"/>
+    <el-button @click="$store.commit('save_current_state')" type="warning" icon="el-icon-star-off"/>
 
     <el-button @click="format_query" icon="el-icon-check"/>
 
@@ -20,7 +20,7 @@ export default {
     ...mapActions([
       'runQuery',
       'format_query',
-      'add_saved'
+      'save_current_state'
     ])
   },
   computed: {

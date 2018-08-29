@@ -6,7 +6,8 @@ import messages from './qonsole.messages'
 
 const state = {
   'config': {
-    prefixes: {}
+    prefixes: {},
+    queries: []
   },
   'endpoint': '',
   'selectedFormat': 'tsv',

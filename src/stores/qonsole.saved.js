@@ -17,12 +17,12 @@ export default {
         state.query = state.selectedExample.query
       }
     },
-    add_saved (state) {
+    save_current_state (state, title) {
       // Add current query to saved queries
       state.config.queries.push({
         query: state.query,
         endpoint: state.endpoint,
-        name: 'New saved'
+        name: title || state.query.substr(0, 10)
       })
     },
     remove_saved (state, remove) {

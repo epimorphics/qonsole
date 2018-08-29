@@ -17,7 +17,7 @@ describe('Messages.vue', () => {
   }
 
   const mutations = {
-    'add_saved': jest.fn(),
+    'save_current_state': jest.fn(),
     'set_isLoading': (state, val) => {
       state.isLoading = val
     }
@@ -56,7 +56,7 @@ describe('Messages.vue', () => {
 
     expect(actions.runQuery).toHaveBeenCalled()
     expect(actions.format_query).toHaveBeenCalled()
-    expect(mutations.add_saved).toHaveBeenCalled()
+    expect(mutations.save_current_state).toHaveBeenCalled()
   })
 
   it('changes text when loading', () => {

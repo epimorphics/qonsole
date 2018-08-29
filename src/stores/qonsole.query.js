@@ -1,12 +1,10 @@
 import RemoteSparqlService from '../remote-sparql-service'
 import {getPrefixesFromQuery} from '../query'
 import _ from 'lodash'
+import {Parser, Generator} from 'sparqljs'
 
-var SparqlParser = require('sparqljs').Parser
-var SparqlGenerator = require('sparqljs').Generator
-var parser = new SparqlParser()
-var generator = new SparqlGenerator()
-
+const parser = new Parser()
+const generator = new Generator()
 const sparqlService = new RemoteSparqlService()
 
 export default {
