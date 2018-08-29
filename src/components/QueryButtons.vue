@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-button @click="$store.commit('save_current_state')" type="warning" icon="el-icon-star-off"/>
+    <el-button @click="save_query" type="warning" icon="el-icon-star-off"/>
 
     <el-button @click="format_query" icon="el-icon-check"/>
 
@@ -13,14 +13,22 @@
   </el-row>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   methods: {
+    save_query () {
+      this.$prompt('Please name saved query', 'Tip', {
+        confirmButtonText: 'Save',
+        cancelButtonText: 'Cancel'
+      }).then(({value}) => {
+        this.save_current_state(value)
+      }).catch(() => {})
+    },
+    ...mapMutations(['save_current_state']),
     ...mapActions([
       'runQuery',
-      'format_query',
-      'save_current_state'
+      'format_query'
     ])
   },
   computed: {
