@@ -5,7 +5,9 @@ import prefixes from './qonsole.prefixes'
 import messages from './qonsole.messages'
 
 const state = {
-  'config': {},
+  'config': {
+    prefixes: {}
+  },
   'endpoint': '',
   'selectedFormat': 'tsv',
   'timeTaken': 0,

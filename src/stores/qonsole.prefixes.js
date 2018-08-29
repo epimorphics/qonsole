@@ -11,14 +11,14 @@ export default {
     }
   },
   mutations: {
-    add_prefix (state, prefixObj) {
-      Vue.set(state.config.prefixes, prefixObj.prefix, prefixObj.uri)
+    add_prefix (state, {prefix, uri}) {
+      if (!prefix || !uri) throw new Error('Prefix and uri required for new prefix')
+      Vue.set(state.config.prefixes, prefix, uri)
     },
-    remove_prefix (state, remove) {
+    remove_prefix (state, {prefix}) {
       // Remove prefix from available
-      let indx = state.config.prefixes.indexOf(remove)
-      if (indx > -1) {
-        state.config.prefixes.splice(indx, 1)
+      if (state.config.prefixes[prefix]) {
+        delete state.config.prefixes[prefix]
       }
     },
     add_selectedPrefix (state, prefixObj) {

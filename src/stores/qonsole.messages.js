@@ -5,6 +5,7 @@ export default {
   getters: {},
   mutations: {
     add_message (state, message) {
+      if (typeof message !== 'string') throw new Error('Message should be a string')
       state.messages.push(message)
     },
     remove_message (state, message) {
@@ -16,7 +17,7 @@ export default {
     }
   },
   actions: {
-    add_message: ({ commit, state }, message, duration = 5000) => {
+    add_message: ({ commit, state }, {message, duration = 5000}) => {
       commit('add_message', message)
       setTimeout(() => {
         commit('remove_message', message)

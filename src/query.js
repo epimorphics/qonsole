@@ -65,6 +65,7 @@ var getQueryBody = function (query) {
    * @return {string} SPARQL-format prefixes
    */
 var renderPrefixes = function (prefixes) {
+  if (!prefixes || typeof prefixes !== 'object') return ''
   return Object.keys(prefixes).map(function (key, index) {
     return `prefix ${key}: <${prefixes[key]}>`
   }).join('\n')

@@ -9,12 +9,11 @@ var generator = new SparqlGenerator()
 
 const sparqlService = new RemoteSparqlService()
 
-let outstandingQuery // Used to store query for aborting
-
 export default {
   state: {
     'query': '',
-    'isLoading': false
+    'isLoading': false,
+    outstandingQuery: undefined // Used to store query for aborting
   },
   getters: {
     query: state => {
@@ -46,9 +45,9 @@ export default {
       try {
         let parsedQuery = parser.parse(state.query)
         state.query = generator.stringify(parsedQuery)
-        dispatch('add_message', 'Query formatted')
+        dispatch('add_message', {message: 'Query formatted'})
       } catch (e) {
-        dispatch('add_message', 'Failed to format query')
+        dispatch('add_message', {message: 'Failed to format query'})
       }
     },
 
@@ -69,18 +68,26 @@ export default {
       Listen to the results
     */
     runQuery ({ dispatch, commit, state }) {
-      if (outstandingQuery) {
-        dispatch('add_message', 'Aborting Query')
+      if (state.outstandingQuery) {
+        dispatch('add_message', {message: 'Aborting Query'})
         commit('set_isLoading', false)
-        outstandingQuery.abort()
-        outstandingQuery = null
+        state.outstandingQuery.abort()
+        state.outstandingQuery = null
         return
+      }
+
+      if (!state.endpoint || !state.endpoint.length) {
+        throw new Error('Endpoint must be set')
+      }
+
+      if (!state.query || !state.query.length) {
+        throw new Error('Query must be set')
       }
 
       // Clear the results
       commit('set_results', null)
       commit('set_timeTaken', 0)
-      dispatch('add_message', 'Running Query')
+      dispatch('add_message', {message: 'Running Query'})
       // Timer for total time taken
       let startDate = new Date()
 
@@ -94,7 +101,7 @@ export default {
         format: format,
         success: function (data) {
           let elapsed = (new Date().getTime()) - startDate.getTime()
-          dispatch('add_message', 'Query loaded')
+          dispatch('add_message', {message: 'Query loaded'})
           commit('set_isLoading', false)
           commit('set_results', data)
           commit('set_timeTaken', elapsed)
@@ -104,11 +111,11 @@ export default {
             elapsed,
             count: 11 // TODO Fix count
           })
-          outstandingQuery = null
+          state.outstandingQuery = null
         },
         error: function (err) {
           let elapsed = (new Date().getTime()) - startDate.getTime()
-          dispatch('add_message', 'Failed to run query')
+          dispatch('add_message', {message: 'Failed to run query'})
           commit('set_isLoading', false)
           commit('set_resultsError', err.message)
           commit('set_results', null)
@@ -118,11 +125,11 @@ export default {
             elapsed,
             count: 0
           })
-          outstandingQuery = null
+          state.outstandingQuery = null
         }
       }
 
-      outstandingQuery = sparqlService.execute(query, options)
+      state.outstandingQuery = sparqlService.execute(query, options)
     }
   }
 }
