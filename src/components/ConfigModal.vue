@@ -1,7 +1,7 @@
 <template>
 <el-dialog
   title="Qonsole config editor"
-  :visible.sync="visible"
+  :visible="visible" v-on:update:visible="$emit('update:visible', $event)"
   width="30%">
   <div class="modal-body">
     <form class="form-horizontal" role="form">

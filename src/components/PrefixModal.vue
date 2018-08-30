@@ -1,7 +1,7 @@
 <template>
 <el-dialog
   title="Add a SPARQL prefix"
-  :visible.sync="visible"
+  :visible.sync="visible" v-on:update:visible="$emit('update:visible', $event)"
   width="30%">
   <div class="modal-body">
     <form class="form-horizontal" role="form">
