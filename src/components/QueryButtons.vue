@@ -1,5 +1,6 @@
 <template>
   <el-row>
+    <el-button @click="showCurlModal = true" type="warning">Curl</el-button>
     <el-button @click="save_query" type="warning" icon="el-icon-star-off"/>
 
     <el-button @click="format_query" icon="el-icon-check"/>
@@ -10,12 +11,23 @@
       </el-button>
     </transition>
 
+    <CurlModal v-bind:visible.sync="showCurlModal"/>
   </el-row>
 </template>
 <script>
 import { mapActions, mapMutations } from 'vuex'
+import CurlModal from '@/components/CurlModal.vue'
 
 export default {
+  name: 'QueryButtons',
+  data () {
+    return {
+      showCurlModal: false
+    }
+  },
+  components: {
+    CurlModal
+  },
   methods: {
     save_query () {
       this.$prompt('Please name saved query', 'Tip', {
