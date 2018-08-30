@@ -6,11 +6,10 @@ import messages from './qonsole.messages'
 
 const state = {
   'config': {
-    prefixes: {},
-    queries: []
+    'prefixes': {},
+    'queries': []
   },
   'endpoint': '',
-  'selectedFormat': 'tsv',
   'timeTaken': 0,
   'results': '',
   'error': null,
@@ -32,7 +31,8 @@ const state = {
       format: 'xml'
     }
   ],
-  resultsError: '',
+  'selectedFormat': 'tsv',
+  'resultsError': '',
   ...query.state,
   ...saved.state,
   ...history.state,
