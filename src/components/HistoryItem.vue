@@ -60,12 +60,12 @@ export default {
   .history-item {
     padding: 5px;
     display: grid;
-    width: 100%;
     grid-template-columns: 30% 50% 20%;
     grid-gap: 0%;
     border: 1px solid #000;
     margin-bottom: 2px;
     cursor: pointer;
+    border-radius: 2px;
   }
   .date {
     grid-column-start: 1;
