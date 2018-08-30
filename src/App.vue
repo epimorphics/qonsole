@@ -16,6 +16,9 @@
           <Results/>
         </el-main>
         <el-aside width="200px">
+          <a href="#" @click.prevent="showConfigModal = true" title="Add a SPARQL prefix">
+            <i class="fa fa-plus-circle"></i>
+          </a>
           <Endpoints/>
           <FormatInput/>
           <History/>
@@ -24,6 +27,7 @@
     </el-container>
     <!-- <Footer/> -->
     <Messages/>
+    <ConfigModal v-bind:visible.sync="showConfigModal"/>
   </div>
 </template>
 
@@ -40,6 +44,7 @@ import ErrorView from './components/Error.vue'
 import History from './components/History.vue'
 import Messages from './components/Messages.vue'
 import QueryButtons from './components/QueryButtons.vue'
+import ConfigModal from './components/ConfigModal.vue'
 
 import { mapActions } from 'vuex'
 
@@ -58,7 +63,13 @@ import defaults from './default-config'
 
 export default {
   name: 'app',
+  data () {
+    return {
+      showConfigModal: false
+    }
+  },
   components: {
+    ConfigModal,
     Endpoints,
     PrefixInput,
     FormatInput,
