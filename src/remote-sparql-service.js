@@ -38,7 +38,7 @@ _.extend(RemoteSparqlService.prototype, {
       .set('accept', ajaxDataType(format))
       .end(function (err, res) {
         if (err) { return options.error(err) }
-        return onSuccess.call(null, new RemoteSparqlServiceResult(res.text, format)) //eslint-disable-line
+        return onSuccess(new RemoteSparqlServiceResult(res.text, format))
       })
   }
 })
