@@ -1,7 +1,1 @@
-/bower_components/
-/.project
-/.tmp/
-/node_modules/
-/lib/
-/font/
-/images/
+node_modules
