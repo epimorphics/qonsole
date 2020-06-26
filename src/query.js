@@ -1,6 +1,14 @@
 /*eslint no-unused-vars: "error"*/
 
-function sparqlQuery(query, baseURL, format) {
+export function sendQuery(queryURL) {
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET",queryURL,false);
+	xmlhttp.send();
+	return xmlhttp.response; 
+
+}
+
+export function makeQuery(query, baseURL, format) {
 	if (!format)
 		format="application/json";
 	var params={
@@ -14,11 +22,6 @@ function sparqlQuery(query, baseURL, format) {
 		querypart += k+"="+encodeURIComponent(params[k])+"&";
 	}
 	var queryURL=baseURL + '?' + querypart;
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("GET",queryURL,false);
-	xmlhttp.send();
-	return xmlhttp.responseText; 
-
+	return queryURL; 
 }
 
-export default sparqlQuery

@@ -14,7 +14,7 @@
                     :value="type" 
                     :key="type"> {{ type }} </option>
         </select>
-        <Output :result="result" :resultType="resultTypes.selectedOption" />
+        <Output ref="output" :jsonResponse="jsonResponse" />
     </div>
 </template>
 <script>
@@ -22,7 +22,7 @@ import CodeEditor from './Code-Editor.vue'
 import Buttons from './Buttons.vue'
 import Output from './Output.vue'
 // import 'sparqljs'
-import sparqlQuery from '@/query.js'
+import {makeQuery, sendQuery} from '@/query.js'
 
 // var SparqlParser = require('sparqljs').Parser;
 // var parser = new SparqlParser();
@@ -38,11 +38,10 @@ export default {
         return {
             language: 'sparql',
             code: '',
-            parsedQuery: '',
             endpoint: 'http://dbpedia.org/sparql',
-            result: '',
-            resultTypes: { options: ['Text', 'JSON', 'CSV'],
-                           selectedOption: 'Text'} ,
+            resultTypes: { options: ['JSON'],
+                           selectedOption: 'JSON'} ,
+            jsonResponse: new Array() 
         }
     },
     methods: {
@@ -52,9 +51,13 @@ export default {
                     this.$refs.codeEditor.clearEditor();
                     break;
                 case "Perform Query":
+                    // Get code from code mirror 
                     this.$refs.codeEditor.sendContent(); 
-                    this.result=sparqlQuery(this.code, this.endpoint, this.resultTypes.selectedOption.replace(/['"]+/g, ''));
-                    console.log(this.result)
+                    // Send SPARQL query to SPARQL endpoint with the user decided output format
+                    var queryURL = makeQuery(this.code, this.endpoint, this.resultTypes.selectedOption)
+                    var response = JSON.parse(sendQuery(queryURL))
+                    this.jsonResponse = response
+                    this.$refs.output.makeTable()
             }
         }, 
     }
