@@ -4,25 +4,24 @@
 <script>
 export default {
     name: 'Output',
-    props: ['jsonResponse'],
     data () {
         return {
             table: null
         }
     },
     methods: {
-        makeTable () {
+        makeTable (jsonResponse) {
             this.table = ''
             this.table += '<table style="width:60%">'
-            var results = this.jsonResponse.results.bindings
+            var results = jsonResponse.results.bindings
 
             // Make top row 
             var entries = Object.entries(results[0])
             this.table += '<tr>'
             for (var x = 0; x < entries.length; x++) {
-                this.table += '<td>'
+                this.table += '<th>'
                 this.table += entries[x][0]
-                this.table += '</td>'
+                this.table += '</th>'
             }
             this.table += '</tr>'
 
@@ -43,3 +42,8 @@ export default {
     }
 }
 </script>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
