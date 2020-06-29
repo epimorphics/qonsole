@@ -14,7 +14,7 @@
                     :value="type" 
                     :key="type"> {{ type }} </option>
         </select>
-        <Output ref="output" />
+        <Output ref="output" :jsonResponse="jsonResponse"/>
     </div>
 </template>
 <script>
@@ -37,7 +37,7 @@ export default {
             endpoint: 'http://dbpedia.org/sparql',
             resultTypes: { options: ['JSON'],
                            selectedOption: 'JSON'} ,
-            jsonResponse: []
+            jsonResponse: [],
         }
     },
     methods: {
@@ -52,7 +52,6 @@ export default {
                     // Send SPARQL query to SPARQL endpoint with the user decided output format
                     var queryURL = makeQuery(this.code, this.endpoint, this.resultTypes.selectedOption)
                     this.jsonResponse = JSON.parse(sendQuery(queryURL))
-                    this.$refs.output.makeTable(this.jsonResponse)
             }
         }, 
     }

@@ -1,49 +1,58 @@
 <template>
-    <div v-html="table" />
+    <grid :cols="getVariables(jsonResponse)" :rows="deconstructJSON(jsonResponse)"
+          :auto-width="autoWidth"
+          :from="from"
+          :language="language"
+          :pagination="pagination"
+          :search="search"
+          :server="server"
+          :sort="sort"
+          :width="width"></grid>
 </template>
 <script>
+import Grid from 'gridjs-vue'
+// import {deconstructJSON, getVariables} from '@/result.js'
+
+
+
 export default {
     name: 'Output',
+    props: ['jsonResponse'],
+    components: { Grid }, 
     data () {
         return {
-            table: null
+            autoWidth: true,
+            language: {},
+            pagination: true,
+            search: true,
+            sort: true,
+            theme: 'mermaid',
+            width: '100%',
         }
     },
     methods: {
-        makeTable (jsonResponse) {
-            this.table = ''
-            this.table += '<table style="width:60%">'
-            var results = jsonResponse.results.bindings
+        deconstructJSON: function (jsonResponse) {
+            const variables = jsonResponse.head.vars 
+            const listOfResults = jsonResponse.results.bindings 
+            var results = new Array(listOfResults.length)
 
-            // Make top row 
-            var entries = Object.entries(results[0])
-            this.table += '<tr>'
-            for (var x = 0; x < entries.length; x++) {
-                this.table += '<th>'
-                this.table += entries[x][0]
-                this.table += '</th>'
-            }
-            this.table += '</tr>'
-
-            for (var i = 0; i < results.length; i++) {
-                this.table += '<tr>'
-
-                entries = Object.entries(results[i])
-
-                for (var j = 0; j < entries.length; j ++) {
-                    this.table += '<td>'
-                    this.table += entries[j][1].value
-                    this.table += '</td>'
+            for (var i = 0; i < listOfResults.length; i++) {
+                var entries = Object.entries(listOfResults[i])
+                var temp = new Array(listOfResults.length)
+                for (var j = 0; j < variables.length; j++) {
+                    temp[j] = entries[j][1].value 
                 }
-                this.table += '</tr>'
+                results[i] = temp
             }
-            this.table += '</table>'
+            console.log(results)
+            return results
+        },
+        getVariables: function (jsonResponse) {
+            console.log(jsonResponse.head.vars)
+            return jsonResponse.head.vars
         }
     }
 }
 </script>
 <style>
-table, th, td {
-  border: 1px solid black;
-}
 </style>

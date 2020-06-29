@@ -10,9 +10,12 @@
   "dependencies": {
     "codemirror": "^5.54.0",
     "core-js": "^3.6.5",
+    "css": "^2.2.4",
     "es6-promise": "^4.2.8",
+    "gridjs-vue": "^0.3.5",
     "nearley": "^2.19.4",
     "rdf": "^4.1.0",
+    "sass-loader": "^8.0.2",
     "sparqljs": "^3.0.1",
     "tabulator-tables": "^4.7.0",
     "vue": "^2.6.11",
@@ -26,6 +29,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.14.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
