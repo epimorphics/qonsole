@@ -1,24 +1,28 @@
 <template>
-    <grid :cols="getVariables(jsonResponse)" :rows="deconstructJSON(jsonResponse)"
-          :auto-width="autoWidth"
-          :from="from"
-          :language="language"
-          :pagination="pagination"
-          :search="search"
-          :server="server"
-          :sort="sort"
-          :width="width"></grid>
+    <div>
+        <grid :cols="getVariables(this.$store.getters.jsonResponse)" :rows="deconstructJSON(this.$store.getters.jsonResponse)" 
+              :auto-width="autoWidth"
+              :language="language"
+              :pagination="pagination"
+              :search="search"
+              :sort="sort"
+              :width="width"
+              v-if="this.$store.getters.error==false && this.$store.getters.jsonResponse!=''">
+        </grid>
+        <div v-if="this.$store.getters.error==true"> {{ this.$store.getters.errorMessage }} </div>
+    </div>
 </template>
 <script>
 import Grid from 'gridjs-vue'
-// import {deconstructJSON, getVariables} from '@/result.js'
-
+import store from '@/store.js'
 
 
 export default {
     name: 'Output',
-    props: ['jsonResponse'],
-    components: { Grid }, 
+    components: { 
+        Grid 
+    }, 
+    store: store, 
     data () {
         return {
             autoWidth: true,
@@ -44,11 +48,9 @@ export default {
                 }
                 results[i] = temp
             }
-            console.log(results)
             return results
         },
         getVariables: function (jsonResponse) {
-            console.log(jsonResponse.head.vars)
             return jsonResponse.head.vars
         }
     }

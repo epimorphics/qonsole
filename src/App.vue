@@ -17,7 +17,7 @@ export default {
     return {
       appTitle: 'Qonsole 2.0'
     }
-  }
+  },
 }
 </script>
 

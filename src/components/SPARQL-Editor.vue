@@ -2,8 +2,7 @@
     <div>
         Example datasheets: 
         <CodeEditor :language="language" 
-                    ref="codeEditor" 
-                    @sendCode="code = $event"/>
+                    ref="codeEditor" />
         <label for="endpoint">SPARQL Endpoint: </label>
         <input type="text" id="endpoint" name="endpoint" v-model="endpoint">
         <Buttons :language="language" 
@@ -14,7 +13,7 @@
                     :value="type" 
                     :key="type"> {{ type }} </option>
         </select>
-        <Output ref="output" :jsonResponse="jsonResponse"/>
+        <Output ref="output" />
     </div>
 </template>
 <script>
@@ -22,6 +21,7 @@ import CodeEditor from './Code-Editor.vue'
 import Buttons from './Buttons.vue'
 import Output from './Output.vue'
 import {makeQuery, sendQuery} from '@/query.js'
+import store from '@/store.js'
 
 export default {
     name: 'SPARQLEditor',
@@ -30,14 +30,13 @@ export default {
         Buttons,
         Output
     },
+    store: store, 
     data () {
         return {
             language: 'sparql',
-            code: '',
             endpoint: 'http://dbpedia.org/sparql',
             resultTypes: { options: ['JSON'],
                            selectedOption: 'JSON'} ,
-            jsonResponse: [],
         }
     },
     methods: {
@@ -48,10 +47,17 @@ export default {
                     break;
                 case "Perform Query":
                     // Get code from code mirror 
-                    this.$refs.codeEditor.sendContent(); 
+                    // this.$refs.codeEditor.sendContent(); 
                     // Send SPARQL query to SPARQL endpoint with the user decided output format
-                    var queryURL = makeQuery(this.code, this.endpoint, this.resultTypes.selectedOption)
-                    this.jsonResponse = JSON.parse(sendQuery(queryURL))
+                    var queryURL = makeQuery(this.$store.getters.SPARQLCode, this.endpoint, this.resultTypes.selectedOption)
+                    var rawResponse = sendQuery(queryURL)
+                    try {
+                        this.$store.commit('updateJSONResponse', JSON.parse(rawResponse))
+                        this.$store.commit('changeError', false)
+                    } catch (error) {
+                        this.$store.commit('changeError', true)
+                        this.$store.commit('updateErrorMessage', rawResponse)
+                    }
             }
         }, 
     }

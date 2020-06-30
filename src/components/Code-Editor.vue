@@ -11,12 +11,12 @@
     </div>
 </template>
 <script>
-// Import codemirror scripts 
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/sparql/sparql.js'
 import 'codemirror/mode/turtle/turtle.js'
 import 'codemirror/theme/base16-light.css'
+import store from '@/store.js'
 
 export default {
     name: 'CodeEditor',
@@ -25,6 +25,7 @@ export default {
     },
     // Get language mode from parent and change the mode of Code Mirror accordingly 
     props: ['language'], 
+    store: store, 
     data() {
         return {
             code : '', 
@@ -48,14 +49,12 @@ export default {
         onCmCodeChange(newCode) {
             // Write in console for debugging purposes 
             // console.log('this is new code', newCode)
-            this.code = newCode
+            this.$store.commit('updateSPARQLCode', newCode)
+            // this.code = newCode
         },
         clearEditor() {
             this.code = '' 
         },
-        sendContent() {
-            this.$emit('sendCode', this.code)
-        }
     },
     computed: {
         codemirror() {
