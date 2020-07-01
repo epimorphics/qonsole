@@ -5,9 +5,9 @@
                     ref="codeEditor" />
         <label for="endpoint">SPARQL Endpoint: </label>
         <input type="text" id="endpoint" name="endpoint" v-model="endpoint">
+        <input type="file" @change="loadTextFromFile">
         <Buttons :language="language" 
                  @buttonClicked="buttonClicked" />
-
         <select v-model="resultTypes.selectedOption">
             <option v-for="type in resultTypes.options" 
                     :value="type" 
@@ -38,6 +38,7 @@ export default {
             endpoint: 'http://dbpedia.org/sparql',
             resultTypes: { options: ['JSON'],
                            selectedOption: 'JSON'} ,
+            file: null
         }
     },
     methods: {
@@ -62,9 +63,16 @@ export default {
                     break; 
                 case "Save Query":
                     var blob = new Blob([this.$store.getters.SPARQLCode], {type: "text/plain;charset=utf-8"})
-                    saveAs(blob, "query.txt")
+                    saveAs(blob, 'query.txt')
+                    break; 
             }
         }, 
+        loadTextFromFile: function (ev) {
+            const file = ev.target.files[0];
+            const reader = new FileReader();
+            reader.onload = e => this.$store.commit('updateSPARQLCode', e.target.result)
+            reader.readAsText(file)
+        }
     },
     mounted: function () {
         this.$store.commit('updateCurrentLanguage', this.language)

@@ -2,7 +2,17 @@
     <div>
         <codemirror
             ref="cmEditor"
-            :value="code"
+            v-if="language=='sparql'"
+            :value="this.$store.getters.SPARQLCode"
+            :options="cmOptions"
+            @ready="onCmReady"
+            @focus="onCmFocus"
+            @input="onCmCodeChange"
+        />
+        <codemirror
+            ref="cmEditor"
+            v-if="language=='turtle'"
+            :value="this.$store.getters.turtleCode"
             :options="cmOptions"
             @ready="onCmReady"
             @focus="onCmFocus"
@@ -28,7 +38,6 @@ export default {
     store: store, 
     data() {
         return {
-            code : '', 
             cmOptions: {
                 // Code Mirror options 
                 tabSize: 4,

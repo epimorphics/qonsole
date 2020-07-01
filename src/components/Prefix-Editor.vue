@@ -21,7 +21,7 @@ export default {
         }
     },
     watch: {
-    // whenever question changes, this function will run
+        // whenever selectedPrefixes changes, this function will run
         selectedPrefixes: function (newSelectedPrefixes) {
             this.$store.commit('updateSelectedPrefixes', newSelectedPrefixes)
         }

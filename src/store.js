@@ -58,7 +58,7 @@ const store = new Vuex.Store({
     },
     updateSelectedPrefixes (state, prefixes) {
       state.selectedPrefixes = prefixes
-    }
+    },
   },
   getters: {
       SPARQLCode: state => state.SPARQLCode,
@@ -69,7 +69,8 @@ const store = new Vuex.Store({
       currentLanguage: state => state.currentLanguage,
       prefixes: state => state.prefixes,
       rdfstore: state => state.rdfstore,
-      selectedPrefixes: state => state.selectedPrefixes
+      selectedPrefixes: state => state.selectedPrefixes,
+      fileText: state => state.fileText
   }
 })
 
