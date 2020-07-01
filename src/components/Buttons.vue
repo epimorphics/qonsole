@@ -23,10 +23,10 @@ export default {
     mounted() {
         switch (this.language) {
             case 'sparql':
-                this.buttonFunctions = ['Clear', 'Add Known Prefixes', 'Display as Table', 'Perform Query', 'Save Query']
+                this.buttonFunctions = ['Clear', 'Perform Query', 'Save Query']
                 break; 
             case 'turtle':
-                this.buttonFunctions = ['Clear', 'Add Known Prefixes', 'Load', 'Generate Diagram']
+                this.buttonFunctions = ['Clear', 'Load']
         }
     }
 }

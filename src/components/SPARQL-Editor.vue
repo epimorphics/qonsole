@@ -22,6 +22,7 @@ import Buttons from './Buttons.vue'
 import Output from './Output.vue'
 import {makeQuery, sendQuery} from '@/query.js'
 import store from '@/store.js'
+import {saveAs} from 'file-saver'
 
 export default {
     name: 'SPARQLEditor',
@@ -58,8 +59,15 @@ export default {
                         this.$store.commit('changeError', true)
                         this.$store.commit('updateErrorMessage', rawResponse)
                     }
+                    break; 
+                case "Save Query":
+                    var blob = new Blob([this.$store.getters.SPARQLCode], {type: "text/plain;charset=utf-8"})
+                    saveAs(blob, "query.txt")
             }
         }, 
+    },
+    mounted: function () {
+        this.$store.commit('updateCurrentLanguage', this.language)
     }
 }
 </script>

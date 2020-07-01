@@ -1,17 +1,30 @@
 <template>
     <div> 
-        <ul>
-            <li v-for="prefix in prefixes" :key="prefix.id"> {{ prefix }} </li>
+        <h3>Prefixes</h3>
+        <ul style="list-style-type:none">
+            <li v-for="prefix in this.$store.getters.prefixes" :key="prefix.id">
+                <input type="checkbox" :id="prefix[0]" :value="prefix" v-model="selectedPrefixes">
+                <label :for="prefix"> {{ prefix[0] }}: {{ prefix[1] }} </label>
+            </li>
         </ul>
     </div>
 </template>
 <script>
+import store from '@/store.js'
+
 export default {
     name: 'PrefixEditor',
+    store: store, 
     data () {
         return {
-            prefixes: ['prefix','prefix','prefix']
+            selectedPrefixes: [], 
         }
-    }
+    },
+    watch: {
+    // whenever question changes, this function will run
+        selectedPrefixes: function (newSelectedPrefixes) {
+            this.$store.commit('updateSelectedPrefixes', newSelectedPrefixes)
+        }
+    },
 }
 </script>

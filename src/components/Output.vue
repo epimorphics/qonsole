@@ -7,7 +7,7 @@
               :search="search"
               :sort="sort"
               :width="width"
-              v-if="this.$store.getters.error==false && this.$store.getters.jsonResponse!=''">
+              v-if="this.$store.getters.error==false && this.$store.getters.jsonResponse!='' && this.$store.getters.currentLanguage=='sparql'">
         </grid>
         <div v-if="this.$store.getters.error==true"> {{ this.$store.getters.errorMessage }} </div>
     </div>

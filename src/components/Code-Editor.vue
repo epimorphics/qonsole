@@ -49,7 +49,13 @@ export default {
         onCmCodeChange(newCode) {
             // Write in console for debugging purposes 
             // console.log('this is new code', newCode)
-            this.$store.commit('updateSPARQLCode', newCode)
+            switch (this.language){
+                case "turtle":
+                    this.$store.commit('updateTurtleCode', newCode)
+                    break; 
+                case "sparql":
+                    this.$store.commit('updateSPARQLCode', newCode)
+            }
             // this.code = newCode
         },
         clearEditor() {
@@ -66,10 +72,10 @@ export default {
         // you can use this.codemirror to do something...
         switch (this.language) {
             case "sparql":
-                this.code = 'PREFIX foaf:  <http://xmlns.com/foaf/0.1/>'
+                this.code = this.$store.getters.SPARQLCode
                 break; 
             case "turtle":
-                this.code = '@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .'
+                this.code = this.$store.getters.turtleCode 
         }
     }
 }
