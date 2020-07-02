@@ -1,19 +1,29 @@
 <template>
     <div>
-        Example datasheets: 
-        <CodeEditor :language="language" 
-                    ref="codeEditor" />
-        <label for="endpoint">SPARQL Endpoint: </label>
-        <input type="text" id="endpoint" name="endpoint" v-model="endpoint">
-        <input type="file" @change="loadTextFromFile">
-        <Buttons :language="language" 
-                 @buttonClicked="buttonClicked" />
-        <select v-model="resultTypes.selectedOption">
-            <option v-for="type in resultTypes.options" 
-                    :value="type" 
-                    :key="type"> {{ type }} </option>
-        </select>
-        <Output ref="output" />
+        <div v-show="!rdfsparql">
+            Example datasheets: 
+            <CodeEditor :language="language" 
+                        ref="codeEditor" />
+            <label for="endpoint">Query from: </label>
+            <input type="text" id="endpoint" name="endpoint" v-model="endpoint">
+            <input type="file" @change="loadTextFromFile">
+            <Buttons :language="language" 
+                    @buttonClicked="buttonClicked" />
+            <select v-model="resultTypes.selectedOption">
+                <option v-for="type in resultTypes.options" 
+                        :value="type" 
+                        :key="type"> {{ type }} </option>
+            </select>
+            <Output ref="output" />
+        </div>
+        <div v-show="rdfsparql">
+            Example datasheets: 
+            <CodeEditor :language="language" 
+                        ref="codeEditor" />
+            <input type="file" @change="loadTextFromFile">
+            <Buttons :language="'rdfsparql'" 
+                    @buttonClicked="buttonClicked" />
+        </div>
     </div>
 </template>
 <script>
@@ -31,6 +41,7 @@ export default {
         Buttons,
         Output
     },
+    props: ['rdfsparql'], 
     store: store, 
     data () {
         return {
@@ -45,7 +56,7 @@ export default {
         buttonClicked (button) {
             switch (button) {
                 case "Clear":
-                    this.$refs.codeEditor.clearEditor();
+                    this.$store.commit('updateSPARQLCode','')
                     break;
                 case "Perform Query":
                     // Get code from code mirror 
@@ -65,6 +76,8 @@ export default {
                     var blob = new Blob([this.$store.getters.SPARQLCode], {type: "text/plain;charset=utf-8"})
                     saveAs(blob, 'query.txt')
                     break; 
+                case "Query Store":
+                    this.$store.commit('queryStore')
             }
         }, 
         loadTextFromFile: function (ev) {

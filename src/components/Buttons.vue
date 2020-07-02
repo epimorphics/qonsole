@@ -27,6 +27,9 @@ export default {
                 break; 
             case 'turtle':
                 this.buttonFunctions = ['Clear', 'Load']
+                break;
+            case 'rdfsparql':
+                this.buttonFunctions = ['Clear', 'Query Store', 'Save Query']
         }
     }
 }

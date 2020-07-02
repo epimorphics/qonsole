@@ -3,8 +3,9 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const N3 = require('n3');
+// const N3 = require('n3');
 // const rdfstore = new N3.Store()
+var rdfStore = require('rdfstore');
 
 const store = new Vuex.Store({
   state: {
@@ -18,7 +19,12 @@ const store = new Vuex.Store({
     // RDF 
     turtleCode: '',
     prefixes: [], 
-    rdfstore: new N3.Store(),
+    rdfstore: new rdfStore.Store(function(err, store) {
+      // the new store is ready
+      console.log(err)
+      return store 
+    }),
+    storeQueryResult: [], 
 
     // SPARQL
     SPARQLCode: '',
@@ -51,14 +57,30 @@ const store = new Vuex.Store({
     },
     clearTurtleStore (state) {
       state.prefixes = []
-      state.rdfstore = new N3.Store()
+      state.rdfstore = new rdfStore.Store(function(err, store) {
+        console.log(err)
+        return store
+      });
     },
-    populateRDFStore (state, quad){
-      state.rdfstore.addQuad(quad)
-    },
+    // populateRDFStore (state, quad){
+    //   state.rdfstore.addQuad(quad)
+    // },
+    loadRDF (state) {
+      state.rdfstore.load("text/turtle", state.turtleCode, function(err){ console.log(err) })
+    }, 
     updateSelectedPrefixes (state, prefixes) {
       state.selectedPrefixes = prefixes
     },
+    queryStore (state) {
+      state.rdfstore.execute(state.SPARQLCode, function(err,results) {
+        if (err) {
+          console.log(err)
+        } else {
+          state.storeQueryResult = results 
+          console.log(state.storeQueryResult)
+        }
+      })
+    }
   },
   getters: {
       SPARQLCode: state => state.SPARQLCode,
@@ -70,7 +92,8 @@ const store = new Vuex.Store({
       prefixes: state => state.prefixes,
       rdfstore: state => state.rdfstore,
       selectedPrefixes: state => state.selectedPrefixes,
-      fileText: state => state.fileText
+      fileText: state => state.fileText,
+      storeQueryResult: state  => state.storeQueryResult
   }
 })
 
