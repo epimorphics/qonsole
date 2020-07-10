@@ -29,6 +29,7 @@ const store = new Vuex.Store({
     // SPARQL
     SPARQLCode: '',
     jsonResponse: '',
+    savedQueries: [], 
 
     // Prefixes 
     selectedPrefixes: []
@@ -62,9 +63,6 @@ const store = new Vuex.Store({
         return store
       });
     },
-    // populateRDFStore (state, quad){
-    //   state.rdfstore.addQuad(quad)
-    // },
     loadRDF (state) {
       state.rdfstore.load("text/turtle", state.turtleCode, function(err){ console.log(err) })
     }, 
@@ -80,6 +78,10 @@ const store = new Vuex.Store({
           console.log(state.storeQueryResult)
         }
       })
+    },
+    addQueryToSavedQueries (state) {
+      var query = {id: state.savedQueries.length, queryText: state.SPARQLCode, queryResult: state.queryResult}
+      state.savedQueries.push(query)
     }
   },
   getters: {
@@ -93,7 +95,8 @@ const store = new Vuex.Store({
       rdfstore: state => state.rdfstore,
       selectedPrefixes: state => state.selectedPrefixes,
       fileText: state => state.fileText,
-      storeQueryResult: state  => state.storeQueryResult
+      storeQueryResult: state  => state.storeQueryResult,
+      savedQueries: state => state.savedQueries
   }
 })
 

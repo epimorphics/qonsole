@@ -26,7 +26,7 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/sparql/sparql.js'
 import 'codemirror/mode/turtle/turtle.js'
 import 'codemirror/theme/base16-light.css'
-import store from '@/store.js'
+import store from '@/store/store.js'
 
 export default {
     name: 'CodeEditor',
@@ -78,14 +78,6 @@ export default {
     },
     mounted() {
         console.log('the current CodeMirror instance object:', this.codemirror)
-        // you can use this.codemirror to do something...
-        switch (this.language) {
-            case "sparql":
-                this.code = this.$store.getters.SPARQLCode
-                break; 
-            case "turtle":
-                this.code = this.$store.getters.turtleCode 
-        }
     }
 }
 

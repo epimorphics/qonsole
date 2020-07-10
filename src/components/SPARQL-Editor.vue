@@ -1,7 +1,6 @@
 <template>
     <div>
         <div v-show="!rdfsparql">
-            Example datasheets: 
             <CodeEditor :language="language" 
                         ref="codeEditor" />
             <label for="endpoint">Query from: </label>
@@ -17,7 +16,6 @@
             <Output ref="output" />
         </div>
         <div v-show="rdfsparql">
-            Example datasheets: 
             <CodeEditor :language="language" 
                         ref="codeEditor" />
             <input type="file" @change="loadTextFromFile">
@@ -31,7 +29,7 @@ import CodeEditor from './Code-Editor.vue'
 import Buttons from './Buttons.vue'
 import Output from './Output.vue'
 import {makeQuery, sendQuery} from '@/query.js'
-import store from '@/store.js'
+import store from '@/store/store.js'
 import {saveAs} from 'file-saver'
 
 export default {
@@ -49,7 +47,7 @@ export default {
             endpoint: 'http://dbpedia.org/sparql',
             resultTypes: { options: ['JSON'],
                            selectedOption: 'JSON'} ,
-            file: null
+            file: null,
         }
     },
     methods: {
@@ -60,7 +58,6 @@ export default {
                     break;
                 case "Perform Query":
                     // Get code from code mirror 
-                    // this.$refs.codeEditor.sendContent(); 
                     // Send SPARQL query to SPARQL endpoint with the user decided output format
                     var queryURL = makeQuery(this.$store.getters.SPARQLCode, this.endpoint, this.resultTypes.selectedOption)
                     var rawResponse = sendQuery(queryURL)
@@ -72,12 +69,15 @@ export default {
                         this.$store.commit('updateErrorMessage', rawResponse)
                     }
                     break; 
-                case "Save Query":
+                case "Save Query To Local":
                     var blob = new Blob([this.$store.getters.SPARQLCode], {type: "text/plain;charset=utf-8"})
                     saveAs(blob, 'query.txt')
                     break; 
                 case "Query Store":
                     this.$store.commit('queryStore')
+                    break; 
+                case "Save Query For Later":
+                    this.$store.commit('addQueryToSavedQueries')
             }
         }, 
         loadTextFromFile: function (ev) {

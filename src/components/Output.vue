@@ -14,7 +14,7 @@
 </template>
 <script>
 import Grid from 'gridjs-vue'
-import store from '@/store.js'
+import store from '@/store/store.js'
 
 
 export default {

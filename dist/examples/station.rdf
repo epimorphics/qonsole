@@ -1,0 +1,732 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:dbpo="http://dbpedia.org/ontology/"
+    xmlns:schema="http://schema.org/"
+    xmlns:lu-line="http://training.epimorphics.com/transport/london-underground/line/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:j.0="http://a9.com/-/spec/opensearch/1.1/"
+    xmlns:dct="http://purl.org/dc/terms/"
+    xmlns:lu-station="http://training.epimorphics.com/transport/london-underground/station/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:j.1="http://www.w3.org/1999/xhtml/vocab#"
+    xmlns:api="http://purl.org/linked-data/api/vocab#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:metro="http://training.epimorphics.com/transport/def/metro/">
+  <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/angel">
+    <metro:incomingConnection>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/northern_line/old_street/angel">
+        <rdfs:label>Connection from Old Street to Angel along the Northern Line</rdfs:label>
+        <metro:onLine>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/line/northern_line">
+            <rdfs:label>Northern Line</rdfs:label>
+          </rdf:Description>
+        </metro:onLine>
+        <metro:fromStop>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/old_street">
+            <rdfs:label>Old Street</rdfs:label>
+          </rdf:Description>
+        </metro:fromStop>
+      </rdf:Description>
+    </metro:incomingConnection>
+    <metro:incomingConnection>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/northern_line/kings_cross_st_pancras/angel">
+        <rdfs:label>Connection from King's Cross St. Pancras to Angel along the Northern Line</rdfs:label>
+        <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/northern_line"/>
+        <metro:fromStop>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/kings_cross_st_pancras">
+            <rdfs:label>King's Cross St. Pancras</rdfs:label>
+          </rdf:Description>
+        </metro:fromStop>
+      </rdf:Description>
+    </metro:incomingConnection>
+    <metro:nearbyTo>
+      <schema:Museum rdf:about="http://training.epimorphics.com/culture/london/museum/Sartorial_Contemporary_Art">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Museum"/>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.101599</geo:long>
+        <rdfs:label>Sartorial Contemporary Art</rdfs:label>
+        <owl:sameAs rdf:resource="http://dbpedia.org/resource/Sartorial_Contemporary_Art"/>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.528642</geo:lat>
+        <rdfs:comment>Sartorial Contemporary Art is an artist run gallery founded in 2005 by Gretta Sarfaty Marchant, artist and curator, as a project-led space in central London, England. Originally based in an 18th century Georgian house on Kensington Church Street. Sartorial Contemporary Art moved to Kings Cross in October 2008 where it has built a reputation for embracing newly emerging artists.</rdfs:comment>
+        <rdf:type rdf:resource="http://schema.org/TouristAttraction"/>
+        <rdf:type rdf:resource="http://schema.org/Place"/>
+        <metro:nearestUndergroundStationDistance rdf:datatype=
+        "http://www.w3.org/2001/XMLSchema#integer">491</metro:nearestUndergroundStationDistance>
+        <metro:nearestUndergroundStation rdf:resource="http://training.epimorphics.com/transport/london-underground/station/angel"/>
+      </schema:Museum>
+    </metro:nearbyTo>
+    <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+    >-0.1058</geo:long>
+    <rdfs:label>Angel</rdfs:label>
+    <metro:outgoingConnection>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/northern_line/angel/old_street">
+        <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/old_street"/>
+        <rdfs:label>Connection from Angel to Old Street along the Northern Line</rdfs:label>
+        <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/northern_line"/>
+      </rdf:Description>
+    </metro:outgoingConnection>
+    <metro:outgoingConnection>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/northern_line/angel/kings_cross_st_pancras">
+        <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/kings_cross_st_pancras"/>
+        <rdfs:label>Connection from Angel to King's Cross St. Pancras along the Northern Line</rdfs:label>
+        <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/northern_line"/>
+      </rdf:Description>
+    </metro:outgoingConnection>
+    <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+    >51.5322</geo:lat>
+  </rdf:Description>
+  <api:ListEndpoint rdf:about="http://training.epimorphics.com/transport/london-underground/station.rdf">
+    <dct:isPartOf rdf:resource="http://training.epimorphics.com/transport/london-underground/station.rdf"/>
+    <rdf:type rdf:resource="http://purl.org/linked-data/api/vocab#Page"/>
+    <api:definition rdf:resource="http://training.epimorphics.com/transport/meta/london-underground/station.rdf"/>
+    <j.0:startIndex rdf:datatype="http://www.w3.org/2001/XMLSchema#long"
+    >1</j.0:startIndex>
+    <j.1:next rdf:resource="http://training.epimorphics.com/transport/london-underground/station.rdf?_page=1"/>
+    <j.1:first rdf:resource="http://training.epimorphics.com/transport/london-underground/station.rdf?_page=0"/>
+    <api:items rdf:parseType="Collection">
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/acton_town">
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/district_line/ealing_common/acton_town">
+            <rdfs:label>Connection from Ealing Common to Acton Town along the District Line</rdfs:label>
+            <metro:onLine>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/line/district_line">
+                <rdfs:label>District Line</rdfs:label>
+              </rdf:Description>
+            </metro:onLine>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/ealing_common">
+                <rdfs:label>Ealing Common</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/district_line/acton_town/ealing_common">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/ealing_common"/>
+            <rdfs:label>Connection from Acton Town to Ealing Common along the District Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/district_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <rdfs:label>Acton Town</rdfs:label>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.5028</geo:lat>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/turnham_green/acton_town">
+            <rdfs:label>Connection from Turnham Green to Acton Town along the Piccadilly Line</rdfs:label>
+            <metro:onLine>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line">
+                <rdfs:label>Piccadilly Line</rdfs:label>
+              </rdf:Description>
+            </metro:onLine>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/turnham_green">
+                <rdfs:label>Turnham Green</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/south_ealing/acton_town">
+            <rdfs:label>Connection from South Ealing to Acton Town along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/south_ealing">
+                <rdfs:label>South Ealing</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/acton_town/turnham_green">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/turnham_green"/>
+            <rdfs:label>Connection from Acton Town to Turnham Green along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/acton_town/ealing_common">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/ealing_common"/>
+            <rdfs:label>Connection from Acton Town to Ealing Common along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/district_line/chiswick_park/acton_town">
+            <rdfs:label>Connection from Chiswick Park to Acton Town along the District Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/district_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/chiswick_park">
+                <rdfs:label>Chiswick Park</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.2801</geo:long>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/district_line/acton_town/chiswick_park">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/chiswick_park"/>
+            <rdfs:label>Connection from Acton Town to Chiswick Park along the District Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/district_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/ealing_common/acton_town">
+            <rdfs:label>Connection from Ealing Common to Acton Town along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/ealing_common"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/acton_town/south_ealing">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/south_ealing"/>
+            <rdfs:label>Connection from Acton Town to South Ealing along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/aldgate">
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/metropolitan_line/liverpool_street/aldgate">
+            <rdfs:label>Connection from Liverpool Street to Aldgate along the Metropolitan Line</rdfs:label>
+            <metro:onLine>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/line/metropolitan_line">
+                <rdfs:label>Metropolitan Line</rdfs:label>
+              </rdf:Description>
+            </metro:onLine>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/liverpool_street">
+                <rdfs:label>Liverpool Street</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/circle_line/tower_hill/aldgate">
+            <rdfs:label>Connection from Tower Hill to Aldgate along the Circle Line</rdfs:label>
+            <metro:onLine>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/line/circle_line">
+                <rdfs:label>Circle Line</rdfs:label>
+              </rdf:Description>
+            </metro:onLine>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/tower_hill">
+                <rdfs:label>Tower Hill</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/circle_line/liverpool_street/aldgate">
+            <rdfs:label>Connection from Liverpool Street to Aldgate along the Circle Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/circle_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/liverpool_street"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.0755</geo:long>
+        <rdfs:label>Aldgate</rdfs:label>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/metropolitan_line/aldgate/liverpool_street">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/liverpool_street"/>
+            <rdfs:label>Connection from Aldgate to Liverpool Street along the Metropolitan Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/metropolitan_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/circle_line/aldgate/tower_hill">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/tower_hill"/>
+            <rdfs:label>Connection from Aldgate to Tower Hill along the Circle Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/circle_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/circle_line/aldgate/liverpool_street">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/liverpool_street"/>
+            <rdfs:label>Connection from Aldgate to Liverpool Street along the Circle Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/circle_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.5143</geo:lat>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/aldgate_east">
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/hammersmith_and_city_line/liverpool_street/aldgate_east">
+            <rdfs:label>Connection from Liverpool Street to Aldgate East along the Hammersmith &amp; City Line</rdfs:label>
+            <metro:onLine>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/line/hammersmith_and_city_line">
+                <rdfs:label>Hammersmith &amp; City Line</rdfs:label>
+              </rdf:Description>
+            </metro:onLine>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/liverpool_street"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/hammersmith_and_city_line/aldgate_east/liverpool_street">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/liverpool_street"/>
+            <rdfs:label>Connection from Aldgate East to Liverpool Street along the Hammersmith &amp; City Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/hammersmith_and_city_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/district_line/aldgate_east/tower_hill">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/tower_hill"/>
+            <rdfs:label>Connection from Aldgate East to Tower Hill along the District Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/district_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <rdfs:label>Aldgate East</rdfs:label>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.5154</geo:lat>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/district_line/tower_hill/aldgate_east">
+            <rdfs:label>Connection from Tower Hill to Aldgate East along the District Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/district_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/tower_hill"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/hammersmith_and_city_line/whitechapel/aldgate_east">
+            <rdfs:label>Connection from Whitechapel to Aldgate East along the Hammersmith &amp; City Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/hammersmith_and_city_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/whitechapel">
+                <rdfs:label>Whitechapel</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.0726</geo:long>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/district_line/whitechapel/aldgate_east">
+            <rdfs:label>Connection from Whitechapel to Aldgate East along the District Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/district_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/whitechapel"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:nearbyTo>
+          <schema:Museum rdf:about="http://training.epimorphics.com/culture/london/museum/Whitechapel_Gallery">
+            <rdfs:label>Whitechapel Gallery</rdfs:label>
+            <rdfs:comment>The Whitechapel Gallery is a public art gallery on the north side of Whitechapel High Street, in the London Borough of Tower Hamlets. Designed by Charles Harrison Townsend, it was founded in 1901 as one of the first publicly funded galleries for temporary exhibitions in London, and it has a long track record for education and outreach projects, now focused on the Whitechapel area's deprived populations.</rdfs:comment>
+            <metro:nearestUndergroundStationDistance rdf:datatype=
+            "http://www.w3.org/2001/XMLSchema#integer">160</metro:nearestUndergroundStationDistance>
+            <rdf:type rdf:resource="http://dbpedia.org/ontology/Museum"/>
+            <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+            >-0.070485</geo:long>
+            <owl:sameAs rdf:resource="http://dbpedia.org/resource/Whitechapel_Gallery"/>
+            <metro:nearestUndergroundStation rdf:resource="http://training.epimorphics.com/transport/london-underground/station/aldgate_east"/>
+            <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+            >51.515984</geo:lat>
+            <rdf:type rdf:resource="http://schema.org/TouristAttraction"/>
+            <rdf:type rdf:resource="http://schema.org/Place"/>
+          </schema:Museum>
+        </metro:nearbyTo>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/district_line/aldgate_east/whitechapel">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/whitechapel"/>
+            <rdfs:label>Connection from Aldgate East to Whitechapel along the District Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/district_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/hammersmith_and_city_line/aldgate_east/whitechapel">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/whitechapel"/>
+            <rdfs:label>Connection from Aldgate East to Whitechapel along the Hammersmith &amp; City Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/hammersmith_and_city_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/alperton">
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/sudbury_town/alperton">
+            <rdfs:label>Connection from Sudbury Town to Alperton along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/sudbury_town">
+                <rdfs:label>Sudbury Town</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/park_royal/alperton">
+            <rdfs:label>Connection from Park Royal to Alperton along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/park_royal">
+                <rdfs:label>Park Royal</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.2997</geo:long>
+        <rdfs:label>Alperton</rdfs:label>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/alperton/sudbury_town">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/sudbury_town"/>
+            <rdfs:label>Connection from Alperton to Sudbury Town along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/alperton/park_royal">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/park_royal"/>
+            <rdfs:label>Connection from Alperton to Park Royal along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.5407</geo:lat>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/amersham">
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/metropolitan_line/chalfont_and_latimer/amersham">
+            <rdfs:label>Connection from Chalfont &amp; Latimer to Amersham along the Metropolitan Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/metropolitan_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/chalfont_and_latimer">
+                <rdfs:label>Chalfont &amp; Latimer</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.607</geo:long>
+        <rdfs:label>Amersham</rdfs:label>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/metropolitan_line/amersham/chalfont_and_latimer">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/chalfont_and_latimer"/>
+            <rdfs:label>Connection from Amersham to Chalfont &amp; Latimer along the Metropolitan Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/metropolitan_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.6736</geo:lat>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/angel"/>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/archway">
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/northern_line/tufnell_park/archway">
+            <rdfs:label>Connection from Tufnell Park to Archway along the Northern Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/northern_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/tufnell_park">
+                <rdfs:label>Tufnell Park</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/northern_line/highgate/archway">
+            <rdfs:label>Connection from Highgate to Archway along the Northern Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/northern_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/highgate">
+                <rdfs:label>Highgate</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.1353</geo:long>
+        <rdfs:label>Archway</rdfs:label>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/northern_line/archway/tufnell_park">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/tufnell_park"/>
+            <rdfs:label>Connection from Archway to Tufnell Park along the Northern Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/northern_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/northern_line/archway/highgate">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/highgate"/>
+            <rdfs:label>Connection from Archway to Highgate along the Northern Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/northern_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.5653</geo:lat>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/arnos_grove">
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/southgate/arnos_grove">
+            <rdfs:label>Connection from Southgate to Arnos Grove along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/southgate">
+                <rdfs:label>Southgate</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/bounds_green/arnos_grove">
+            <rdfs:label>Connection from Bounds Green to Arnos Grove along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/bounds_green">
+                <rdfs:label>Bounds Green</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.1331</geo:long>
+        <rdfs:label>Arnos Grove</rdfs:label>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/arnos_grove/southgate">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/southgate"/>
+            <rdfs:label>Connection from Arnos Grove to Southgate along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/arnos_grove/bounds_green">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/bounds_green"/>
+            <rdfs:label>Connection from Arnos Grove to Bounds Green along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.6164</geo:lat>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/arsenal">
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/holloway_road/arsenal">
+            <rdfs:label>Connection from Holloway Road to Arsenal along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/holloway_road">
+                <rdfs:label>Holloway Road</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/finsbury_park/arsenal">
+            <rdfs:label>Connection from Finsbury Park to Arsenal along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/finsbury_park">
+                <rdfs:label>Finsbury Park</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.1059</geo:long>
+        <rdfs:label>Arsenal</rdfs:label>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/arsenal/holloway_road">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/holloway_road"/>
+            <rdfs:label>Connection from Arsenal to Holloway Road along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/piccadilly_line/arsenal/finsbury_park">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/finsbury_park"/>
+            <rdfs:label>Connection from Arsenal to Finsbury Park along the Piccadilly Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/piccadilly_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.5586</geo:lat>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/baker_street">
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/metropolitan_line/baker_street/great_portland_street">
+            <metro:toStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/great_portland_street">
+                <rdfs:label>Great Portland Street</rdfs:label>
+              </rdf:Description>
+            </metro:toStop>
+            <rdfs:label>Connection from Baker Street to Great Portland Street along the Metropolitan Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/metropolitan_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/metropolitan_line/baker_street/finchley_road">
+            <metro:toStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/finchley_road">
+                <rdfs:label>Finchley Road</rdfs:label>
+              </rdf:Description>
+            </metro:toStop>
+            <rdfs:label>Connection from Baker Street to Finchley Road along the Metropolitan Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/metropolitan_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/circle_line/great_portland_street/baker_street">
+            <rdfs:label>Connection from Great Portland Street to Baker Street along the Circle Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/circle_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/great_portland_street"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/jubilee_line/baker_street/bond_street">
+            <metro:toStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/bond_street">
+                <rdfs:label>Bond Street</rdfs:label>
+              </rdf:Description>
+            </metro:toStop>
+            <rdfs:label>Connection from Baker Street to Bond Street along the Jubilee Line</rdfs:label>
+            <metro:onLine>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/line/jubilee_line">
+                <rdfs:label>Jubilee Line</rdfs:label>
+              </rdf:Description>
+            </metro:onLine>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/bakerloo_line/baker_street/regents_park">
+            <metro:toStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/regents_park">
+                <rdfs:label>Regent's Park</rdfs:label>
+              </rdf:Description>
+            </metro:toStop>
+            <rdfs:label>Connection from Baker Street to Regent's Park along the Bakerloo Line</rdfs:label>
+            <metro:onLine>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/line/bakerloo_line">
+                <rdfs:label>Bakerloo Line</rdfs:label>
+              </rdf:Description>
+            </metro:onLine>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/circle_line/baker_street/edgware_road_cir">
+            <metro:toStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/edgware_road_cir">
+                <rdfs:label>Edgware Road (Cir)</rdfs:label>
+              </rdf:Description>
+            </metro:toStop>
+            <rdfs:label>Connection from Baker Street to Edgware Road (Cir) along the Circle Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/circle_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/hammersmith_and_city_line/baker_street/edgware_road_cir">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/edgware_road_cir"/>
+            <rdfs:label>Connection from Baker Street to Edgware Road (Cir) along the Hammersmith &amp; City Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/hammersmith_and_city_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <rdfs:label>Baker Street</rdfs:label>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/jubilee_line/st_johns_wood/baker_street">
+            <rdfs:label>Connection from St. John's Wood to Baker Street along the Jubilee Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/jubilee_line"/>
+            <metro:fromStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/st_johns_wood">
+                <rdfs:label>St. John's Wood</rdfs:label>
+              </rdf:Description>
+            </metro:fromStop>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/hammersmith_and_city_line/edgware_road_cir/baker_street">
+            <rdfs:label>Connection from Edgware Road (Cir) to Baker Street along the Hammersmith &amp; City Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/hammersmith_and_city_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/edgware_road_cir"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/bakerloo_line/baker_street/marylebone">
+            <metro:toStop>
+              <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/station/marylebone">
+                <rdfs:label>Marylebone</rdfs:label>
+              </rdf:Description>
+            </metro:toStop>
+            <rdfs:label>Connection from Baker Street to Marylebone along the Bakerloo Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/bakerloo_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/bakerloo_line/marylebone/baker_street">
+            <rdfs:label>Connection from Marylebone to Baker Street along the Bakerloo Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/bakerloo_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/marylebone"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/hammersmith_and_city_line/great_portland_street/baker_street">
+            <rdfs:label>Connection from Great Portland Street to Baker Street along the Hammersmith &amp; City Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/hammersmith_and_city_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/great_portland_street"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:lat rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >51.5226</geo:lat>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/hammersmith_and_city_line/baker_street/great_portland_street">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/great_portland_street"/>
+            <rdfs:label>Connection from Baker Street to Great Portland Street along the Hammersmith &amp; City Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/hammersmith_and_city_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/metropolitan_line/finchley_road/baker_street">
+            <rdfs:label>Connection from Finchley Road to Baker Street along the Metropolitan Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/metropolitan_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/finchley_road"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/circle_line/baker_street/great_portland_street">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/great_portland_street"/>
+            <rdfs:label>Connection from Baker Street to Great Portland Street along the Circle Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/circle_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/bakerloo_line/regents_park/baker_street">
+            <rdfs:label>Connection from Regent's Park to Baker Street along the Bakerloo Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/bakerloo_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/regents_park"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/metropolitan_line/great_portland_street/baker_street">
+            <rdfs:label>Connection from Great Portland Street to Baker Street along the Metropolitan Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/metropolitan_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/great_portland_street"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:outgoingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/jubilee_line/baker_street/st_johns_wood">
+            <metro:toStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/st_johns_wood"/>
+            <rdfs:label>Connection from Baker Street to St. John's Wood along the Jubilee Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/jubilee_line"/>
+          </rdf:Description>
+        </metro:outgoingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/circle_line/edgware_road_cir/baker_street">
+            <rdfs:label>Connection from Edgware Road (Cir) to Baker Street along the Circle Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/circle_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/edgware_road_cir"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <metro:incomingConnection>
+          <rdf:Description rdf:about="http://training.epimorphics.com/transport/london-underground/connection/jubilee_line/bond_street/baker_street">
+            <rdfs:label>Connection from Bond Street to Baker Street along the Jubilee Line</rdfs:label>
+            <metro:onLine rdf:resource="http://training.epimorphics.com/transport/london-underground/line/jubilee_line"/>
+            <metro:fromStop rdf:resource="http://training.epimorphics.com/transport/london-underground/station/bond_street"/>
+          </rdf:Description>
+        </metro:incomingConnection>
+        <geo:long rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal"
+        >-0.1571</geo:long>
+      </rdf:Description>
+    </api:items>
+    <j.0:itemsPerPage rdf:datatype="http://www.w3.org/2001/XMLSchema#long"
+    >10</j.0:itemsPerPage>
+    <api:page rdf:datatype="http://www.w3.org/2001/XMLSchema#long"
+    >0</api:page>
+    <dct:hasPart rdf:resource="http://training.epimorphics.com/transport/london-underground/station.rdf"/>
+    <api:extendedMetadataVersion rdf:resource="http://training.epimorphics.com/transport/london-underground/station.rdf?_metadata=all"/>
+  </api:ListEndpoint>
+</rdf:RDF>

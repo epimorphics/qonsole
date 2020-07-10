@@ -23,13 +23,13 @@ export default {
     mounted() {
         switch (this.language) {
             case 'sparql':
-                this.buttonFunctions = ['Clear', 'Perform Query', 'Save Query']
+                this.buttonFunctions = ['Clear', 'Perform Query', 'Save Query To Local', 'Save Query For Later']
                 break; 
             case 'turtle':
                 this.buttonFunctions = ['Clear', 'Load']
                 break;
             case 'rdfsparql':
-                this.buttonFunctions = ['Clear', 'Query Store', 'Save Query']
+                this.buttonFunctions = ['Clear', 'Query Store', 'Save Query To Local', 'Save Query For Later']
         }
     }
 }

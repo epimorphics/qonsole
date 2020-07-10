@@ -2,21 +2,21 @@
 <div>
     <Multipane class="vertical-panes" layout="vertical">
         <div class="pane" >
+            <h3>RDF Editor</h3>
             <CodeEditor :language="language" 
             ref="codeEditor" 
             @sendCode="code = $event" />
             <input type="file" @change="loadTextFromFile">
-            <p v-show="rdfstoreSize > 0"> Loaded triples: {{ rdfstoreSize }} </p>
             <Buttons :language="language"
                 @buttonClicked="buttonClicked" /> 
-            <Output />
         </div>
         <MultipaneResizer></MultipaneResizer>
         <div class="pane" >
+            <h3>SPARQL Editor</h3>
             <SPARQLEditor :rdfsparql="rdfsparql"/>
         </div>
     </Multipane>        
-    <grid :cols="getVariables(this.$store.getters.storeQueryResult)" :rows="getRows(this.$store.getters.storeQueryResult)" 
+    <grid :cols="resultCol" :rows="resultRow" 
           :auto-width="autoWidth"
           :language="{}"
           :pagination="pagination"
@@ -30,34 +30,10 @@
 <script>
 import CodeEditor from './Code-Editor.vue'
 import Buttons from './Buttons.vue' 
-import Output from './Output.vue'
-import store from '@/store.js'
+import store from '@/store/store.js'
 import { Multipane, MultipaneResizer } from 'vue-multipane'
 import SPARQLEditor from './SPARQL-Editor.vue'
 import Grid from 'gridjs-vue'
-
-// const N3 = require('n3');
-
-// function parseTurtle(code) {
-//     // const parser = new N3.Parser();
-//     // parser.parse(code, 
-//     //     (error, quad, prefixes) => {
-//     //         if (error) {
-//     //             store.commit('changeError', true)
-//     //             store.commit('updateErrorMessage', error)
-//     //             return error 
-//     //         } else if (prefixes) {
-//     //             var entries = Object.entries(prefixes)
-//     //             console.log(entries)
-//     //             for (var i = 0; i < entries.length; i++) {
-//     //                 store.commit('addPrefix', entries[i])
-//     //             }
-//     //         } else {
-//     //             store.commit('populateRDFStore', quad)
-//     //         }
-//     //     })
-//     store.
-// }
 
 export default {
     name: 'RDFEditor',
@@ -66,7 +42,6 @@ export default {
         MultipaneResizer, 
         CodeEditor,
         Buttons,
-        Output,
         SPARQLEditor,
         Grid
     },
@@ -138,8 +113,11 @@ export default {
         this.$store.commit('updateCurrentLanguage', this.language)
     },
     computed: {
-        rdfstoreSize: function () {
-            return this.$store.getters.rdfstore.size
+        resultCol: function () {
+            return this.getVariables(this.$store.getters.storeQueryResult)
+        },
+        resultRow: function () {
+            return this.getRows(this.$store.getters.storeQueryResult)
         }
     }
 }
@@ -150,7 +128,7 @@ div {
 }
 .vertical-panes {
   width: 100%;
-  height: 400px;
+  height: 450px;
   border: 1px solid #ccc;
 }
 .vertical-panes > .pane {
