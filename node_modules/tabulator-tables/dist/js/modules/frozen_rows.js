@@ -1,4 +1,4 @@
-/* Tabulator v4.7.1 (c) Oliver Folkerd */
+/* Tabulator v4.7.2 (c) Oliver Folkerd */
 
 var FrozenRows = function FrozenRows(table) {
 	this.table = table; //hold Tabulator object
@@ -70,12 +70,9 @@ FrozenRows.prototype.unfreezeRow = function (row) {
 
 		row.modules.frozen = false;
 
-		var rowEl = row.getElement();
-		rowEl.parentNode.removeChild(rowEl);
+		this.detachRow(row);
 
 		this.table.rowManager.adjustTableSize();
-
-		this.rows.splice(index, 1);
 
 		this.table.rowManager.refreshActiveData("display");
 
@@ -84,6 +81,17 @@ FrozenRows.prototype.unfreezeRow = function (row) {
 		}
 	} else {
 		console.warn("Freeze Error - Row is already unfrozen");
+	}
+};
+
+FrozenRows.prototype.detachRow = function (row) {
+	var index = this.rows.indexOf(row);
+
+	if (index > -1) {
+		var rowEl = row.getElement();
+		rowEl.parentNode.removeChild(rowEl);
+
+		this.rows.splice(index, 1);
 	}
 };
 

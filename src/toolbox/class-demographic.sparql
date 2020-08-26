@@ -1,0 +1,4 @@
+SELECT ?class (count(distinct ?t) as ?count) 
+WHERE {
+    ?t a ?class .
+} GROUP BY ?class ORDER BY desc(?count) 

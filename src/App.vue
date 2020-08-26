@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Welcome to {{ appTitle }}</h1>
+    <img src="@/assets/logo.png" id="logo"/>
     <AppNav/>
   </div>
 </template>
@@ -29,5 +29,9 @@ export default {
   text-align: left;
   color: #2c3e50;
   margin-top: 60px;
+}
+#logo {
+  width: 220px;
+  height: 46px; 
 }
 </style>

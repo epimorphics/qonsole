@@ -1,28 +1,41 @@
 <template>
     <div>
-        <grid :cols="getVariables(this.$store.getters.jsonResponse)" :rows="deconstructJSON(this.$store.getters.jsonResponse)" 
-              :auto-width="autoWidth"
-              :language="language"
-              :pagination="pagination"
-              :search="search"
-              :sort="sort"
-              :width="width"
-              v-if="this.$store.getters.error==false && this.$store.getters.jsonResponse!='' && this.$store.getters.currentLanguage=='sparql'">
-        </grid>
-        <div v-if="this.$store.getters.error==true"> {{ this.$store.getters.errorMessage }} </div>
+        <div v-show="this.$store.getters['sparqlEditorStore/remoteResultIsReady'] && mode=='sparql'">
+            Query time: {{this.$store.getters['sparqlEditorStore/remoteResultTime']}} ms.
+            <grid :cols="this.$store.getters['sparqlEditorStore/remoteResultCols']"
+                  :rows="this.$store.getters['sparqlEditorStore/remoteResultRows']"
+                  :auto-width="autoWidth"
+                  :language="language"
+                  :pagination="pagination"
+                  :search="search"
+                  :sort="sort"
+                  :width="width" />
+        </div>
+        <div v-show="this.$store.getters['sparqlEditorStore/localResultIsReady']&&mode=='turtle'">
+            Query time: {{this.$store.getters['sparqlEditorStore/localResultTime']}} ms.
+            <grid :cols="this.$store.getters['sparqlEditorStore/localResultCols']"
+                  :rows="this.$store.getters['sparqlEditorStore/localResultRows']"
+                  :auto-width="autoWidth"
+                  :language="language"
+                  :pagination="pagination"
+                  :search="search"
+                  :sort="sort"
+                  :width="width" />
+        </div>
     </div>
 </template>
 <script>
 import Grid from 'gridjs-vue'
-import store from '@/store/store.js'
 
+import store from '@/store/store.js'
 
 export default {
     name: 'Output',
-    components: { 
-        Grid 
-    }, 
+    components: {
+        Grid
+    },
     store: store, 
+    props: ['mode'], 
     data () {
         return {
             autoWidth: true,
@@ -35,26 +48,7 @@ export default {
         }
     },
     methods: {
-        deconstructJSON: function (jsonResponse) {
-            const variables = jsonResponse.head.vars 
-            const listOfResults = jsonResponse.results.bindings 
-            var results = new Array(listOfResults.length)
 
-            for (var i = 0; i < listOfResults.length; i++) {
-                var entries = Object.entries(listOfResults[i])
-                var temp = new Array(listOfResults.length)
-                for (var j = 0; j < variables.length; j++) {
-                    temp[j] = entries[j][1].value 
-                }
-                results[i] = temp
-            }
-            return results
-        },
-        getVariables: function (jsonResponse) {
-            return jsonResponse.head.vars
-        }
     }
 }
 </script>
-<style>
-</style>

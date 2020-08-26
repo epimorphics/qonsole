@@ -13,22 +13,21 @@
 </template>
 
 <script>
-// import CodeEditor from './Code-Editor.vue'
 import RDFEditor from './RDF-Editor.vue'
 import SPARQLEditor from './SPARQL-Editor.vue'
-import PrefixEditor from './Prefix-Editor.vue'
+// import PrefixEditor from './Prefix-Editor.vue'
 
 export default {
     name: 'AppNav',
     components: {
         RDFEditor,
         SPARQLEditor, 
-        PrefixEditor
+        // PrefixEditor
     },
     data () {
         return {
             currentTab: "RDFEditor",
-            tabs: ["RDFEditor", "SPARQLEditor","PrefixEditor"]
+            tabs: ["RDFEditor", "SPARQLEditor"]
         }
     },
     computed: {
@@ -48,9 +47,7 @@ export default {
   background: #f0f0f0;
   margin-bottom: -1px;
   margin-right: -1px;
-}
-.tab-button:hover {
-  background: #e0e0e0;
+  color: black;
 }
 .tab-button.active {
   background: #e0e0e0;

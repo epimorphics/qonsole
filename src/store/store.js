@@ -3,101 +3,23 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-// const N3 = require('n3');
-// const rdfstore = new N3.Store()
-var rdfStore = require('rdfstore');
+import rdfEditorStore from './modules/rdfeditor.store.js'
+import sparqlEditorStore from './modules/sparqleditor.store.js'
 
-const store = new Vuex.Store({
-  state: {
-    // Overall 
-    currentLanguage: '', 
-
-    // Error handling  
-    error: false,
-    errorMessage: '',
-
-    // RDF 
-    turtleCode: '',
-    prefixes: [], 
-    rdfstore: new rdfStore.Store(function(err, store) {
-      // the new store is ready
-      console.log(err)
-      return store 
-    }),
-    storeQueryResult: [], 
-
-    // SPARQL
-    SPARQLCode: '',
-    jsonResponse: '',
-    savedQueries: [], 
-
-    // Prefixes 
-    selectedPrefixes: []
-  },
-  mutations: {
-    updateSPARQLCode (state, newCode) {
-      state.SPARQLCode = newCode 
+export default new Vuex.Store({
+    modules: {
+        rdfEditorStore,
+        sparqlEditorStore, 
     },
-    updateTurtleCode (state, newCode) {
-      state.turtleCode = newCode
+    state: {
+        currentMode: '',
+    },
+    getters: {
+        currentMode: state => state.currentMode
     }, 
-    updateJSONResponse (state, newResponse) {
-      state.jsonResponse = newResponse
-    },
-    changeError (state, boolean) {
-      state.error = boolean 
-    },
-    updateErrorMessage (state, errorMessage) {
-      state.errorMessage = errorMessage
-    },
-    updateCurrentLanguage (state, newLanguage) {
-      state.currentLanguage = newLanguage
-    },
-    addPrefix (state, newPrefix) {
-      state.prefixes.push(newPrefix)
-    },
-    clearTurtleStore (state) {
-      state.prefixes = []
-      state.rdfstore = new rdfStore.Store(function(err, store) {
-        console.log(err)
-        return store
-      });
-    },
-    loadRDF (state) {
-      state.rdfstore.load("text/turtle", state.turtleCode, function(err){ console.log(err) })
-    }, 
-    updateSelectedPrefixes (state, prefixes) {
-      state.selectedPrefixes = prefixes
-    },
-    queryStore (state) {
-      state.rdfstore.execute(state.SPARQLCode, function(err,results) {
-        if (err) {
-          console.log(err)
-        } else {
-          state.storeQueryResult = results 
-          console.log(state.storeQueryResult)
+    mutations: {
+        updateCurrentMode (state, newMode) {
+            state.currentMode = newMode 
         }
-      })
-    },
-    addQueryToSavedQueries (state) {
-      var query = {id: state.savedQueries.length, queryText: state.SPARQLCode, queryResult: state.queryResult}
-      state.savedQueries.push(query)
     }
-  },
-  getters: {
-      SPARQLCode: state => state.SPARQLCode,
-      jsonResponse: state => state.jsonResponse, 
-      errorMessage: state => state.errorMessage,
-      error: state => state.error,
-      turtleCode: state => state.turtleCode, 
-      currentLanguage: state => state.currentLanguage,
-      prefixes: state => state.prefixes,
-      rdfstore: state => state.rdfstore,
-      selectedPrefixes: state => state.selectedPrefixes,
-      fileText: state => state.fileText,
-      storeQueryResult: state  => state.storeQueryResult,
-      savedQueries: state => state.savedQueries
-  }
 })
-
-export default store 
