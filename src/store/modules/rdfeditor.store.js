@@ -7,7 +7,6 @@ export default {
     state: {
         // Attributes of the rdfEditor component 
         turtleCode: '',
-        prefixes: [],
         rdfstore: new N3.Store(), 
         errorStatus: false, 
         errorMessage: '',
@@ -17,16 +16,12 @@ export default {
         errorStatus: state => state.errorStatus, 
         errorMessage: state => state.errorMessage,
         turtleCode: state => state.turtleCode,
-        prefixes: state => state.prefixes,
         resultsReady: state => state.resultsReady,
     },
     mutations: {
         // back-end functions 
         updateCode (state, newCode) {
             state.turtleCode = newCode 
-        },
-        updatePrefixes (state, newPrefixes) {
-            state.prefixes = newPrefixes
         },
         updateError (state, {newErrorStatus, newErrorMessage}) {
             state.errorStatus = newErrorStatus, 
@@ -40,7 +35,7 @@ export default {
                     if (quad) {
                         state.rdfstore.addQuad(quad.subject, quad.predicate, quad.object)
                     } else {
-                        state.prefixes = prefixes 
+                        console.log(prefixes)
                     }
                 }
             )
@@ -49,9 +44,6 @@ export default {
     actions: {
         updateCode: ({ commit }, newCode) => {
             commit('updateCode', newCode) 
-        },
-        updatePrefixes: ({commit}, newPrefixes) => {
-            commit('updatePrefixes', newPrefixes)
         },
         loadRDF: ({commit}) => {
             commit('loadRDF')

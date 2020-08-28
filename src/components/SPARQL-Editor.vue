@@ -1,15 +1,27 @@
 <template>
     <div>
-        <div v-show="!rdfmode">
+        <div> 
+            Example Queries: 
+            <v-row align="center"
+                   justify="space-around"
+                   style="display: inline-block">
+                <v-btn v-for="(query, key) in this.$store.getters['sparqlEditorStore/exampleQueries']" 
+                       :key="key" @click="loadExampleQuery(key)">
+                    {{ key }} 
+                </v-btn>
+            </v-row>
+        </div>
+        <br>
+        <div>
             <CodeEditor ref="codeEditor" :mode="mode"/>
             <UserInput :mode="mode"/>
             <Error :mode="mode"/>
             <Output :mode="mode"/>
         </div>
-        <div v-show="rdfmode">
+        <!-- <div v-show="rdfmode">
             <CodeEditor ref="codeEditor" :mode="mode"/>
             <UserInput :mode="'rdfsparql'"/>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -27,21 +39,23 @@ export default {
         CodeEditor,
         UserInput,
         Output,
-        Error 
+        Error,
     },
     store: store, 
     props: ['rdfmode'], 
     data () {
         return {
             mode: 'sparql',
+            toggle_exclusive: undefined,
         }
     },
     methods: {
+        loadExampleQuery(queryFile) {
+            this.$store.dispatch('sparqlEditorStore/loadExampleQuery', queryFile)
+        }
     },
     mounted: function () {
         this.$store.commit('updateCurrentMode', this.mode)
     }
 }
 </script>
-<style>
-</style>

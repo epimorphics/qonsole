@@ -1,5 +1,5 @@
 <template>
-    <div id="app-nav" class="demo">
+    <div id="app-nav">
         <button
             v-for="tab in tabs"
             v-bind:key="tab"
@@ -8,26 +8,27 @@
         >
             {{ tab }}
         </button> 
+        <PrefixEditor/>
         <component v-bind:is="currentTabComponent" class="tab"></component>
     </div>
 </template>
 
 <script>
-import RDFEditor from './RDF-Editor.vue'
+// import RDFEditor from './RDF-Editor.vue'
 import SPARQLEditor from './SPARQL-Editor.vue'
-// import PrefixEditor from './Prefix-Editor.vue'
+import PrefixEditor from './Prefix-Editor.vue'
 
 export default {
     name: 'AppNav',
     components: {
-        RDFEditor,
+        // RDFEditor,
         SPARQLEditor, 
-        // PrefixEditor
+        PrefixEditor
     },
     data () {
         return {
-            currentTab: "RDFEditor",
-            tabs: ["RDFEditor", "SPARQLEditor"]
+            currentTab: "SPARQLEditor",
+            tabs: ["SPARQLEditor"]
         }
     },
     computed: {

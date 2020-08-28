@@ -1,9 +1,11 @@
 import {makeQuery, sendQuery} from '@/scripts/remoteQuery.js'
 import {saveAs} from 'file-saver'
+import {toolbox} from '@/scripts/toolbox.js'
+
 export default {
     namespaced: true, 
     state: {
-        SPARQLCode: '',
+        SPARQLCode: '', 
         endpoint: '', 
         errorStatus: false,
         errorMessage: '', 
@@ -21,7 +23,8 @@ export default {
             rows: null
         },
         localResultIsReady: false,
-        localResultTime: 0 
+        localResultTime: 0,
+        exampleQueries: toolbox
     }, 
     getters: {
         SPARQLCode: state => state.SPARQLCode,
@@ -34,7 +37,8 @@ export default {
         localResultCols: state => state.localResult.cols,
         localResultRows: state => state.localResult.rows,
         localResultIsReady: state => state.localResultIsReady,
-        localResultTime: state => state.localResultTime 
+        localResultTime: state => state.localResultTime,
+        exampleQueries: state => state.exampleQueries
     },
     mutations: {
         updateCode (state, newCode) {
@@ -95,6 +99,14 @@ export default {
         },
         updateRemoteResultTime (state, newTime) {
             state.remoteResultTime = newTime
+        },
+        addPrefixToCode (state, payload) {
+            state.SPARQLCode = 'PREFIX ' + payload.name + ': <' + payload.url + '>\n' + state.SPARQLCode
+        },
+        removePrefixFromCode (state, payload) {
+            let removeCode = 'PREFIX ' + payload.name + ': <' + payload.url + '>\n'
+            let code = state.SPARQLCode
+            state.SPARQLCode = code.replace(removeCode, '')
         }
     },
     actions: {
@@ -106,6 +118,7 @@ export default {
         },
         queryEndpoint: ({state, commit}) => {
             var t0 = performance.now()
+
             state.remoteResultIsReady = false 
             var queryURL = makeQuery(state.SPARQLCode, state.endpoint, state.resultType)
             var rawResponse = sendQuery(queryURL)
@@ -128,6 +141,15 @@ export default {
         },
         updateLocalResult: ({commit}, newLocalResult) => {
             commit('updateLocalResult', newLocalResult)
+        },
+        addPrefixToCode: ({commit}, payload) => {
+            commit('addPrefixToCode', payload)
+        },
+        removePrefixFromCode: ({commit}, payload) => {
+            commit('removePrefixFromCode', payload)
+        },
+        loadExampleQuery: ({state, commit}, queryFile) => {
+            commit('updateCode', state.exampleQueries[queryFile])
         }
     }
 }

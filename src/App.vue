@@ -7,7 +7,6 @@
 
 <script>
 import AppNav from './components/App-Navigation.vue'
-
 export default {
   name: 'App',
   components: {

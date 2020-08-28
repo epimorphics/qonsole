@@ -47,8 +47,5 @@ export default {
             width: '100%',
         }
     },
-    methods: {
-
-    }
 }
 </script>
