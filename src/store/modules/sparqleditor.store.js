@@ -9,7 +9,6 @@ export default {
         endpoint: '', 
         errorStatus: false,
         errorMessage: '', 
-        resultType: 'JSON', 
         // For SPARQL Editor only 
         remoteResult: {
             cols: null,
@@ -17,6 +16,9 @@ export default {
         },
         remoteResultIsReady: false,
         remoteResultTime: 0, 
+        remoteResultJSON: null, 
+        remoteResultXML: null, 
+        remoteResultCSV: null, 
         // For using SPARQL editor to query "local" RDF store 
         localResult: {
             cols: null, 
@@ -24,7 +26,8 @@ export default {
         },
         localResultIsReady: false,
         localResultTime: 0,
-        exampleQueries: toolbox
+        exampleQueries: toolbox,
+        outputFormat: 'Table', 
     }, 
     getters: {
         SPARQLCode: state => state.SPARQLCode,
@@ -38,7 +41,12 @@ export default {
         localResultRows: state => state.localResult.rows,
         localResultIsReady: state => state.localResultIsReady,
         localResultTime: state => state.localResultTime,
-        exampleQueries: state => state.exampleQueries
+        exampleQueries: state => state.exampleQueries,
+        outputFormat: state => state.outputFormat,
+        remoteResultJSON: state => state.remoteResultJSON, 
+        remoteResultXML: state => state.remoteResultXML,
+        remoteResultCSV: state => state.remoteResultCSV,
+        endpoint: state => state.endpoint
     },
     mutations: {
         updateCode (state, newCode) {
@@ -46,7 +54,6 @@ export default {
         },
         updateResponse (state, newResponse) {
             state.jsonResponse = newResponse
-            console.log(state.jsonResponse)
         },
         updateError (state, {newErrorStatus, newErrorMessage}) {
             state.errorStatus = newErrorStatus
@@ -70,7 +77,6 @@ export default {
                 rows.push(row)
             }
             state.remoteResult.rows = rows 
-
             state.remoteResultIsReady = true 
         },
         updateLocalResult (state, newLocalResult) {
@@ -107,6 +113,18 @@ export default {
             let removeCode = 'PREFIX ' + payload.name + ': <' + payload.url + '>\n'
             let code = state.SPARQLCode
             state.SPARQLCode = code.replace(removeCode, '')
+        },
+        updateOutputFormat (state, newOutputFormat) {
+            state.outputFormat = newOutputFormat
+        },
+        updateRemoteResultJSON (state, newResponse) {
+            state.remoteResultJSON = JSON.stringify(newResponse)
+        },
+        updateRemoteResultXML(state, newResponse) {
+            state.remoteResultXML = newResponse
+        },
+        updateRemoteResultCSV(state, newResponse) {
+            state.remoteResultCSV = newResponse
         }
     },
     actions: {
@@ -118,15 +136,53 @@ export default {
         },
         queryEndpoint: ({state, commit}) => {
             var t0 = performance.now()
+            
+            state.remoteResultIsReady = false; 
 
-            state.remoteResultIsReady = false 
-            var queryURL = makeQuery(state.SPARQLCode, state.endpoint, state.resultType)
-            var rawResponse = sendQuery(queryURL)
-            try {
-                commit('updateRemoteResult', JSON.parse(rawResponse))
-                commit('updateError', {newErrorStatus: false, newErrorMessage: ''})
-            } catch (error) {
-                commit('updateError', {newErrorStatus: true, newErrorMessage: rawResponse.split("\n")[0]})
+            var queryURL = null
+            var rawResponse = null
+
+            switch (state.outputFormat) {
+                case 'Table':
+                    queryURL = makeQuery(state.SPARQLCode, state.endpoint, 'json')
+                    rawResponse = sendQuery(queryURL)
+                    try {
+                        commit('updateRemoteResult', JSON.parse(rawResponse))
+                        commit('updateError', {newErrorStatus: false, newErrorMessage: ''})
+                    } catch (error) {
+                        commit('updateError', {newErrorStatus: true, newErrorMessage: rawResponse.split("\n")[0]})
+                    }
+                    break;
+                case 'JSON':
+                    queryURL = makeQuery(state.SPARQLCode, state.endpoint, 'json')
+                    rawResponse = sendQuery(queryURL)
+                    try {
+                        commit('updateRemoteResultJSON', JSON.parse(rawResponse))
+                        commit('updateError', {newErrorStatus: false, newErrorMessage: ''})
+                    } catch (error) {
+                        commit('updateError', {newErrorStatus: true, newErrorMessage: rawResponse.split("\n")[0]})
+                    }
+                    break; 
+                case 'XML':
+                    queryURL = makeQuery(state.SPARQLCode, state.endpoint, 'xml')
+                    rawResponse = sendQuery(queryURL)
+                    try {
+                        commit('updateRemoteResultXML', rawResponse)
+                        commit('updateError', {newErrorStatus: false, newErrorMessage: ''})
+                    } catch (error) {
+                        commit('updateError', {newErrorStatus: true, newErrorMessage: rawResponse.split("\n")[0]})
+                    }
+                    break;
+                case 'CSV':
+                    queryURL = makeQuery(state.SPARQLCode, state.endpoint, 'csv')
+                    rawResponse = sendQuery(queryURL)
+                    try {
+                        commit('updateRemoteResultCSV', rawResponse)
+                        commit('updateError', {newErrorStatus: false, newErrorMessage: ''})
+                    } catch (error) {
+                        commit('updateError', {newErrorStatus: true, newErrorMessage: rawResponse.split("\n")[0]})
+                    }
+                    break;
             }
             var t1 = performance.now()
             commit('updateRemoteResultTime', (Math.round( (t1-t0) * 100 + Number.EPSILON ) / 100))
@@ -150,6 +206,9 @@ export default {
         },
         loadExampleQuery: ({state, commit}, queryFile) => {
             commit('updateCode', state.exampleQueries[queryFile])
+        },
+        updateOutputFormat: ({commit}, newOutputFormat) => {
+            commit('updateOutputFormat', newOutputFormat)
         }
     }
 }

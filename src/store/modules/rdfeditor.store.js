@@ -1,15 +1,20 @@
 /* Store module to handle RDF Editor component store */
 
-const N3 = require('n3')
+var rdfstore = require('rdfstore')
 
 export default {
     namespaced: true,
     state: {
         // Attributes of the rdfEditor component 
         turtleCode: '',
-        rdfstore: new N3.Store(), 
+        rdfstore: new rdfstore.Store(function(error, store){
+            if (!error) {
+                return store
+            }
+        }), 
         errorStatus: false, 
         errorMessage: '',
+        storeSize: 0, 
     },
     getters: {
         // getters and computed props of rdfEditor 
@@ -17,6 +22,7 @@ export default {
         errorMessage: state => state.errorMessage,
         turtleCode: state => state.turtleCode,
         resultsReady: state => state.resultsReady,
+        storeSize: state => state.storeSize
     },
     mutations: {
         // back-end functions 
@@ -28,17 +34,11 @@ export default {
             state.errorMessage = newErrorMessage 
         },
         loadRDF (state) {
-            const parser = new N3.Parser();
-            parser.parse(
-                state.turtleCode, 
-                (_, quad, prefixes) => {
-                    if (quad) {
-                        state.rdfstore.addQuad(quad.subject, quad.predicate, quad.object)
-                    } else {
-                        console.log(prefixes)
-                    }
+            state.rdfstore.load("text/turtle", state.turtleCode, function(error, results){
+                if (!error) {
+                    state.storeSize = results 
                 }
-            )
+            })
         }
     },
     actions: {
@@ -48,8 +48,12 @@ export default {
         loadRDF: ({commit}) => {
             commit('loadRDF')
         },
-        queryStore: () => {
-            console.log("This function is under construction!")
+        queryStore: ({state, commit}, sparqlCode) => {
+            state.rdfstore.execute(sparqlCode, function(error, results){
+                if (!error) {
+                    commit('sparqlEditorStore/updateLocalResult', results, {root: true})
+                }
+            })
         }
     }
 }

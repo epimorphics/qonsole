@@ -1,29 +1,29 @@
 <template>
     <div id="prefix-editor"> 
-        <ul id="menu">
-            <strong> Prefixes: </strong>
-            <li v-for="(prefix, key) in prefixes" :key="key" class="sub tooltip">
-                <input type="checkbox" 
-                       :id="key" 
-                       @change="updateSelectedPrefixes($event.target.checked, key, prefix)">
-                <label :for="key"> {{ key }} </label>
-                <span class="tooltiptext"> {{ prefix }} </span>
-            </li>
-        </ul>
-        <div class="dropdown">
+        <ul id="menu" style="padding: 20px;">
+          <strong> Prefixes: </strong>
+          <li v-for="(prefix, key) in prefixes" :key="key" class="sub tooltip">
+              <input type="checkbox" 
+                     :id="key" 
+                     @change="updateSelectedPrefixes($event.target.checked, key, prefix)">
+              <label :for="key" style="margin-right:5px;"> {{ key }} </label>
+              <span class="tooltiptext"> {{ prefix }} </span>
+          </li>
+          <div class="dropdown" style="padding:0;">
             <input class="dropdown-input" 
-                   type="text" 
-                   placeholder="Search for Prefix" 
-                   v-model="searchInput"/>
+                  type="text" 
+                  placeholder="Search for Prefix" 
+                  v-model="searchInput"/>
             <div v-show="searchInput" class="dropdown-list">
                 <div v-for="(name, key) in this.$store.getters['prefixEditorStore/contextList']" 
-                     v-show="checkList(key)"
-                     :key="key" class="dropdown-item"
-                     @click="addToPrefixes(name, key)">
+                    v-show="checkList(key)"
+                    :key="key" class="dropdown-item"
+                    @click="addToPrefixes(name, key)">
                     {{ key }}
                 </div>
             </div>
-        </div>
+          </div>
+        </ul>
     </div>
 </template>
 <script>
@@ -79,7 +79,7 @@ export default {
   left: 0px;
 }
 #menu{
-  text-align: left;
+  text-align: left;  
 }
 li{
   display:inline-block;
@@ -89,13 +89,12 @@ li{
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
-  padding: 0px 40px;
   z-index: 3; 
 }
 .dropdown-input, .dropdown-selected{
   width: 100%;
   padding: 10px 16px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(0,0,0, 0.1);
   background: #edf2f7;
   line-height: 1.5em;
   outline: none;

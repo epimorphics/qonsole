@@ -19,6 +19,7 @@
     "n3": "^1.6.1",
     "nearley": "^2.19.5",
     "rdf": "^4.1.0",
+    "rdfstore": "^0.9.17",
     "sass-loader": "^8.0.2",
     "sparqljs": "^3.1.1",
     "tabulator-tables": "^4.7.2",

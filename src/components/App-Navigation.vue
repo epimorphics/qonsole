@@ -14,21 +14,21 @@
 </template>
 
 <script>
-// import RDFEditor from './RDF-Editor.vue'
+import RDFEditor from './RDF-Editor.vue'
 import SPARQLEditor from './SPARQL-Editor.vue'
 import PrefixEditor from './Prefix-Editor.vue'
 
 export default {
     name: 'AppNav',
     components: {
-        // RDFEditor,
+        RDFEditor,
         SPARQLEditor, 
         PrefixEditor
     },
     data () {
         return {
             currentTab: "SPARQLEditor",
-            tabs: ["SPARQLEditor"]
+            tabs: ["SPARQLEditor", "RDFEditor"]
         }
     },
     computed: {

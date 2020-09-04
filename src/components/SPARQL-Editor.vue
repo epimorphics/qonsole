@@ -1,27 +1,27 @@
 <template>
-    <div>
+    <div class="sparqleditor">
         <div> 
-            Example Queries: 
             <v-row align="center"
                    justify="space-around"
-                   style="display: inline-block">
+                   style="display: inline-block; padding: 0px 10px;">
+                <strong>Toolbox: </strong> 
                 <v-btn v-for="(query, key) in this.$store.getters['sparqlEditorStore/exampleQueries']" 
-                       :key="key" @click="loadExampleQuery(key)">
+                       :key="key" @click="loadExampleQuery(key)" x-small>
                     {{ key }} 
                 </v-btn>
             </v-row>
         </div>
         <br>
-        <div>
+        <div v-show="rdfmode!='rdfsparql'">
             <CodeEditor ref="codeEditor" :mode="mode"/>
             <UserInput :mode="mode"/>
             <Error :mode="mode"/>
             <Output :mode="mode"/>
         </div>
-        <!-- <div v-show="rdfmode">
+        <div v-show="rdfmode=='rdfsparql'">
             <CodeEditor ref="codeEditor" :mode="mode"/>
             <UserInput :mode="'rdfsparql'"/>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -59,3 +59,8 @@ export default {
     }
 }
 </script>
+<style>
+.sparqleditor {
+    background: #eee;
+}
+</style>

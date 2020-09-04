@@ -1,4 +1,0 @@
-SELECT ?property (count(distinct *) as ?count) 
-WHERE {
-    ?s ?property ?o .
-} GROUP BY ?property ORDER BY desc(?count) 

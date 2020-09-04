@@ -1,21 +1,43 @@
 <template>
     <div id="user-input">
-        <button @click="clearCode">Clear</button>
-        <button v-show="mode=='turtle'" @click="loadStore">Load</button>
+        <v-row align="center"
+               justify="space-around"
+               style="display:inline-block; margin: 10px;">
+            <v-btn @click="clearCode"> Clear </v-btn>
+            <v-btn v-show="mode=='turtle'" 
+                   @click="loadStore"
+                   :disabled="this.$store.getters['rdfEditorStore/turtleCode']==''"> Load </v-btn>
 
-        <!-- For SPARQL Editor only -->
-        <!-- For SPARQL Editor in RDF mode -->
-        <button v-show="mode=='rdfsparql'" @click="queryStore">Query Store</button>
-        <label v-show="mode=='sparql'"> Query from: </label>
-        <input v-show="mode=='sparql'" type="text" id="endpoint" v-model=endpoint @input="updateEndpoint">
-        <button v-show="mode=='sparql'" @click="queryEndpoint">Perform Query</button>
-        <button v-show="mode=='sparql'" @click="saveQuery">Save Query</button>
+            <!-- For SPARQL Editor -->
+            <!-- For SPARQL Editor in RDF mode -->
+            <v-btn v-show="mode=='rdfsparql'"
+                   @click="queryStore"
+                   :disabled="this.$store.getters['sparqlEditorStore/SPARQLCode']==''"> Query Store </v-btn>
 
-        <br>
+            <!-- For SPARQL Editor only -->
+            <strong v-show="mode=='sparql'"> Query from: </strong>
+            <input v-show="mode=='sparql'" type="text" id="endpoint" v-model="endpoint" @input="updateEndpoint" style="border: 1px solid gray; border-radius:2px;">
+            <v-btn v-show="mode=='sparql'" 
+                   @click="queryEndpoint"
+                   :disabled="this.$store.getters['sparqlEditorStore/SPARQLCode']==''
+                   || this.$store.getters['sparqlEditorStore/endpoint']==''"> Perform Query </v-btn>
+            <v-btn v-show="mode=='sparql'" @click="saveQuery">Save Query</v-btn>
+            
+            <strong v-show="mode=='sparql'"> Output Format: </strong>
+            <select v-show="mode=='sparql'" v-model="selectedFormat"
+                    @change="updateSelectedOutputFormat" style="border: 1px solid gray; border-radius: 2px;">
+                <option value="Table" selected="selected"> Table </option>
+                <option value="JSON"> JSON </option>
+                <option value="CSV"> CSV </option>
+                <option value="XML"> XML </option>
+            </select>
 
-        <!-- Load code from local file -->
-        <label> Import code from local: </label>
-        <input type="file" @change="loadTextFromFile">
+            <br>
+
+            <!-- Load code from local file -->
+            <strong> Import code from local: </strong>
+            <input type="file" @change="loadTextFromFile">
+        </v-row>
     </div>
 </template>
 <script>
@@ -27,7 +49,8 @@ export default{
     props: ['mode'], 
     data () {
         return {
-            endpoint: ''
+            endpoint: '',
+            selectedFormat: 'Table', 
         }
     }, 
     methods: {
@@ -69,6 +92,9 @@ export default{
         },
         saveQuery () {
             this.$store.dispatch('sparqlEditorStore/saveQuery')
+        },
+        updateSelectedOutputFormat () {
+            this.$store.dispatch('sparqlEditorStore/updateOutputFormat', this.selectedFormat)
         }
     }
 }
@@ -76,18 +102,5 @@ export default{
 <style>
 label {
     font-size: 15px; 
-}
-#user-input button {
-    background-color: #008CBA;
-    color: blanchedalmond;
-    border-radius: 10%;
-    padding: 5px 20px;
-    transition-duration: 0.4s;
-    border: 2px solid #008CBA; 
-    margin: 5px; 
-}
-#user-input button:hover {
-    background-color: white; 
-    color: black; 
 }
 </style>

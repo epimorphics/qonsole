@@ -17,7 +17,7 @@ export var toolbox = {
                      '          ?thing ?property ?v .\n' +
                      '          FILTER (isURI(?v) || isBlank(?v))\n' +
                      '          OPTIONAL {\n' +
-                     '              v a ?dt_or_class .\n' +
+                     '              ?v a ?dt_or_class .\n' +
                      '          }\n' +
                      '      }\n' +
                      '  } OPTIONAL {\n' +
@@ -43,7 +43,7 @@ export var toolbox = {
                                   '          ?thing ?property ?v .\n' +
                                   '          FILTER (isURI(?v) || isBlank(?v))\n' +
                                   '          OPTIONAL {\n' +
-                                  '              v a ?dt_or_class .\n' +
+                                  '              ?v a ?dt_or_class .\n' +
                                   '          }\n' +
                                   '      }\n' +
                                   '  } OPTIONAL {\n' +
@@ -57,5 +57,43 @@ export var toolbox = {
     "Property Demographic": 'SELECT ?property (count(distinct *) as ?count)\n' +
                             'WHERE {\n' +
                             '?s ?property ?o .\n' +
-                            '} GROUP BY ?property ORDER BY desc(?count)\n'
+                            '} GROUP BY ?property ORDER BY desc(?count)\n',
+    "Describe Sample (Type)":  'DESCRIBE ?sample\n' +
+                        'WHERE\n' +
+                        '{\n' +
+                        '   { SELECT (sample(?thing) as ?sample)\n' +
+                        '     WHERE {\n' +
+                        '       ?thing a ?class.\n' +
+                        '     } GROUP BY ?class\n' +
+                        '   }\n' +
+                        '}\n', 
+    "Decribe Sample (Type), Subject and Object (Property)":   'DESCRIBE ?sample ?subject ?object\n' +
+                                                              'WHERE\n' + 
+                                                              '{ \n' + 
+                                                              '    { SELECT (sample(?thing) as ?sample)\n' +
+                                                              '      WHERE {\n' +
+                                                              '          ?thing a ?class.\n' +
+                                                              '      } GROUP BY ?class \n' +
+                                                              '    } UNION {\n' +
+                                                              '       SELECT (sample(?s) as ?subject) ?p (sample(?o) as ?object) \n' +
+                                                              '       WHERE {\n' +
+                                                              '           ?s ?p ?o\n' +
+                                                              '       } GROUP BY ?p\n' +
+                                                              '    }\n' +
+                                                              '}', 
+    "Describe Sample (Type) and 1 Value of Every Property Used With Object" :   'DESCRIBE ?sample ?subject ?object \n' +
+                                                                                'WHERE \n' +
+                                                                                '{ \n' +
+                                                                                '  { SELECT (sample(?thing) as ?sample)\n' +
+                                                                                '    WHERE {\n' +
+                                                                                '       ?thing a ?class.\n' +
+                                                                                '    } GROUP BY ?class}\n' +
+                                                                                '  }\n' +
+                                                                                '  { select ?sample (sample(?o) as ?object) \n' +
+                                                                                '    where {\n' +
+                                                                                '      ?sample ?p ?object .\n' +
+                                                                                '    }\n' +
+                                                                                '    group by ?p\n' +
+                                                                                '  } \n'+
+                                                                                '}'
 }

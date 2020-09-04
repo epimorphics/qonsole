@@ -6,11 +6,12 @@
             <CodeEditor ref="codeEditor" :mode="mode"/>
             <UserInput :mode="mode"/> 
             <Error :mode="mode"/>
+            <br>
         </div>
         <MultipaneResizer></MultipaneResizer>
         <div class="pane" >
             <h3>SPARQL Editor</h3>
-            <SPARQLEditor :rdfmode="mode"/>
+            <SPARQLEditor :rdfmode="'rdfsparql'"/>
         </div>
     </Multipane>
     <Output :mode="mode"/>
@@ -65,7 +66,7 @@ div {
 }
 .vertical-panes {
   width: 100%;
-  height: 450px;
+  height: auto;
   border: 1px solid #ccc;
 }
 .vertical-panes > .pane {
