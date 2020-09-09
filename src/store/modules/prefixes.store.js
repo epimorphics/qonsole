@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 export default {
     namespaced: true,
@@ -26,16 +27,25 @@ export default {
     }, 
     mutations: {
         addToSelectedPrefixes (state, payload) {
-            state.selectedPrefixes[payload.name] = payload.url
+            // state.selectedPrefixes[payload.name] = payload.url
+            Vue.set(state.selectedPrefixes, payload.name, payload.url)
         },
         deleteFromSelectedPrefixes (state, name) {
-            delete state.selectedPrefixes[name]
+            Vue.delete(state.selectedPrefixes, name)
         },
         updateContextList (state, newData) {
             state.contextList = newData
         },
         addToPrefixes (state, payload) {
-            state.prefixes[payload.name] = payload.url
+            Vue.set(state.prefixes, payload.name, payload.url)
+        },
+        deleteFromPrefixes (state, payload) {
+            Vue.delete(state.prefixes, payload.name)
+        },
+        updatePrefix (state, payload) {
+            console.log(payload)
+            Vue.delete(state.prefixes, payload.old.name)
+            Vue.set(state.prefixes, payload.new.name, payload.new.url)
         }
     },
     actions: {
@@ -54,6 +64,12 @@ export default {
         },
         addToPrefixes: ({commit}, payload) => {
             commit('addToPrefixes', payload)
+        },
+        deleteFromPrefixes: ({commit}, payload) => {
+            commit('deleteFromPrefixes', payload)
+        },
+        updatePrefix: ({commit}, payload) => {
+            commit('updatePrefix', payload)
         }
     }
 }

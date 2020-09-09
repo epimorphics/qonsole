@@ -3,6 +3,7 @@
         Triples Loaded: {{this.$store.getters['rdfEditorStore/storeSize']}}
         Query time: {{this.$store.getters['sparqlEditorStore/localResultTime']}} ms.
         <div v-show="this.$store.getters['sparqlEditorStore/remoteResultIsReady'] && mode=='sparql'">
+            <grid :cols="this.$store.getters['sparqlEditorStore/remoteResultsRows']"
                   :rows="this.$store.getters['sparqlEditorStore/remoteResultRows']"
                   :auto-width="autoWidth"
                   :language="language"
@@ -85,5 +86,8 @@ export default {
 #output-text {
     width: 100%;
     height: auto; 
+    background: #ffffff;
+    border: 1px solid grey;
+    padding: 5px;
 }
 </style>

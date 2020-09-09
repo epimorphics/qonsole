@@ -25,6 +25,8 @@
     "tabulator-tables": "^4.7.2",
     "vue": "^2.6.11",
     "vue-codemirror": "^4.0.6",
+    "vue-context": "^6.0.0",
+    "vue-js-modal": "^2.0.0-rc.6",
     "vue-multipane": "^0.9.5",
     "vuetify": "^2.2.11",
     "vuex": "^3.5.1"
