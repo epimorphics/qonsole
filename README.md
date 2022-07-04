@@ -1,6 +1,8 @@
 # Qonsole - a simple console for running SPARQL queries
 
-*Warning:* While this project has not yet been replaced and should continue to receive required bug fixes and any minor feature requests, future development of qonsole will be done as part of the [qonsole-sfc](https://github.com/epimorphics/qonsole-sfc) project. (2022-07-04)
+**Warning:** While this project has not yet been replaced and should continue to receive required bug fixes and any minor feature requests, future development of qonsole will be done as part of the [qonsole-sfc](https://github.com/epimorphics/qonsole-sfc) project. (2022-07-04)
+
+## Concept
 
 Suppose you have a linked-data dataset that you've published on the web, and that
 you'd like to provide your users with the means to run SPARQL queries to explore 
@@ -9,15 +11,15 @@ to send a query and get back results, so it's easy enough to put up an HTML form
 your users to type in a query and get back some results. But that's not necessarily
 that helpful for your users, because:
 
-  * in some browsers, hitting the 'back' button after posting a query means that the
+* in some browsers, hitting the 'back' button after posting a query means that the
   text input control is emptied. So your users will lose the query that they have typed, 
   which makes iterative development of the query hard.
-  * you can provide at most one sample query to get your users started with suggestions
+* you can provide at most one sample query to get your users started with suggestions
   and ideas.
-  * you don't have any to manage prefixes, which can make a huge difference to the
+* you don't have any to manage prefixes, which can make a huge difference to the
   readability of a query (compare `<http://www.w3.org/2000/01/rdf-schema#comment>` to
   `rdfs:comment`, for example).
-  * the returned values from a SPARQL form are generally represented as a text format, or
+* the returned values from a SPARQL form are generally represented as a text format, or
   using a MIME type (e.g. `text/csv` that makes your user's computer open the returning file
   in another program (e.g. a spreadsheet). Plain text can be hard to explore, while opening a
   different application takes your user's focus away from the task of editing the query and
@@ -28,11 +30,11 @@ using the [UK bathing water quality dataset](http://environment.data.gov.uk/bwq/
 
 Qonsole provides the following features:
 
-  * An edit control with SPARQL syntax highlighting, undo, and other familiar code editing 
+* An edit control with SPARQL syntax highlighting, undo, and other familiar code editing 
   features (courtesy of [CodeMirror](http://codemirror.net/)).
-  * Display of the query and the return result on one page
-  * A configurable set of example queries your users can select with one click
-  * A configurable set of pre-declared prefixes, and the ability to add new prefixes dynamically,
+* Display of the query and the return result on one page
+* A configurable set of example queries your users can select with one click
+* A configurable set of pre-declared prefixes, and the ability to add new prefixes dynamically,
   including looking a well-know prefix up on [prefix.cc](http://prefix.cc). Users can add or
   remove prefix declarations from the edit window with one click.
   * A choice of return formats, including XML, JSON and plain text. XML and JSON results
@@ -131,4 +133,3 @@ in the configuration object:
 </pre>
   </dd>
 </dl>
-
