@@ -55,7 +55,6 @@ need to include.
 Qonsole is configured by passing a JSON data structure to the `qonsole.init()` call. Currently,
 this config object allows you to specify:
 
-
 ### `elements` &ndash; available SPARQL end-points
 
 The value of this config element is a JSON object, whose keys are short
@@ -63,7 +62,7 @@ references to available endpoints and whose values are URLs. One `default` end-p
 should always be provided. The goal here is to allow different example queries potentially
 to be run against different specific SPARQL endpoints. Example:
 
-```JSON
+```JavaScript
     endpoints: {
       "default":  "http://environment.data.gov.uk/sparql/bwq/query",
     }
@@ -75,7 +74,7 @@ The prefixes listed in this element will be added to each query, and may be
 selected on or off by a single click. The value is a JSON object, whose keys are the
 prefix short-name, and whose values are URIs. Example:
 
-```JSON
+```JavaScript
     prefixes: {
       "bw":       "http://environment.data.gov.uk/def/bathing-water/",
       "bwq":      "http://environment.data.gov.uk/def/bathing-water-quality/",
@@ -99,7 +98,7 @@ declared in the example queries. The query text can be declared in the config
 structure itself, with the `query` key, or accessed remotely from a different URL
 using the `queryURL` key:
 
-```JSON
+```JavaScript
     queries: [
       { "name": "Properties of a named bathing water",
         "query": "select ?predicate ?object\nwhere {\n" +
@@ -126,7 +125,7 @@ itself includes `prefix` declarations, then only those prefixes will be shown. A
 you can list the prefix keys that should be used with the query with a `prefixes` key
 in the configuration object:
 
-```JSON
+```JavaScript
   queries: [
     { "name": "Properties of a named bathing water",
       "query": "select ?predicate ?object\nwhere {\n" +
