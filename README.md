@@ -55,24 +55,27 @@ need to include.
 Qonsole is configured by passing a JSON data structure to the `qonsole.init()` call. Currently,
 this config object allows you to specify:
 
-<dl>
-  <dt><code>elements</code> &ndash; available SPARQL end-points</dt>
-  <dd>The value of this config element is a JSON object, whose keys are short
-  references to available endpoints and whose values are URLs. One `default` end-point
-  should always be provided. The goal here is to allow different example queries potentially
-  to be run against different specific SPARQL endpoints. Example:
-<pre>
+
+### `elements` &ndash; available SPARQL end-points
+
+The value of this config element is a JSON object, whose keys are short
+references to available endpoints and whose values are URLs. One `default` end-point
+should always be provided. The goal here is to allow different example queries potentially
+to be run against different specific SPARQL endpoints. Example:
+
+```JSON
     endpoints: {
       "default":  "http://environment.data.gov.uk/sparql/bwq/query",
     }
-</pre>
-  </dd>
-  <dt><code>prefixes</code> &ndash; shared list of pre-defined prefixes</dt>
-  <dd>The prefixes listed in this element will be added to each query, and may be
-  selected on or off by a single click. The value is a JSON object, whose keys are the
-  prefix short-name, and whose values are URIs. Example:
+```
 
-<pre>
+### `prefixes` &ndash; shared list of pre-defined prefixes
+
+The prefixes listed in this element will be added to each query, and may be
+selected on or off by a single click. The value is a JSON object, whose keys are the
+prefix short-name, and whose values are URIs. Example:
+
+```JSON
     prefixes: {
       "bw":       "http://environment.data.gov.uk/def/bathing-water/",
       "bwq":      "http://environment.data.gov.uk/def/bathing-water-quality/",
@@ -85,17 +88,18 @@ this config object allows you to specify:
       "owl":      "http://www.w3.org/2002/07/owl#",
       "xsd":      "http://www.w3.org/2001/XMLSchema#"
     },
-</pre>
-  </dd>
-  <dt><code>queries</code> &ndash; pre-defined example queries</dt>
-  <dd>
-  This element defines the example queries that users can select run, or
-  to base their own queries on. The value is a JSON array, each element of
-  which is one example query. Note that prefixes do not need to be
-  declared in the example queries. The query text can be declared in the config
-  structure itself, with the `query` key, or accessed remotely from a different URL
-  using the `queryURL` key:
-<pre>
+```
+
+### `queries` &ndash; pre-defined example queries
+
+This element defines the example queries that users can select run, or
+to base their own queries on. The value is a JSON array, each element of
+which is one example query. Note that prefixes do not need to be
+declared in the example queries. The query text can be declared in the config
+structure itself, with the `query` key, or accessed remotely from a different URL
+using the `queryURL` key:
+
+```JSON
     queries: [
       { "name": "Properties of a named bathing water",
         "query": "select ?predicate ?object\nwhere {\n" +
@@ -112,17 +116,17 @@ this config object allows you to specify:
         "queryURL": "list-properties.rq"
       }
     ]
-</pre>
+```
 
 By default, each query gets all of the shared prefixes declared in the configuration
 object (see above). However this isn't always necessary. Simpler example queries may be easier
 to read if the prefixes shown are only those actually in use. There are two mechanisms
 you can use to control the prefixes used when displaying a query. Firstly, if the query
-itself includes <code>prefix</code> declarations, then only those prefixes will be shown. Alternatively,
-you can list the prefix keys that should be used with the query with a <code>prefixes</code> key
+itself includes `prefix` declarations, then only those prefixes will be shown. Alternatively,
+you can list the prefix keys that should be used with the query with a `prefixes` key
 in the configuration object:
 
-<pre>
+```JSON
   queries: [
     { "name": "Properties of a named bathing water",
       "query": "select ?predicate ?object\nwhere {\n" +
@@ -130,6 +134,4 @@ in the configuration object:
                "      ?predicate ?object\n}",
       "prefixes": [rdfs", "bw"]
     }]
-</pre>
-  </dd>
-</dl>
+```
