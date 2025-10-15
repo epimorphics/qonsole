@@ -75,4 +75,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.registerTask('install-dependencies', ['bower:install', 'clean:lib', 'copy:dependencies'] );
+  grunt.registerTask('default', ['install-dependencies']);
 };
