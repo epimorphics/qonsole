@@ -97,6 +97,37 @@ QONSOLE_TEST_PAGE="http://localhost:8080/demo-vertical.html" bundle exec ruby te
 > The integration tests now use headless Chrome via Selenium
 > (`:selenium_chrome_headless`) for better compatibility on modern systems.
 
+## Local server and SPARQL proxy (config.ru)
+
+We include a tiny Rack application (`config.ru`) used for local development and
+testing. It serves the static demo files and exposes a same-origin SPARQL proxy
+at `/sparql` to avoid CORS when issuing queries from the demo page.
+
+Key behaviors and environment variables:
+
+- SPARQL_ENDPOINT: URL of the upstream SPARQL HTTP endpoint. Default:
+  `https://environment.data.gov.uk/sparql/bwq/query`.
+- RACK_ENV: When set to `development`, the proxy prefers POST for requests to
+  improve compatibility during local runs. Otherwise, it uses GET unless the
+  encoded URL would be too long, in which case it falls back to POST.
+- PROXY_ALWAYS_POST: Set to `1` to force the proxy to use POST regardless of
+  environment.
+- PROXY_INSECURE: Set to `1` to disable TLS verification (for local use only).
+  Prefer configuring a proper trust store for real deployments.
+- PROXY_CA_FILE / PROXY_CA_PATH: Optional CA bundle file/directory to extend
+  the system trust for TLS verification.
+- PROXY_DEBUG: Set to `1` to enable minimal request/response logging from the
+  proxy to STDOUT.
+
+The demo page (`demo-vertical.html`) adds a "local proxy" endpoint option when
+served from `localhost` so you can select `/sparql` in the UI. You can run the
+server with:
+
+```sh
+bundle exec rake serve
+# Visit http://localhost:8080/demo-vertical.html
+```
+
 ### Running the Selenium IDE suite (optional)
 
 The legacy Selenium IDE tests live in `test/selenium/` and are referenced by `test/selenium/qonsole.suite`.
