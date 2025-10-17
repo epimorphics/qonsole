@@ -36,19 +36,12 @@ jobs:
       - name: Install Google Chrome
         uses: browser-actions/setup-chrome@v1
 
-      - name: Install gems
-        run: bundle install --jobs 4 --retry 3
-
-      # Optional: install Node deps if needed by the demo page
-      - name: Install Node and deps
+      # Set up Node so Makefile can run npm + npx bower
+      - name: Set up Node
         uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
-      - run: npm ci
 
-      # Build static assets (bower + grunt via Makefile)
-      - name: Build assets
-        run: make assets
-
-      - name: Run integration tests (starts local server)
-        run: bundle exec rake test_integration
+      # Run the canonical Make target which installs deps, builds assets, and runs tests
+      - name: Run end-to-end tests
+        run: make tests
