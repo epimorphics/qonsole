@@ -40,7 +40,7 @@ PORT=9090 make server
 SPARQL_ENDPOINT="https://example.org/sparql" make server
 
 # Run tests against a custom page (e.g. non-default port)
-QONSOLE_TEST_PAGE="http://localhost:9090/demo-vertical.html" make test
+QONSOLE_TEST_PAGE="http://localhost:9090/demo-vertical.html" make tests
 ```
 
 ## Developer Notes
