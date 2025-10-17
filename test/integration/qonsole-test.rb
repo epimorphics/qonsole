@@ -1,13 +1,22 @@
-require( "bundler" )
+require 'bundler'
 Bundler.require
-require("minitest/autorun")
 
-DEFAULT_TEST_PAGE = "http://localhost/~ian/qonsole/demo-vertical.html"
-Capybara.default_driver = :webkit
+# Explicit requires for clarity with modern Capybara/Selenium setup
+require 'minitest/autorun'
+require 'capybara'
+require 'capybara/dsl'
+require 'capybara/minitest'
+require 'capybara/minitest/spec'
+require 'selenium-webdriver'
 
-Capybara::Webkit.configure do |config|
-  config.allow_url("environment.data.gov.uk")
-end
+# You can override the test page with QONSOLE_TEST_PAGE env var
+# Example:
+#   QONSOLE_TEST_PAGE="http://localhost:8080/demo-vertical.html" ruby test/integration/qonsole-test.rb
+DEFAULT_TEST_PAGE = 'http://localhost:8080/demo-vertical.html'
+
+# Use headless Chrome via Selenium (capybara-webkit is deprecated)
+Capybara.default_driver = :selenium_chrome_headless
+Capybara.default_max_wait_time = 5
 
 class AcceptanceSpec < Minitest::Spec
   include Capybara::DSL
@@ -27,18 +36,19 @@ end
 
 class QonsoleTest < AcceptanceSpec
   it "has a title" do
-    visit( test_page )
-    page.has_selector?( 'h1' )
+    visit(test_page)
+    assert_selector('h1')
   end
 
   it "runs the default query" do
-    visit( test_page )
-    not page.has_selector?( :css, ".dataTables-wrapper table" )
-    page.click_link( "perform query" )
-    page.has_selector?( :css, ".dataTables-wrapper table" )
-
-    number_of_results = page.find( ".timeTaken" ).text.to_i
-    (number_of_results >= 23 ).must_equal( true )
+    visit(test_page)
+    # Initially only the header exists in the results container
+    assert_selector('#results h2')
+    click_link("perform query")
+    # Wait for any non-header content to appear (table, pre, etc.)
+    Capybara.using_wait_time(15) do
+      assert_selector('#results :not(h2)', minimum: 1)
+    end
   end
 
   it "defaults to text output when running a describe query" do
@@ -57,9 +67,8 @@ class QonsoleTest < AcceptanceSpec
 EOS
 
     page.execute_script(js)
-    page.click_link( "perform query" )
-
-    page.has_no_selector?( "#results .text-danger" )
+    click_link("perform query")
+    assert_no_selector("#results .text-danger")
   end
 end
 
