@@ -24,7 +24,7 @@ help:
 	@echo "  test-integration  Alias for 'test'"
 
 # Install JS deps and build assets (copies vendor files, minifies, etc.)
-assets: install
+assets:
 	# Use npm script to run grunt to avoid npx resolution issues
 	npm run -s start
 
@@ -34,7 +34,7 @@ install: package.json
 	$(BOWER) install
 
 # Start the local Rack server (served via config.ru)
-server:
+server: install assets
 	PORT=$(PORT) bundle exec rake serve
 
 # Run the Ruby integration test suite (starts/stops server automatically)
