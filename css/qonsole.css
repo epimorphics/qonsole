@@ -1,9 +1,5 @@
 /* Copyright (c) 2012-2013 Epimorphics Ltd. Released under Apache License 2.0 http://www.apache.org/licenses/ */
 
-body {
-  padding-top: 60px;
-}
-
 .qonsole h2, .query-chrome label {
   font-size: 10px;
   color: #666666;
@@ -82,16 +78,30 @@ footer p {
   color: #333;
 }
 
-.prefix {
-  padding-top: 0.5em;
+.qonsole .panel-body {
+  padding: 0;
 }
 
-.prefix input {
-  margin-left: 0.5em;
+.qonsole .collapsed i.expand-indicator:before {
+  content: "\f078";
+}
+.qonsole i.expand-indicator:before {
+  content: "\f077";
+}
+.qonsole .panel-heading {
+  background-color: #e8eaf6;
+}
+.qonsole h2.panel-title {
+  font-size: 10pt;
+}
+.qonsole h2 {
+  margin-right: 10px;
 }
 
-.prefix label {
-  font-weight: normal;
+.qonsole #results-block {
+  border-top: 1px solid #e8eaf6;
+  margin-top: 10px;
+  padding-top: 10px;
 }
 
 /* Custom buttons */
@@ -167,4 +177,25 @@ footer p {
 
 .auto-overflow {
   overflow: auto;
+}
+.CodeMirror-foldmarker {
+  color: blue;
+  text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+  font-family: arial;
+  line-height: .3;
+  cursor: pointer;
+}
+.CodeMirror-foldgutter {
+  width: .7em;
+}
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+  color: #555;
+  cursor: pointer;
+}
+.CodeMirror-foldgutter-open:after {
+  content: "\25BE";
+}
+.CodeMirror-foldgutter-folded:after {
+  content: "\25B8";
 }

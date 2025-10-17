@@ -21,14 +21,14 @@ require.config({
   },
   paths: {
     'bootstrap': 'lib/js/bootstrap',
-    'jquery': 'lib/js/jquery',
+    'jquery': 'lib/js/jquery.min',
     'lodash': 'lib/js/lodash',
-    'sprintf': 'lib/js/sprintf.min',
-    'json2': 'lib/js/json2',
-    'spin': 'lib/js/jquery.spin',
+    'sprintf': 'lib/js/sprintf',
+    // 'json2': 'lib/js/json2', Until I can find it ...
+    'spin': 'lib/js/spin',
     'jquery.spinjs': 'lib/js/jquery.spin',
     'datatables': 'lib/js/jquery.dataTables',
-    'respond': 'lib/js/respond.min',
+    'respond': 'lib/js/respond',
     'app/remote-sparql-service': 'js/app/remote-sparql-service'
   },
   packages: [{

@@ -1,0 +1,56 @@
+name: Qonsole Integration Tests
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**.rb'
+      - 'Gemfile*'
+      - 'test/**'
+      - 'config.ru'
+      - 'Rakefile'
+      - '.github/workflows/integration-tests.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**.rb'
+      - 'Gemfile*'
+      - 'test/**'
+      - 'config.ru'
+      - 'Rakefile'
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Install Google Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      # Set up Node so Makefile can run npm + npx bower
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      # Run the canonical Make target which installs deps, builds assets, and runs tests
+      - name: Run end-to-end tests
+        run: make tests
+
+      - name: Keep screenshots from failed system tests
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/tmp/screenshots
+          if-no-files-found: ignore

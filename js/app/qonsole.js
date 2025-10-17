@@ -231,7 +231,8 @@ function (
     if (!_queryEditor) {
       _queryEditor = new CodeMirror( $('#query-edit-cm').get(0), {
         lineNumbers: true,
-        mode: 'sparql'
+        mode: 'sparql',
+        autoRefresh: true
       } );
     }
     return _queryEditor;

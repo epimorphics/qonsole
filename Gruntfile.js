@@ -10,22 +10,55 @@ module.exports = function (grunt) {
     clean: {
       lib: ['lib']
     },
+    cssmin: {
+      options: {
+        sourceMap: true
+      },
+
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'lib/css',
+          src: ['*.css', '!*.min.css'],
+          dest: 'lib/css',
+          ext: '.min.css',
+          extDot: 'last'
+        }]
+      }
+    },
+    uglify: {
+
+      options: {
+        mangle: false,
+        sourceMap: true
+      },
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'lib/js',
+          src: ['**/*.js', '!cm/**/*.js', '!*.min.js'],
+          dest: 'lib/js'
+        }]
+      }
+    },
     copy: {
       dependencies: {
         files: [
           {
             expand: true,
             flatten: true,
-            src: ['bower_components/respond/dest/respond.min.js',
+            src: [
+              'bower_components/respond/dest/respond.js',
               'bower_components/bootstrap/dist/js/bootstrap.js',
-              'bower_components/jquery/dist/jquery.js',
+              'bower_components/jquery/dist/jquery.min.js',
+              'bower_components/jquery/dist/jquery.min.map',
               'bower_components/datatables/media/js/jquery.dataTables.js',
               'bower_components/html5shiv/dist/html5shiv.js',
               'bower_components/jquery.xdomainrequest/jQuery.XDomainRequest.js',
               'bower_components/lodash-compat/lodash.js',
               'bower_components/spin.js/spin.js',
               'bower_components/jquery.spinjs/dist/jquery.spin.js',
-              'bower_components/sprintf/dist/sprintf.min.js',
+              'bower_components/sprintf/src/sprintf.js',
               'bower_components/requirejs/require.js'
             ],
             dest: 'lib/js'
@@ -34,7 +67,8 @@ module.exports = function (grunt) {
             expand: true,
             flatten: false,
             cwd: 'bower_components/CodeMirror',
-            src: ['lib/*.js',
+            src: [
+              'lib/*.js',
               'addon/fold/*.js',
               'mode/@(javascript|sparql|xml)/*.js'
             ],
@@ -43,26 +77,30 @@ module.exports = function (grunt) {
           {
             expand: true,
             flatten: true,
-            src: ['bower_components/CodeMirror/addon/fold/*.css',
+            src: [
+              'bower_components/CodeMirror/addon/fold/*.css',
               'bower_components/CodeMirror/lib/codemirror.css',
               'bower_components/bootstrap/dist/css/bootstrap.css',
               'bower_components/datatables/media/css/jquery.dataTables.css',
               'bower_components/fontawesome/css/font-awesome.css',
-              'bower_components/spin/stylesheets/jquery.spin.css'
+              'bower_components/spin.js/spin.css'
             ],
             dest: 'lib/css'
           },
           {
             expand: true,
             flatten: true,
-            src: ['bower_components/fontawesome/fonts/*'
+            src: [
+              'bower_components/fontawesome/fonts/*'
             ],
             dest: 'lib/fonts'
           },
           {
             expand: true,
             flatten: true,
-            src: ['bower_components/datatables/media/images/*.png'],
+            src: [
+              'bower_components/datatables/media/images/*.png'
+            ],
             dest: 'lib/images'
           }
         ]
@@ -73,6 +111,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('install-dependencies', ['bower:install', 'clean:lib', 'copy:dependencies'] );
+  grunt.registerTask('install-dependencies', ['bower:install', 'clean:lib', 'copy:dependencies', 'cssmin', 'uglify'] );
+  grunt.registerTask('default', ['install-dependencies']);
 };

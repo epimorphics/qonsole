@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'capybara-webkit'
-gem 'capybara_minitest_spec'
-
+gem 'capybara', '~> 3.40'
+gem 'selenium-webdriver', '~> 4.0'
+gem 'minitest', '~> 5.22'
+gem 'rack', '>= 2.2'
+gem 'rake', '~> 13.0'
+gem 'rackup', '~> 2.0'
+gem 'puma', '~> 7.0'
+gem 'mutex_m', '~> 0.1.1'
