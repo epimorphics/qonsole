@@ -46,5 +46,9 @@ jobs:
           node-version-file: '.nvmrc'
       - run: npm ci
 
+      # Build static assets (bower + grunt via Makefile)
+      - name: Build assets
+        run: make assets
+
       - name: Run integration tests (starts local server)
         run: bundle exec rake test_integration

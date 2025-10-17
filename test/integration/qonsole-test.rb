@@ -32,6 +32,21 @@ class AcceptanceSpec < Minitest::Spec
   def test_page
     ENV["QONSOLE_TEST_PAGE"] || DEFAULT_TEST_PAGE
   end
+
+  # Prefer the local same-origin proxy if it's available in the endpoint list
+  def prefer_local_proxy
+    # Wait for the endpoints select to exist
+    return unless page.has_css?('select#endpoints', wait: 5)
+
+    # If an option with value "/sparql" exists, select it
+    if page.has_css?('select#endpoints option[value="/sparql"]', wait: 1)
+      # Get the option's label text, then use Capybara's select by text
+      label = find('select#endpoints option[value="/sparql"]', visible: :all).text
+      select(label, from: 'endpoints') unless label.to_s.strip.empty?
+    end
+  rescue Capybara::ElementNotFound
+    # Ignore silently if elements aren't present yet
+  end
 end
 
 class QonsoleTest < AcceptanceSpec
@@ -42,6 +57,8 @@ class QonsoleTest < AcceptanceSpec
 
   it "runs the default query" do
     visit(test_page)
+    # Attempt to avoid the CORS issue by selecting the local proxy endpoint
+    prefer_local_proxy
     # Initially only the header exists in the results container
     assert_selector('#results h2')
     click_link("perform query")
@@ -53,6 +70,8 @@ class QonsoleTest < AcceptanceSpec
 
   it "defaults to text output when running a describe query" do
     visit( test_page )
+    # Attempt to avoid the CORS issue by selecting the local proxy endpoint
+    prefer_local_proxy
     sleep( 3 )
 
     js = <<EOS
