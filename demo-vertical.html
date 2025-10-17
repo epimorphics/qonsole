@@ -9,11 +9,18 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <link href="lib/css/bootstrap.css" rel="stylesheet" />
-    <link href="lib/css/font-awesome.css" rel="stylesheet" />
-    <link href="lib/css/codemirror.css" rel="stylesheet" />
-    <link href="lib/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="lib/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="lib/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="lib/css/codemirror.min.css" rel="stylesheet" />
+    <link href="lib/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="css/qonsole.css" rel="stylesheet" />
+
+    <style>
+      /* custom styles found only in the master branch */
+      body {padding-top: 60px;}
+      .prefix input {margin-left: 0.5em;}
+      .prefix label {font-weight: normal;}
+    </style>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -21,7 +28,7 @@
       <script src="lib/js/respond.min.js"></script>
     <![endif]-->
 
-    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="shortcut icon" href="./img/favicon.ico">
 
     <script src="lib/js/require.js"></script>
 
@@ -32,9 +39,9 @@
 
     <script type="text/javascript">
       // configuration
-      var qonfig = {
+      const qonfig = {
         endpoints: {
-          "default": "http://environment.data.gov.uk/sparql/bwq/query",
+          "default": "https://environment.data.gov.uk/sparql/bwq/query",
         },
         prefixes: {
           "bw":       "http://environment.data.gov.uk/def/bathing-water/",
@@ -70,9 +77,12 @@
 
       require( ["js/config"], function() {
         require( ["jquery", "js/app/qonsole", "bootstrap"], function( $, qonsole ) {
-          $( function() {qonsole.init( qonfig );} );
-        } );
-      } );
+          $( function() {
+            console.log("initializing Qonsole with config:", qonfig );
+            qonsole.init( qonfig );
+          });
+        });
+      });
     </script>
   </head>
 
@@ -90,9 +100,9 @@
 
     <div class="container qonsole">
       <div class="col-md-12 well">
-        <h2 id="example_querires_header" class="">Example queries</h2>
+        <h2 id="example_queries_header" class="">Example queries</h2>
         <span class="form-inline">
-          <select aria-labelledby="example_querires_header" class="form-control" id="examples"></select>
+          <select aria-labelledby="example_queries_header" class="form-control" id="examples"></select>
         </span>
       </div>
 
@@ -122,8 +132,8 @@
               <input type="hidden" class="form-control" id="sparqlEndpoint" />
             </div>
             <div class="form-group">
-              <label id="results_format_label" for="format">Results format:</label>
-              <select aria-labelledby="results_format_label" class="form-control" name="format">
+              <label for="results_format">Results format:</label>
+              <select class="form-control" id="results_format">
                 <option value="tsv">table</option>
                 <option value="text">plain text</option>
                 <option value="json">JSON</option>
@@ -165,11 +175,11 @@
     </div><!-- .container-->
 
     <!-- modal dialogue -->
-    <div class="modal fade" id="prefixEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="prefixEditor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Add a SPARQL prefix</h4>
           </div>
           <div class="modal-body">
