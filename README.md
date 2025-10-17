@@ -18,10 +18,10 @@ wiki](https://github.com/epimorphics/qonsole/wiki).
 | Target            | What it does                                                |
 |-------------------|-------------------------------------------------------------|
 | `make assets`     | Install Node/Bower deps and build static assets via grunt   |
+| `make bundles`    | Install Ruby gems via Bundler                               |
+| `make install`    | Install Node and Bower dependencies only                    |
 | `make server`     | Start the local Rack server (serves demo + `/sparql` proxy) |
 | `make tests`      | Run the integration tests end-to-end (starts server)        |
-| `make install`    | Install Node and Bower dependencies only                    |
-| `make bundles`    | Install Ruby gems via Bundler                               |
 
 Common env vars:
 
@@ -109,25 +109,7 @@ make assets
 Note: The CI workflow also runs `make assets` before executing the
 integration tests, so mirroring this step locally reduces surprises.
 
-### 3) Serve the project locally
-
-We ship a tiny Rack app and tasks to serve the static demo locally:
-
-```sh
-# From the project root
-make server
-# Visit http://localhost:8080/demo-vertical.html
-```
-
-Alternatively:
-
-```sh
-bundle exec rake serve
-```
-
-Alternatively, you can serve the directory with any static server.
-
-### 4) Run the integration tests
+### 3) Run the integration tests
 
 You can run the end-to-end flow with a single task that starts the server,
 runs the test, then shuts the server down:
@@ -175,14 +157,17 @@ server with:
 
 ```sh
 make server
-# Visit http://localhost:8080/demo-vertical.html
 ```
 
-Alternatively:
+Or:
 
 ```sh
 bundle exec rake serve
 ```
+
+Visit <http://localhost:8080/demo-vertical.html>
+
+Alternatively, you can serve the directory with any static server.
 
 ### Running the Selenium IDE suite (optional)
 
