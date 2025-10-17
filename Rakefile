@@ -5,13 +5,15 @@ require 'net/http'
 
 desc 'Start a local Rack server (rackup) to serve Qonsole'
 task :serve do
-  sh 'bundle exec rackup -p 8080'
+  port = ENV.fetch('PORT', '8080')
+  sh "bundle exec rackup -p #{port}"
 end
 
 desc 'Run integration tests (starts server, runs tests, then stops)'
 task :test_integration do
-  server_cmd = ['bundle', 'exec', 'rackup', '-p', '8080']
-  puts 'Starting Rack server on http://localhost:8080 ...'
+  port = ENV.fetch('PORT', '8080')
+  server_cmd = ['bundle', 'exec', 'rackup', '-p', port]
+  puts "Starting Rack server on http://localhost:#{port} ..."
 
   # Start server in the background
   rd, wr = IO.pipe
@@ -26,7 +28,7 @@ task :test_integration do
         sleep 0.5
         # naive readiness check
         begin
-          res = Net::HTTP.get_response(URI('http://localhost:8080/demo-vertical.html'))
+          res = Net::HTTP.get_response(URI("http://localhost:#{port}/demo-vertical.html"))
           booted = res.is_a?(Net::HTTPSuccess) || res.is_a?(Net::HTTPRedirection) || res.is_a?(Net::HTTPNotFound)
         rescue StandardError
           # keep retrying
@@ -41,7 +43,8 @@ task :test_integration do
 
   puts 'Server is up. Running tests...'
   begin
-    sh({ 'QONSOLE_TEST_PAGE' => 'http://localhost:8080/demo-vertical.html' }, 'bundle exec ruby test/integration/qonsole-test.rb')
+    test_page = ENV.fetch('QONSOLE_TEST_PAGE', "http://localhost:#{port}/demo-vertical.html")
+    sh({ 'QONSOLE_TEST_PAGE' => test_page }, 'bundle exec ruby test/integration/qonsole-test.rb')
   ensure
     puts 'Stopping server...'
     Process.kill('TERM', pid) rescue nil
