@@ -15,15 +15,17 @@ wiki](https://github.com/epimorphics/qonsole/wiki).
 
 ## Developer Notes
 
-In order to get started, you'll want to install Grunt's command line interface
-(CLI) globally.[^1]
+Optional: If you plan to run `grunt` directly, you can install Grunt's
+command-line interface (CLI) globally. If you use the Make targets
+documented below (`make assets`), a local Grunt will be used via npm,
+so a global install isn't required.
 
 ```sh
 npm install -g grunt-cli
 ```
 
-This will put the grunt command in your system path, allowing it to be run from
-any directory.
+This will put the `grunt` command in your system path, allowing it to be run
+from any directory.[^1]
 
 >[!Note]
 > Installing grunt-cli does not install the Grunt task runner! The job
@@ -56,8 +58,7 @@ For more detail on the test structure, expectations, and tips, see
 
 - Ruby and Bundler
 - Google Chrome (for headless browser tests)
-- Node is only needed for general development, not for running the Ruby
-  integration test.
+- Node and npm (for `make assets`)
 
 ### 1) Install dependencies
 
@@ -65,32 +66,51 @@ For more detail on the test structure, expectations, and tips, see
 bundle install
 ```
 
-### 2) Serve the project locally
+### 2) Build assets (first run or after changes)
+
+The demo page relies on built static assets (bower vendored files and
+copies via grunt).
+Build them with the Makefile target:
+
+```sh
+make assets
+```
+
+Note: The CI workflow also runs `make assets` before executing the
+integration tests, so mirroring this step locally reduces surprises.
+
+### 3) Serve the project locally
 
 We ship a tiny Rack app and tasks to serve the static demo locally:
 
 ```sh
 # From the project root
-bundle exec rake serve
+make server
 # Visit http://localhost:8080/demo-vertical.html
+```
+
+Alternatively:
+
+```sh
+bundle exec rake serve
 ```
 
 Alternatively, you can serve the directory with any static server.
 
-### 3) Run the integration test
+### 4) Run the integration test
 
 You can run the end-to-end flow with a single task that starts the server,
 runs the test, then shuts the server down:
 
 ```sh
-bundle exec rake test_integration
+make test
 ```
 
 If you already have the site served elsewhere, you can point the test at a
 custom URL:
 
 ```sh
-QONSOLE_TEST_PAGE="http://localhost:8080/demo-vertical.html" bundle exec ruby test/integration/qonsole-test.rb
+QONSOLE_TEST_PAGE="http://localhost:8080/demo-vertical.html" make test
 ```
 
 > [!TIP]
@@ -124,8 +144,14 @@ served from `localhost` so you can select `/sparql` in the UI. You can run the
 server with:
 
 ```sh
-bundle exec rake serve
+make server
 # Visit http://localhost:8080/demo-vertical.html
+```
+
+Alternatively:
+
+```sh
+bundle exec rake serve
 ```
 
 ### Running the Selenium IDE suite (optional)
