@@ -28,7 +28,7 @@ help:
 # Install JS deps and build assets (copies vendor files, minifies, etc.)
 assets:
 	@echo "Building assets with grunt (via npm scripts)..."
-	# Use npm script to run grunt to avoid npx resolution issues
+# Use npm script to run grunt to avoid npx resolution issues
 	npm run -s start
 
 # Alias for bundles

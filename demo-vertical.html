@@ -9,11 +9,11 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <link href="lib/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="lib/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="lib/css/codemirror.min.css" rel="stylesheet" />
-    <link href="lib/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="css/qonsole.css" rel="stylesheet" />
+    <link href="./lib/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./lib/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./lib/css/codemirror.min.css" rel="stylesheet" />
+    <link href="./lib/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="./css/qonsole.css" rel="stylesheet" />
 
     <style>
       /* custom styles found only in the master branch */
@@ -30,7 +30,7 @@
 
     <link rel="shortcut icon" href="./img/favicon.ico">
 
-    <script src="lib/js/require.js"></script>
+    <script src="./lib/js/require.js"></script>
 
     <!-- This link provides CORS support in IE8+ -->
     <!--[if lt IE 10]>
@@ -58,7 +58,7 @@
         queries: [
           { "name": "Properties of a named bathing water",
             "query": "select ?predicate ?object\nwhere {\n" +
-                     "  ?bw rdfs:label \"Spittal\"@en ;\n" +
+                     "  ?bw rdfs:label \"Cemaes\"@en ;\n" +
                      "      ?predicate ?object\n}"
           },
           { "name": "all OWL classes",
@@ -75,10 +75,19 @@
         allowQueriesFromURL: true
       };
 
+      // Prefer same-origin proxy when running locally to avoid CORS
+      (function() {
+        const host = window.location.hostname;
+        const isLocal = host === 'localhost' || host === '127.0.0.1' || host.startsWith('127.');
+        if (isLocal) {
+          qonfig.endpoints["local proxy"] = '/sparql';
+        }
+      })();
+
       require( ["js/config"], function() {
         require( ["jquery", "js/app/qonsole", "bootstrap"], function( $, qonsole ) {
           $( function() {
-            console.log("initializing Qonsole with config:", qonfig );
+            console.debug("initializing Qonsole with config:", qonfig );
             qonsole.init( qonfig );
           });
         });
