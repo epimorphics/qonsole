@@ -13,6 +13,36 @@ wiki](https://github.com/epimorphics/qonsole/wiki).
 
 ---
 
+## Make targets at a glance
+
+| Target            | What it does                                                |
+|-------------------|-------------------------------------------------------------|
+| `make assets`     | Install Node/Bower deps and build static assets via grunt   |
+| `make server`     | Start the local Rack server (serves demo + `/sparql` proxy) |
+| `make tests`      | Run the integration tests end-to-end (starts server)        |
+| `make install`    | Install Node and Bower dependencies only                    |
+| `make bundles`    | Install Ruby gems via Bundler                               |
+
+Common env vars:
+
+- `PORT` — Port for the local server (default 8080)
+- `QONSOLE_TEST_PAGE` — Override test target page URL
+- `SPARQL_ENDPOINT` — Upstream endpoint for the `/sparql` proxy
+- `PROXY_DEBUG=1` — Enable minimal proxy request/response logging
+
+Examples:
+
+```sh
+# Serve on a different port
+PORT=9090 make server
+
+# Point the proxy at a different SPARQL endpoint
+SPARQL_ENDPOINT="https://example.org/sparql" make server
+
+# Run tests against a custom page (e.g. non-default port)
+QONSOLE_TEST_PAGE="http://localhost:9090/demo-vertical.html" make test
+```
+
 ## Developer Notes
 
 Optional: If you plan to run `grunt` directly, you can install Grunt's
@@ -63,7 +93,7 @@ For more detail on the test structure, expectations, and tips, see
 ### 1) Install dependencies
 
 ```sh
-bundle install
+make bundles
 ```
 
 ### 2) Build assets (first run or after changes)
@@ -97,20 +127,20 @@ bundle exec rake serve
 
 Alternatively, you can serve the directory with any static server.
 
-### 4) Run the integration test
+### 4) Run the integration tests
 
 You can run the end-to-end flow with a single task that starts the server,
 runs the test, then shuts the server down:
 
 ```sh
-make test
+make tests
 ```
 
 If you already have the site served elsewhere, you can point the test at a
 custom URL:
 
 ```sh
-QONSOLE_TEST_PAGE="http://localhost:8080/demo-vertical.html" make test
+QONSOLE_TEST_PAGE="http://localhost:8080/demo-vertical.html" make tests
 ```
 
 > [!TIP]
