@@ -3,6 +3,7 @@
 # Prefer npx to run local tools; fall back to global if needed
 BOWER := $(shell command -v npx >/dev/null 2>&1 && echo "npx bower" || echo "bower")
 
+NOW := $(shell date "+%Y.%m.%d-%H.%M.%S")
 # Configurable ports/URLs for local server and tests
 PORT ?= 8080
 QONSOLE_TEST_PAGE ?= http://localhost:$(PORT)/demo-vertical.html
@@ -16,9 +17,9 @@ endif
 
 all: help
 
-audit: install
+audit:
 	@echo "Auditing Node dependencies for vulnerabilities..."
-	npm audit --json > $(date "+%Y.%m.%d-%H.%M.%S")-npm_audit.json
+	npm audit --json > ${NOW}-npm_audit.json || :
 
 help:
 	@echo "Available targets:"
