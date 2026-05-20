@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-05-20
+
+### Changed
+
+* Complete rewrite as a Vue 3 SFC compiled to a native Web Component (`<epi-qonsole>`).
+  The component is framework-agnostic and requires no runtime dependencies from consumers.
+* Package renamed to `@epimorphics/qonsole` and published as an ES module with a UMD fallback.
+* Replaced jQuery DataTables with a plain sortable `<table>` implementation.
+* Replaced Bootstrap modal with a native `<dialog>` element.
+* Replaced jQuery AJAX with the Fetch API.
+* Replaced RequireJS module loading with Vite + Yarn Berry workspaces.
+* CodeMirror upgraded to v6 with proper shadow DOM style injection.
+
+### Removed
+
+* All jQuery, RequireJS, Bootstrap, and Lodash dependencies.
+* Ruby development server and Capybara/Selenium integration test suite.
+* Grunt build tooling and Bower dependency management.
+* Legacy demo HTML pages.
+
 ### Added
 
 * Automated integration tests in CI, including browser setup and failure

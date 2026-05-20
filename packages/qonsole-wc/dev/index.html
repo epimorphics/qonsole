@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Qonsole Web Component — Dev</title>
+  <style>
+    body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.5rem; }
+    epi-qonsole { display: block; }
+  </style>
+  <script type="module" src="../src/index.js"></script>
+</head>
+<body>
+  <h1>Qonsole Dev</h1>
+  <epi-qonsole
+    endpoints='{"DBpedia": "https://dbpedia.org/sparql"}'
+    prefixes='{
+      "rdf":  "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+      "owl":  "http://www.w3.org/2002/07/owl#",
+      "dbo":  "http://dbpedia.org/ontology/",
+      "dbr":  "http://dbpedia.org/resource/"
+    }'
+    queries='[
+      {
+        "name": "All classes (limit 10)",
+        "query": "SELECT ?class ?label WHERE {\n  ?class a owl:Class .\n  OPTIONAL { ?class rdfs:label ?label FILTER(LANG(?label) = \"en\") }\n} LIMIT 10"
+      },
+      {
+        "name": "DESCRIBE a resource",
+        "query": "DESCRIBE dbr:London"
+      }
+    ]'
+    allow-queries-from-u-r-l="true"
+  ></epi-qonsole>
+
+  <script>
+    // Test public API after component mounts
+    setTimeout(() => {
+      const el = document.querySelector('epi-qonsole')
+      console.log('currentQueryText():', el?.currentQueryText?.())
+    }, 1000)
+  </script>
+</body>
+</html>

@@ -1,70 +1,8 @@
 {
-  "name": "qonsole",
-  "version": "0.3.0",
-  "description": "A web console for issuing SPARQL queries.",
-  "keywords": [
-    "SPARQL",
-    "web",
-    "form"
-  ],
-  "homepage": "https://github.com/epimorphics/qonsole",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/epimorphics/qonsole.git"
-  },
-  "author": {
-    "name": "Epimorphics Limited",
-    "url": "https://www.epimorphics.com"
-  },
-  "contributors": [
-    {
-      "name": "Ian Dickinson",
-      "email": "ian.dickinson@epimorphics.com"
-    },
-    {
-      "name": "Brian McBride",
-      "email": "brian.mcbride@epimorphics.com"
-    },
-    {
-      "name": "Dave Reynolds",
-      "email": "dave.reynolds@epimorphics.com"
-    },
-    {
-      "name": "Joseph Davies",
-      "email": "joseph.davies@epimorphics.com"
-    },
-    {
-      "name": "Bogdan Marc",
-      "email": "bogdan.marc@epimorphics.com"
-    },
-    {
-      "name": "Jon Humphrey",
-      "email": "jon.humphrey@epimorphics.com"
-    }
-  ],
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/epimorphics/qonsole/issues"
-  },
-  "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "bower": "^1.8.14",
-    "cors": "^2.8.5",
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-es5": "^1.1.0",
-    "eslint-plugin-import": "^2.6.1",
-    "eslint-plugin-react": "^7.1.0",
-    "grunt": "^1.0.4",
-    "grunt-bower-task": "~0.6.2",
-    "grunt-cli": "^1.5.0",
-    "grunt-contrib-clean": "~2.0.1",
-    "grunt-contrib-copy": "~1.0.0",
-    "grunt-contrib-cssmin": "^5.0.0",
-    "grunt-contrib-uglify": "^5.2.2"
-  },
-  "scripts": {
-    "prestart": "npm install",
-    "start": "grunt"
-  }
+  "name": "qonsole-workspace",
+  "private": true,
+  "packageManager": "yarn@4.15.0",
+  "workspaces": [
+    "packages/*"
+  ]
 }
