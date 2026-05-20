@@ -1,8 +1,13 @@
-/bower_components/
-/.project
-/.tmp/
-/node_modules/
-/lib/
-/font/
-/images/
-/**/*-npm_audit.json
+# Yarn Berry — commit releases/, ignore everything else
+.yarn/install-state.gz
+.yarn/cache
+!.yarn/releases
+
+# Build output
+packages/qonsole-wc/dist/
+
+# Dependencies
+node_modules/
+
+# OS
+.DS_Store
