@@ -15,7 +15,7 @@ export function usePrefixes(initialPrefixMap) {
   initPrefixes(initialPrefixMap)
 
   function addOrUpdatePrefix(name, uri) {
-    const existing = prefixList.value.find(p => p.name === name)
+    const existing = prefixList.value.find((p) => p.name === name)
     if (uri) {
       if (existing) {
         existing.uri = uri
@@ -24,57 +24,63 @@ export function usePrefixes(initialPrefixMap) {
         prefixList.value.push({ name, uri, active: true })
       }
     } else {
-      prefixList.value = prefixList.value.filter(p => p.name !== name)
+      prefixList.value = prefixList.value.filter((p) => p.name !== name)
     }
   }
 
   function setActive(name, active) {
-    const p = prefixList.value.find(p => p.name === name)
+    const p = prefixList.value.find((p) => p.name === name)
     if (p) p.active = active
   }
 
   // Sync checkbox state to match a prefix array (e.g. from a loaded example)
   function syncPrefixButtonState(prefixes) {
-    const names = new Set(prefixes.map(p => p.name))
-    prefixList.value.forEach(p => { p.active = names.has(p.name) })
+    const names = new Set(prefixes.map((p) => p.name))
+    prefixList.value.forEach((p) => {
+      p.active = names.has(p.name)
+    })
   }
 
   // Parse prefix declarations out of the leader of a query body
   function assemblePrefixesFromQuery(queryBody) {
     const [leader] = queryLeader(queryBody)
     const leaderLines = leader.split('\n')
-    const prefixLines = leaderLines.filter(line => /prefix/i.test(line))
-    return prefixLines.map(line => {
-      const parts = line.split(/\@?prefix\s+/i)
-      if (parts.length < 2) return null
-      const m = parts[1].match(/^\s*([\w\-]*)\s*:\s*<([^>]*)>\s*\.?\s*$/)
-      if (!m) return null
-      return { name: m[1], uri: m[2] }
-    }).filter(Boolean)
+    const prefixLines = leaderLines.filter((line) => /prefix/i.test(line))
+    return prefixLines
+      .map((line) => {
+        const parts = line.split(/@?prefix\s+/i)
+        if (parts.length < 2) return null
+        const m = parts[1].match(/^\s*([\w-]*)\s*:\s*<([^>]*)>\s*\.?\s*$/)
+        if (!m) return null
+        return { name: m[1], uri: m[2] }
+      })
+      .filter(Boolean)
   }
 
   // Three-strategy prefix assembly (mirrors original assemblePrefixes)
   function assemblePrefixes(queryBody, queryDefinitionPrefixes) {
-    if (/\@?prefix\s/i.test(queryBody)) {
+    if (/@?prefix\s/i.test(queryBody)) {
       return assemblePrefixesFromQuery(queryBody)
     }
     if (queryDefinitionPrefixes) {
-      const map = Object.fromEntries(prefixList.value.map(p => [p.name, p.uri]))
+      const map = Object.fromEntries(
+        prefixList.value.map((p) => [p.name, p.uri])
+      )
       return queryDefinitionPrefixes
-        .map(name => ({ name, uri: map[name] }))
-        .filter(p => p.uri)
+        .map((name) => ({ name, uri: map[name] }))
+        .filter((p) => p.uri)
     }
-    return prefixList.value.filter(p => p.active)
+    return prefixList.value.filter((p) => p.active)
   }
 
   // Render prefix array to SPARQL prefix block
   function renderPrefixes(prefixes) {
-    return prefixes.map(p => `prefix ${p.name}: <${p.uri}>`).join('\n')
+    return prefixes.map((p) => `prefix ${p.name}: <${p.uri}>`).join('\n')
   }
 
   // Split query into [leader, body]
   function queryLeader(query) {
-    const isLeaderLine = line => /(^\s*\@?prefix)|(^\s*#)|(^\s*$)/i.test(line)
+    const isLeaderLine = (line) => /(^\s*@?prefix)|(^\s*#)|(^\s*$)/i.test(line)
     const lines = query.split('\n')
     const leaderLines = []
     while (lines.length && isLeaderLine(lines[0])) {
@@ -114,7 +120,7 @@ export function usePrefixes(initialPrefixMap) {
 
   // Return { name: uri } map for QName shortening
   function parsedPrefixMap() {
-    return Object.fromEntries(prefixList.value.map(p => [p.name, p.uri]))
+    return Object.fromEntries(prefixList.value.map((p) => [p.name, p.uri]))
   }
 
   async function lookupPrefixCC(prefix) {

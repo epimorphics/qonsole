@@ -4,14 +4,16 @@ export function useExamples() {
   const examples = ref([])
   const selectedExampleIndex = ref(0)
 
-  const currentExample = computed(() => examples.value[selectedExampleIndex.value] ?? null)
+  const currentExample = computed(
+    () => examples.value[selectedExampleIndex.value] ?? null
+  )
 
   async function initExamples(queriesConfig) {
-    examples.value = queriesConfig.map(q => ({ ...q }))
+    examples.value = queriesConfig.map((q) => ({ ...q }))
 
     const remoteLoads = examples.value
-      .filter(ex => ex.queryURL && !ex.query)
-      .map(ex => loadRemoteQuery(ex))
+      .filter((ex) => ex.queryURL && !ex.query)
+      .map((ex) => loadRemoteQuery(ex))
 
     await Promise.all(remoteLoads)
   }
@@ -34,5 +36,12 @@ export function useExamples() {
     return new URLSearchParams(window.location.search).get('query')
   }
 
-  return { examples, selectedExampleIndex, currentExample, initExamples, selectExample, checkForURLQuery }
+  return {
+    examples,
+    selectedExampleIndex,
+    currentExample,
+    initExamples,
+    selectExample,
+    checkForURLQuery,
+  }
 }

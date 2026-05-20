@@ -3,7 +3,10 @@
     <!-- Example queries selector -->
     <div v-if="examples.length > 0" class="qonsole__section">
       <label for="qc-examples">Example queries</label>
-      <select id="qc-examples" @change="onExampleChange($event.target.selectedIndex)">
+      <select
+        id="qc-examples"
+        @change="onExampleChange($event.target.selectedIndex)"
+      >
         <option v-for="(ex, i) in examples" :key="i">{{ ex.name }}</option>
       </select>
     </div>
@@ -27,7 +30,9 @@
     <div class="qonsole__controls">
       <label for="qc-endpoints">SPARQL endpoint</label>
       <select id="qc-endpoints" v-model="selectedEndpoint">
-        <option v-for="(url, name) in parsedEndpoints" :key="name" :value="url">{{ name }}</option>
+        <option v-for="(url, name) in parsedEndpoints" :key="name" :value="url">
+          {{ name }}
+        </option>
       </select>
 
       <label for="qc-format">Results format</label>
@@ -79,39 +84,57 @@ import AddPrefixModal from './components/AddPrefixModal.vue'
 import ResultsPane from './components/ResultsPane.vue'
 
 const props = defineProps({
-  endpoints:           { type: String, default: '{}' },
-  prefixes:            { type: String, default: '{}' },
-  queries:             { type: String, default: '[]' },
+  endpoints: { type: String, default: '{}' },
+  prefixes: { type: String, default: '{}' },
+  queries: { type: String, default: '[]' },
   allowQueriesFromURL: { type: String, default: 'false' },
-  service:             { type: Object, default: null },
+  service: { type: Object, default: null },
 })
 
 const parsedEndpoints = computed(() => parseJsonProp(props.endpoints))
 const parsedPrefixMap = computed(() => parseJsonProp(props.prefixes))
-const parsedQueries   = computed(() => parseJsonProp(props.queries, []))
+const parsedQueries = computed(() => parseJsonProp(props.queries, []))
 
 const selectedEndpoint = ref(null)
-const resultsFormat    = ref('tsv')
-const queryText        = ref('')
-const showAddPrefix    = ref(false)
+const resultsFormat = ref('tsv')
+const queryText = ref('')
+const showAddPrefix = ref(false)
 
 const {
-  prefixList, initPrefixes, addOrUpdatePrefix, setActive,
-  syncPrefixButtonState, assemblePrefixes, renderPrefixes,
-  stripLeader, updatePrefixDeclaration, parsedPrefixMap: getPrefixMap,
+  prefixList,
+  initPrefixes,
+  addOrUpdatePrefix,
+  setActive,
+  syncPrefixButtonState,
+  assemblePrefixes,
+  renderPrefixes,
+  stripLeader,
+  updatePrefixDeclaration,
+  parsedPrefixMap: getPrefixMap,
   lookupPrefixCC,
 } = usePrefixes(parsedPrefixMap.value)
 
-const { examples, initExamples, selectExample, checkForURLQuery } = useExamples()
+const { examples, initExamples, selectExample, checkForURLQuery } =
+  useExamples()
 
-const { loading, error, executionTime, resultCount, result, execute, checkOutputFormat } = useSparqlService()
+const {
+  loading,
+  error,
+  executionTime,
+  resultCount,
+  result,
+  execute,
+  checkOutputFormat,
+} = useSparqlService()
 
 function displayQuery(exampleOrQuery) {
   if (!exampleOrQuery) return
   const queryBody = exampleOrQuery.query ?? exampleOrQuery
-  const prefixes  = assemblePrefixes(queryBody, exampleOrQuery.prefixes)
-  const rendered  = renderPrefixes(prefixes)
-  queryText.value = rendered ? `${rendered}\n\n${stripLeader(queryBody)}` : stripLeader(queryBody)
+  const prefixes = assemblePrefixes(queryBody, exampleOrQuery.prefixes)
+  const rendered = renderPrefixes(prefixes)
+  queryText.value = rendered
+    ? `${rendered}\n\n${stripLeader(queryBody)}`
+    : stripLeader(queryBody)
   syncPrefixButtonState(prefixes)
 }
 
@@ -144,20 +167,22 @@ function onPrefixToggle(name, uri, checked) {
 
 function onAddPrefix({ prefix, uri }) {
   // Save current checkbox state
-  const prevState = Object.fromEntries(prefixList.value.map(p => [p.name, p.active]))
+  const prevState = Object.fromEntries(
+    prefixList.value.map((p) => [p.name, p.active])
+  )
 
   addOrUpdatePrefix(prefix, uri)
 
   // Restore prior state for existing prefixes
-  prefixList.value.forEach(p => {
+  prefixList.value.forEach((p) => {
     if (p.name !== prefix && prevState[p.name] !== undefined) {
       p.active = prevState[p.name]
     }
   })
 
   // Rebuild query text prefix block
-  const lines = queryText.value.split('\n').filter(l => !/^prefix\s/i.test(l))
-  const activePrefixes = prefixList.value.filter(p => p.active)
+  const lines = queryText.value.split('\n').filter((l) => !/^prefix\s/i.test(l))
+  const activePrefixes = prefixList.value.filter((p) => p.active)
   queryText.value = `${renderPrefixes(activePrefixes)}\n${lines.join('\n')}`
 }
 
@@ -169,21 +194,25 @@ async function onRunQuery() {
     selectedEndpoint.value,
     adjustedFormat,
     getPrefixMap(),
-    props.service,
+    props.service
   )
 }
 
 // Public API
 defineExpose({
-  currentQueryText:    () => queryText.value,
-  setCurrentQueryText: (text) => { queryText.value = text },
+  currentQueryText: () => queryText.value,
+  setCurrentQueryText: (text) => {
+    queryText.value = text
+  },
 })
 </script>
 
 <style>
 *,
 *::before,
-*::after { box-sizing: border-box; }
+*::after {
+  box-sizing: border-box;
+}
 
 .qonsole {
   font-family: sans-serif;
@@ -227,7 +256,10 @@ defineExpose({
   flex-wrap: wrap;
 }
 
-.qonsole__controls label { font-weight: bold; font-size: 0.875rem; }
+.qonsole__controls label {
+  font-weight: bold;
+  font-size: 0.875rem;
+}
 
 .qonsole__controls select {
   padding: 0.3rem 0.5rem;
@@ -245,6 +277,11 @@ defineExpose({
   font-size: 0.9rem;
   font-weight: bold;
 }
-.btn-run:hover:not(:disabled) { filter: brightness(0.9); }
-.btn-run:disabled { opacity: 0.6; cursor: default; }
+.btn-run:hover:not(:disabled) {
+  filter: brightness(0.9);
+}
+.btn-run:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
 </style>

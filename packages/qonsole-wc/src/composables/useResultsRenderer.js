@@ -37,19 +37,26 @@ function parseCell(v, prefixMap) {
 
   if (v.match(/^<https?:/)) {
     const href = v.slice(1, -1)
-    return { type: 'uri', href, display: shortened.startsWith('<') ? shortened.slice(1, -1) : shortened }
+    return {
+      type: 'uri',
+      href,
+      display: shortened.startsWith('<') ? shortened.slice(1, -1) : shortened,
+    }
   }
 
-  return { type: shortened === v ? 'literal' : 'qname', value: shortened.startsWith('<') ? shortened.slice(1, -1) : shortened }
+  return {
+    type: shortened === v ? 'literal' : 'qname',
+    value: shortened.startsWith('<') ? shortened.slice(1, -1) : shortened,
+  }
 }
 
 export function parseAsTable(rawTsv, prefixMap = {}) {
-  const lines = rawTsv.split('\n').filter(l => l.trim() !== '')
+  const lines = rawTsv.split('\n').filter((l) => l.trim() !== '')
   if (lines.length === 0) return { headers: [], rows: [], count: 0 }
 
   const headers = lines.shift().replace(/\?/g, '').split('\t')
-  const rows = lines.map(line =>
-    line.split('\t').map(cell => parseCell(cell.trim(), prefixMap))
+  const rows = lines.map((line) =>
+    line.split('\t').map((cell) => parseCell(cell.trim(), prefixMap))
   )
 
   return { headers, rows, count: rows.length }
@@ -74,13 +81,21 @@ export function parseAsCode(rawText, format) {
   }
 
   if (format === 'xml') {
-    let xml = typeof rawText === 'string' ? rawText : new XMLSerializer().serializeToString(rawText)
+    let xml =
+      typeof rawText === 'string'
+        ? rawText
+        : new XMLSerializer().serializeToString(rawText)
     let count = 1
     try {
-      const doc = typeof rawText === 'string' ? new DOMParser().parseFromString(rawText, 'application/xml') : rawText
+      const doc =
+        typeof rawText === 'string'
+          ? new DOMParser().parseFromString(rawText, 'application/xml')
+          : rawText
       const results = doc.querySelector('results')
       count = results ? results.children.length : 1
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
     return { data: xml, mime: 'application/xml', count }
   }
 
