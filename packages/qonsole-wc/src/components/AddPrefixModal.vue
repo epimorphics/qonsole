@@ -112,11 +112,14 @@ function onCancel() {
 
 <style>
 .prefix-dialog {
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid var(--qonsole-border-color, #ccc);
+  border-radius: var(--qonsole-border-radius, 4px);
   padding: 1.5rem;
   min-width: 22rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  color: var(--qonsole-color, #333);
+  font-family: var(--qonsole-font-family, sans-serif);
+  font-size: var(--qonsole-font-size, 14px);
 }
 .prefix-dialog::backdrop {
   background: rgba(0, 0, 0, 0.4);
@@ -132,8 +135,11 @@ function onCancel() {
 }
 .field-row input {
   padding: 0.3rem 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  border: 1px solid var(--qonsole-border-color, #ccc);
+  border-radius: var(--qonsole-border-radius, 3px);
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
 }
 .dialog-buttons {
   display: flex;
@@ -142,22 +148,22 @@ function onCancel() {
   margin-top: 1rem;
 }
 .btn-primary {
-  background: #337ab7;
-  color: #fff;
+  background: var(--qonsole-accent-color, #337ab7);
+  color: var(--qonsole-accent-text-color, #fff);
   border: none;
-  border-radius: 3px;
+  border-radius: var(--qonsole-border-radius, 3px);
   padding: 0.3rem 0.75rem;
   cursor: pointer;
 }
 .btn-primary:hover {
-  background: #286090;
+  filter: brightness(0.9);
 }
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: default;
 }
 .lookup-error {
-  color: #c00;
+  color: var(--qonsole-error-color, #c00);
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }

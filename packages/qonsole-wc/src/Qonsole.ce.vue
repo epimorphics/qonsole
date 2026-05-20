@@ -215,8 +215,8 @@ defineExpose({
 }
 
 .qonsole {
-  font-family: sans-serif;
-  font-size: 14px;
+  font-family: var(--qonsole-font-family, sans-serif);
+  font-size: var(--qonsole-font-size, 14px);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -237,8 +237,8 @@ defineExpose({
 
 .qonsole__section select {
   padding: 0.3rem 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  border: 1px solid var(--qonsole-border-color, #ccc);
+  border-radius: var(--qonsole-border-radius, 3px);
   max-width: 30rem;
 }
 
@@ -263,15 +263,15 @@ defineExpose({
 
 .qonsole__controls select {
   padding: 0.3rem 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  border: 1px solid var(--qonsole-border-color, #ccc);
+  border-radius: var(--qonsole-border-radius, 3px);
 }
 
 .btn-run {
   background: var(--qonsole-accent-color, #5cb85c);
-  color: #fff;
+  color: var(--qonsole-accent-text-color, #fff);
   border: none;
-  border-radius: 3px;
+  border-radius: var(--qonsole-border-radius, 3px);
   padding: 0.4rem 1rem;
   cursor: pointer;
   font-size: 0.9rem;
