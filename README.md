@@ -2,17 +2,50 @@
 
 [![CI](https://github.com/epimorphics/qonsole/actions/workflows/ci.yml/badge.svg)](https://github.com/epimorphics/qonsole/actions/workflows/ci.yml)
 
-A framework-agnostic Web Component for running SPARQL queries against RDF endpoints. Drop it into any web page with a single script tag — no framework required.
+A framework-agnostic Web Component for running SPARQL queries against RDF endpoints. Drop it into any web page — no framework required.
 
 > **v2 note:** This is a full rewrite of the original jQuery/RequireJS widget as a Vue 3 SFC compiled to a native Web Component (`<epi-qonsole>`). The legacy source lives in the git history prior to this release.
 
 ---
 
+## Installation
+
+The package is published to the [GitHub Package Registry](https://npm.pkg.github.com)
+and requires a GitHub token to install. Add the following to your `.npmrc` or
+`.yarnrc.yml`:
+
+```
+# .npmrc
+@epimorphics:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
+```
+
+Then install:
+
+```sh
+yarn add @epimorphics/qonsole
+# or
+npm install @epimorphics/qonsole
+```
+
+> **CDN / script tag usage** is not yet available — the GitHub Package Registry
+> requires authentication and is not indexed by public CDNs such as unpkg or
+> jsDelivr. Direct script tag support is planned for a future release when the
+> package is published to the public npm registry.
+
+---
+
 ## Usage
 
-```html
-<script type="module" src="https://unpkg.com/@epimorphics/qonsole/dist/qonsole.js"></script>
+Import the package once in your application entry point to register the custom element:
 
+```js
+import '@epimorphics/qonsole'
+```
+
+Then use the element in your HTML:
+
+```html
 <epi-qonsole
   endpoints='{"default": "https://your-endpoint/sparql"}'
   prefixes='{
@@ -59,6 +92,105 @@ el.setCurrentQueryText('...')  // set editor content programmatically
 | XML | Read-only CodeMirror editor with XML highlighting |
 
 DESCRIBE and CONSTRUCT queries automatically switch away from table format.
+
+---
+
+## Migrating from v1 to v2
+
+### Installation
+
+**v1** — assets copied manually or via Bower; initialised with RequireJS:
+
+```html
+<script src="lib/js/require.js"></script>
+<script>
+  require(['js/config'], function () {
+    require(['jquery', 'js/app/qonsole', 'bootstrap'], function ($, qonsole) {
+      $(function () { qonsole.init(qonfig) })
+    })
+  })
+</script>
+```
+
+**v2** — install the npm package and import once to register the element:
+
+```js
+import '@epimorphics/qonsole'
+```
+
+### Configuration
+
+**v1** — JavaScript object passed to `qonsole.init()`:
+
+```js
+const qonfig = {
+  endpoints: { default: 'https://example.org/sparql' },
+  prefixes:  { rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#' },
+  queries:   [{ name: 'All classes', query: 'SELECT ...' }],
+  allowQueriesFromURL: true,
+}
+qonsole.init(qonfig)
+```
+
+**v2** — attributes on the custom element (JSON strings):
+
+```html
+<epi-qonsole
+  endpoints='{"default": "https://example.org/sparql"}'
+  prefixes='{"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"}'
+  queries='[{"name": "All classes", "query": "SELECT ..."}]'
+  allow-queries-from-u-r-l="true"
+></epi-qonsole>
+```
+
+### HTML structure
+
+**v1** — the host page had to provide specific DOM elements by `id` and class
+(`#query-edit-cm`, `#examples`, `ul.prefixes`, `#endpoints`, `#results`, etc.)
+plus Bootstrap modal markup for the add-prefix dialog.
+
+**v2** — no host markup required beyond the `<epi-qonsole>` tag. All internal
+structure is encapsulated in the shadow DOM.
+
+### Public API
+
+**v1:**
+```js
+qonsole.currentQueryText()
+qonsole.setCurrentQueryText('SELECT ...')
+```
+
+**v2:**
+```js
+const el = document.querySelector('epi-qonsole')
+el.currentQueryText()
+el.setCurrentQueryText('SELECT ...')
+```
+
+### Custom SPARQL service
+
+**v1** — passed as `config.service` to `qonsole.init()`.
+
+**v2** — set as a JavaScript property on the element:
+
+```js
+document.querySelector('epi-qonsole').service = myCustomService
+```
+
+The service interface is unchanged: `execute(query, { url, format, success, error })`.
+
+### Dependencies you can remove
+
+If your project was loading any of the following as part of the qonsole
+integration, they are no longer required:
+
+- jQuery
+- RequireJS
+- Bootstrap (unless used elsewhere in your project)
+- Lodash / Underscore
+- CodeMirror v5 (AMD)
+- jquery.spin
+- jQuery DataTables
 
 ---
 
