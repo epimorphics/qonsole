@@ -1,6 +1,6 @@
 # Qonsole v2 — SPARQL query web component
 
-[![Qonsole Integration Tests](https://github.com/epimorphics/qonsole/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/epimorphics/qonsole/actions/workflows/integration-tests.yml)
+[![CI](https://github.com/epimorphics/qonsole/actions/workflows/ci.yml/badge.svg)](https://github.com/epimorphics/qonsole/actions/workflows/ci.yml)
 
 A framework-agnostic Web Component for running SPARQL queries against RDF endpoints. Drop it into any web page with a single script tag — no framework required.
 
@@ -78,6 +78,40 @@ yarn workspace @epimorphics/qonsole build
 ```
 
 Open `packages/qonsole-wc/dev/index.html` in the Vite dev server to test against a live DBpedia endpoint.
+
+---
+
+## Releasing
+
+Releases are published to the [GitHub Package Registry](https://npm.pkg.github.com) as `@epimorphics/qonsole` automatically when a GitHub Release is created.
+
+### Process
+
+1. **Bump the version** in `packages/qonsole-wc/package.json` following [Semantic Versioning](https://semver.org):
+   - `patch` — bug fixes
+   - `minor` — new features, backwards-compatible
+   - `major` — breaking changes
+
+2. **Update `CHANGELOG.md`** — move items from `[Unreleased]` into a new dated section, e.g. `## [2.1.0] - 2026-05-20`.
+
+3. **Commit and push** to `main`:
+   ```sh
+   git add packages/qonsole-wc/package.json CHANGELOG.md
+   git commit -m "chore: release v2.1.0"
+   git push
+   ```
+
+4. **Create a GitHub Release** tagged `v<version>` (e.g. `v2.1.0`):
+   - Go to **Releases → Draft a new release** on GitHub
+   - Set the tag to `v2.1.0` targeting `main`
+   - Copy the relevant `CHANGELOG.md` section as the release notes
+   - Click **Publish release**
+
+5. The **Release workflow** fires automatically, builds the package, and publishes it to the GitHub Package Registry. No additional secrets are needed — it uses the built-in `GITHUB_TOKEN`.
+
+### CI
+
+Every push to `main` and every pull request runs the **CI workflow**, which checks linting, formatting, and that the build succeeds.
 
 ---
 
