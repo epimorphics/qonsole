@@ -7,13 +7,20 @@
           :checked="prefix.active"
           :data-prefix="prefix.name"
           :value="prefix.uri"
-          @change="emit('toggle', prefix.name, prefix.uri, $event.target.checked)"
+          @change="
+            emit('toggle', prefix.name, prefix.uri, $event.target.checked)
+          "
         />
         {{ prefix.name === '' ? ':' : prefix.name }}
       </label>
     </li>
     <li class="keep">
-      <button type="button" class="btn-add-prefix" title="Add a SPARQL prefix" @click="emit('open-add-dialog')">
+      <button
+        type="button"
+        class="btn-add-prefix"
+        title="Add a SPARQL prefix"
+        @click="emit('open-add-dialog')"
+      >
         +
       </button>
     </li>
@@ -59,5 +66,7 @@ const emit = defineEmits(['toggle', 'open-add-dialog'])
   align-items: center;
   justify-content: center;
 }
-.btn-add-prefix:hover { background: #eee; }
+.btn-add-prefix:hover {
+  background: #eee;
+}
 </style>

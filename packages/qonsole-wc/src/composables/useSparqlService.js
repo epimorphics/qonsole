@@ -2,9 +2,9 @@ import { ref } from 'vue'
 import { parseAsTable, parseAsCode } from './useResultsRenderer.js'
 
 const ACCEPT_HEADERS = {
-  tsv:  'text/tab-separated-values',
+  tsv: 'text/tab-separated-values',
   json: 'application/sparql-results+json',
-  xml:  'application/sparql-results+xml',
+  xml: 'application/sparql-results+xml',
   text: 'text/plain',
 }
 
@@ -17,13 +17,19 @@ export function useSparqlService() {
 
   function checkOutputFormat(queryText, currentFormat) {
     if (currentFormat !== 'tsv') return currentFormat
-    const bodyMatch = queryText.match(/\@?prefix[^]*?\n+([\s\S]*)/)
+    const bodyMatch = queryText.match(/@?prefix[^]*?\n+([\s\S]*)/)
     const body = bodyMatch ? bodyMatch[1] : queryText
     if (/^\s*(describe|construct)\b/i.test(body.trim())) return 'text'
     return currentFormat
   }
 
-  async function execute(queryText, endpointUrl, format, prefixMap = {}, customService = null) {
+  async function execute(
+    queryText,
+    endpointUrl,
+    format,
+    prefixMap = {},
+    customService = null
+  ) {
     loading.value = true
     error.value = null
     result.value = null
@@ -40,7 +46,8 @@ export function useSparqlService() {
           customService.execute(queryText, {
             url: endpointUrl,
             format,
-            success: (res) => resolve(typeof res.asText === 'function' ? res._val : res),
+            success: (res) =>
+              resolve(typeof res.asText === 'function' ? res._val : res),
             error: (err) => reject(err),
           })
         })
@@ -93,5 +100,13 @@ export function useSparqlService() {
     }
   }
 
-  return { loading, error, executionTime, resultCount, result, execute, checkOutputFormat }
+  return {
+    loading,
+    error,
+    executionTime,
+    resultCount,
+    result,
+    execute,
+    checkOutputFormat,
+  }
 }

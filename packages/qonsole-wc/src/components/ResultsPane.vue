@@ -7,7 +7,9 @@
       <span v-if="executionTime"> in {{ executionTime }}</span>
     </div>
 
-    <div v-if="loading" class="results-loading" aria-live="polite">Running query…</div>
+    <div v-if="loading" class="results-loading" aria-live="polite">
+      Running query…
+    </div>
 
     <pre v-else-if="error" class="results-error">{{ error }}</pre>
 
@@ -21,7 +23,13 @@
                 v-for="(col, i) in result.headers"
                 :key="i"
                 @click="onSort(i)"
-                :aria-sort="sortBy === i ? (sortDir === 1 ? 'ascending' : 'descending') : 'none'"
+                :aria-sort="
+                  sortBy === i
+                    ? sortDir === 1
+                      ? 'ascending'
+                      : 'descending'
+                    : 'none'
+                "
               >
                 {{ col }}
                 <span class="sort-indicator" aria-hidden="true">
@@ -38,9 +46,23 @@
             </tr>
             <tr v-for="(row, ri) in sortedRows" :key="ri">
               <td v-for="(cell, ci) in row" :key="ci">
-                <a v-if="cell.type === 'uri'" :href="cell.href" target="_blank" rel="noopener">{{ cell.display }}</a>
-                <span v-else-if="cell.type === 'typed'" :title="`Type: ${cell.datatype}`">{{ cell.value }}</span>
-                <span v-else-if="cell.type === 'langTagged'" :title="`Language: ${cell.lang}`">{{ cell.value }}</span>
+                <a
+                  v-if="cell.type === 'uri'"
+                  :href="cell.href"
+                  target="_blank"
+                  rel="noopener"
+                  >{{ cell.display }}</a
+                >
+                <span
+                  v-else-if="cell.type === 'typed'"
+                  :title="`Type: ${cell.datatype}`"
+                  >{{ cell.value }}</span
+                >
+                <span
+                  v-else-if="cell.type === 'langTagged'"
+                  :title="`Language: ${cell.lang}`"
+                  >{{ cell.value }}</span
+                >
                 <span v-else>{{ cell.value }}</span>
               </td>
             </tr>
@@ -65,14 +87,14 @@ import { ref, computed } from 'vue'
 import SparqlEditor from './SparqlEditor.vue'
 
 const props = defineProps({
-  result:        { type: Object,  default: null },
-  loading:       { type: Boolean, default: false },
-  error:         { type: String,  default: null },
-  executionTime: { type: String,  default: null },
-  resultCount:   { type: Number,  default: null },
+  result: { type: Object, default: null },
+  loading: { type: Boolean, default: false },
+  error: { type: String, default: null },
+  executionTime: { type: String, default: null },
+  resultCount: { type: Number, default: null },
 })
 
-const sortBy  = ref(null)
+const sortBy = ref(null)
 const sortDir = ref(1)
 
 function onSort(colIndex) {
@@ -97,17 +119,35 @@ const sortedRows = computed(() => {
 
 function mimeToLanguage(mime) {
   if (mime === 'application/json') return 'json'
-  if (mime === 'application/xml')  return 'xml'
+  if (mime === 'application/xml') return 'xml'
   return 'text'
 }
 </script>
 
 <style>
-.results-pane { margin-top: 0.75rem; }
-.results-meta { font-size: 0.875rem; color: #555; margin-bottom: 0.5rem; }
-.results-loading { color: #888; font-style: italic; padding: 0.5rem 0; }
-.results-error { color: #c00; background: #fff0f0; padding: 0.75rem; border-radius: 3px; white-space: pre-wrap; }
-.results-table-wrap { overflow-x: auto; }
+.results-pane {
+  margin-top: 0.75rem;
+}
+.results-meta {
+  font-size: 0.875rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+.results-loading {
+  color: #888;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+.results-error {
+  color: #c00;
+  background: #fff0f0;
+  padding: 0.75rem;
+  border-radius: 3px;
+  white-space: pre-wrap;
+}
+.results-table-wrap {
+  overflow-x: auto;
+}
 .results-table {
   border-collapse: collapse;
   width: 100%;
@@ -122,14 +162,26 @@ function mimeToLanguage(mime) {
   user-select: none;
   white-space: nowrap;
 }
-.results-table th:hover { background: #e0e0e0; }
+.results-table th:hover {
+  background: #e0e0e0;
+}
 .results-table td {
   border: 1px solid #ddd;
   padding: 0.3rem 0.6rem;
   vertical-align: top;
 }
-.results-table tr:nth-child(even) td { background: #fafafa; }
-.results-empty { text-align: center; color: #888; padding: 1rem; }
-.results-code { margin-top: 0.5rem; }
-.sort-indicator { font-size: 0.75rem; }
+.results-table tr:nth-child(even) td {
+  background: #fafafa;
+}
+.results-empty {
+  text-align: center;
+  color: #888;
+  padding: 1rem;
+}
+.results-code {
+  margin-top: 0.5rem;
+}
+.sort-indicator {
+  font-size: 0.75rem;
+}
 </style>
