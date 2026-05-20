@@ -8,6 +8,31 @@ A framework-agnostic Web Component for running SPARQL queries against RDF endpoi
 
 ---
 
+## Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Props](#props)
+  - [Public API](#public-api)
+  - [Custom SPARQL service](#custom-sparql-service)
+- [Result formats](#result-formats)
+- [Migrating from v1 to v2](#migrating-from-v1-to-v2)
+  - [Installation](#installation-1)
+  - [Configuration](#configuration)
+  - [HTML structure](#html-structure)
+  - [Public API](#public-api-1)
+  - [Custom SPARQL service](#custom-sparql-service)
+  - [Removed public API](#removed-public-api)
+  - [Removed configuration options](#removed-configuration-options)
+  - [Output format changes](#output-format-changes)
+  - [Styling](#styling)
+  - [Dependencies you can remove](#dependencies-you-can-remove)
+- [Development](#development)
+- [Releasing](#releasing)
+- [License](#license)
+
+---
+
 ## Installation
 
 The package is published to the [GitHub Package Registry](https://npm.pkg.github.com)
@@ -69,7 +94,7 @@ Then use the element in your HTML:
 | `prefixes` | JSON string | Object mapping prefix short-names to URIs. All are checked on by default. |
 | `queries` | JSON string | Array of `{ name, query }` or `{ name, queryURL }` objects. |
 | `allow-queries-from-u-r-l` | `"true"` / `"false"` | When `"true"`, reads an initial query from the `?query=` URL parameter. |
-| `service` | Object (JS property) | Custom SPARQL service object implementing `.execute(query, options)`. |
+| `service` | Object (JS property) | Custom SPARQL service — see [Custom SPARQL service](#custom-sparql-service). |
 
 ### Public API
 
@@ -79,6 +104,51 @@ const el = document.querySelector('epi-qonsole')
 el.currentQueryText()          // → string: current editor content
 el.setCurrentQueryText('...')  // set editor content programmatically
 ```
+
+### Custom SPARQL service
+
+By default qonsole POSTs queries directly to the configured endpoint URL. You
+can replace this with your own service object — useful for adding authentication
+headers, proxying through a backend, or mocking responses in tests.
+
+Assign the service as a JavaScript property (not an HTML attribute) after the
+element is defined:
+
+```js
+document.querySelector('epi-qonsole').service = myService
+```
+
+The service must implement a single `execute` method:
+
+```js
+const myService = {
+  /**
+   * @param {string} query      - The SPARQL query string (with prefix declarations)
+   * @param {object} options
+   * @param {string} options.url    - The selected endpoint URL
+   * @param {string} options.format - 'tsv' | 'json' | 'xml' | 'text'
+   * @param {function} options.success - Call with the raw response string on success
+   * @param {function} options.error   - Call with an Error (or string) on failure
+   */
+  execute(query, { url, format, success, error }) {
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: 'Bearer ' + getToken(),
+      },
+      body: new URLSearchParams({ query, output: format }),
+    })
+      .then(res => res.text())
+      .then(success)
+      .catch(error)
+  },
+}
+```
+
+The `success` callback must receive the raw response body as a string — qonsole
+handles parsing and rendering from there. The `error` callback receives anything
+thrown or an `Error` instance; the message is displayed in the results panel.
 
 ---
 
@@ -171,13 +241,50 @@ el.setCurrentQueryText('SELECT ...')
 
 **v1** — passed as `config.service` to `qonsole.init()`.
 
-**v2** — set as a JavaScript property on the element:
+**v2** — set as a JavaScript property on the element after registration:
 
 ```js
 document.querySelector('epi-qonsole').service = myCustomService
 ```
 
-The service interface is unchanged: `execute(query, { url, format, success, error })`.
+The `execute(query, { url, format, success, error })` interface is unchanged. See
+[Custom SPARQL service](#custom-sparql-service) for the full contract.
+
+### Removed public API
+
+The following v1 methods and getters are **not available** in v2. The web
+component intentionally encapsulates its internal state rather than exposing it
+for external manipulation.
+
+| v1 method | Notes |
+|-----------|-------|
+| `qonsole.config()` | Returns the parsed config object. No equivalent — pass config via element attributes instead. |
+| `qonsole.sparqlService()` | Returns the service instance. Use the `service` property setter to supply a custom service. |
+| `qonsole.queryEditor()` | Returns the CodeMirror instance. No equivalent — the editor is private to the shadow DOM. |
+| `qonsole.selectedFormat()` / `setSelectedFormat()` | Format getter/setter. No equivalent in v2. |
+| `qonsole.namedExample(name)` | Looks up an example by name. No equivalent — examples are driven by the `queries` prop. |
+
+### Removed configuration options
+
+| v1 `qonfig` key | Notes |
+|-----------------|-------|
+| `configURL` | v1 could load its config object from a remote URL. v2 requires config to be passed as element attributes or properties directly. |
+| `service.execute` callback style | The custom service interface (`success`/`error` callbacks) is preserved for backwards compatibility but may be removed in a future version. |
+
+### Output format changes
+
+- **CSV format removed.** v1 supported `csv` as an output format. v2 supports `tsv`, `json`, `xml`, and `text`. TSV is a strict superset of what CSV was used for here.
+- **Format auto-switch behaviour.** v1 auto-switched DESCRIBE/CONSTRUCT queries from TSV to plain text. v2 preserves this behaviour, but the switch now also applies when the query body is preceded by comments or blank lines.
+
+### Styling
+
+v1 relied on Bootstrap for all UI chrome (panels, modals, buttons, dropdowns).
+v2 bundles its own styles inside the shadow DOM. If you were overriding Bootstrap
+classes to restyle the widget (e.g. `.panel-heading`, `.btn-custom1`), those
+selectors no longer apply.
+
+Global stylesheets do **not** pierce the shadow DOM. Theming via CSS custom
+properties is planned for a future release.
 
 ### Dependencies you can remove
 
