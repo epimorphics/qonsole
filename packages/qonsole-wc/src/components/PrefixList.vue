@@ -54,7 +54,7 @@ const emit = defineEmits(['toggle', 'open-add-dialog'])
 }
 .btn-add-prefix {
   background: none;
-  border: 1px solid #aaa;
+  border: 1px solid var(--qonsole-border-color, #aaa);
   border-radius: 50%;
   width: 1.5rem;
   height: 1.5rem;
@@ -67,6 +67,7 @@ const emit = defineEmits(['toggle', 'open-add-dialog'])
   justify-content: center;
 }
 .btn-add-prefix:hover {
-  background: #eee;
+  filter: brightness(0.95);
+  background: var(--qonsole-table-header-bg, #eee);
 }
 </style>

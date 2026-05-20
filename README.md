@@ -16,6 +16,9 @@ A framework-agnostic Web Component for running SPARQL queries against RDF endpoi
   - [Public API](#public-api)
   - [Custom SPARQL service](#custom-sparql-service)
 - [Result formats](#result-formats)
+- [Styling](#styling)
+  - [CSS custom properties](#css-custom-properties)
+  - [CodeMirror editor](#codemirror-editor)
 - [Migrating from v1 to v2](#migrating-from-v1-to-v2)
   - [Installation](#installation-1)
   - [Configuration](#configuration)
@@ -162,6 +165,68 @@ thrown or an `Error` instance; the message is displayed in the results panel.
 | XML | Read-only CodeMirror editor with XML highlighting |
 
 DESCRIBE and CONSTRUCT queries automatically switch away from table format.
+
+---
+
+## Styling
+
+The component is shadow-DOM encapsulated, so global stylesheets do not apply
+inside it. Appearance is controlled via CSS custom properties set on the
+`epi-qonsole` host element.
+
+### CSS custom properties
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `--qonsole-color` | `#333` | Base text colour |
+| `--qonsole-font-family` | `sans-serif` | Font family for all UI text |
+| `--qonsole-font-size` | `14px` | Base font size |
+| `--qonsole-accent-color` | `#5cb85c` | Run button and primary button background |
+| `--qonsole-accent-text-color` | `#fff` | Text colour on accent-coloured buttons |
+| `--qonsole-border-color` | `#ccc` | Border colour for inputs, selects, and the editor |
+| `--qonsole-border-radius` | `3px` | Border radius applied consistently across controls |
+| `--qonsole-muted-color` | `#555` | Colour for secondary text (result count, loading state) |
+| `--qonsole-error-color` | `#c00` | Error message text colour |
+| `--qonsole-error-bg` | `#fff0f0` | Error message background |
+| `--qonsole-table-header-bg` | `#f0f0f0` | Results table header background |
+| `--qonsole-table-border-color` | `#ddd` | Results table cell border colour |
+| `--qonsole-table-stripe-bg` | `#fafafa` | Results table alternating row background |
+
+### Example — dark theme
+
+```css
+epi-qonsole {
+  --qonsole-color: #e0e0e0;
+  --qonsole-font-family: 'Inter', sans-serif;
+  --qonsole-accent-color: #7c6af5;
+  --qonsole-accent-text-color: #fff;
+  --qonsole-border-color: #444;
+  --qonsole-muted-color: #aaa;
+  --qonsole-error-color: #ff6b6b;
+  --qonsole-error-bg: #2a1a1a;
+  --qonsole-table-header-bg: #2a2a2a;
+  --qonsole-table-border-color: #444;
+  --qonsole-table-stripe-bg: #1e1e1e;
+}
+```
+
+### Example — brand colours
+
+```css
+epi-qonsole {
+  --qonsole-accent-color: #0057b8;
+  --qonsole-border-radius: 6px;
+  --qonsole-font-family: 'Roboto', sans-serif;
+}
+```
+
+### CodeMirror editor
+
+The editor uses [CodeMirror 6](https://codemirror.net/), which ships with its
+own theme system. The default theme is used. CodeMirror's built-in themes or
+community themes can be applied by passing a `theme` extension — this is not
+currently exposed as a prop, but can be done by providing a custom SPARQL service
+wrapper if needed. This is an area planned for future improvement.
 
 ---
 

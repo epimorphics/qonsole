@@ -75,8 +75,8 @@ onBeforeUnmount(() => editorView?.destroy())
 
 <style>
 .sparql-editor {
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  border: 1px solid var(--qonsole-border-color, #ccc);
+  border-radius: var(--qonsole-border-radius, 3px);
 }
 .sparql-editor .cm-editor {
   height: 100%;

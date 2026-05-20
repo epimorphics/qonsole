@@ -130,19 +130,19 @@ function mimeToLanguage(mime) {
 }
 .results-meta {
   font-size: 0.875rem;
-  color: #555;
+  color: var(--qonsole-muted-color, #555);
   margin-bottom: 0.5rem;
 }
 .results-loading {
-  color: #888;
+  color: var(--qonsole-muted-color, #888);
   font-style: italic;
   padding: 0.5rem 0;
 }
 .results-error {
-  color: #c00;
-  background: #fff0f0;
+  color: var(--qonsole-error-color, #c00);
+  background: var(--qonsole-error-bg, #fff0f0);
   padding: 0.75rem;
-  border-radius: 3px;
+  border-radius: var(--qonsole-border-radius, 3px);
   white-space: pre-wrap;
 }
 .results-table-wrap {
@@ -154,8 +154,8 @@ function mimeToLanguage(mime) {
   font-size: 0.9rem;
 }
 .results-table th {
-  background: #f0f0f0;
-  border: 1px solid #ddd;
+  background: var(--qonsole-table-header-bg, #f0f0f0);
+  border: 1px solid var(--qonsole-table-border-color, #ddd);
   padding: 0.4rem 0.6rem;
   text-align: left;
   cursor: pointer;
@@ -163,19 +163,19 @@ function mimeToLanguage(mime) {
   white-space: nowrap;
 }
 .results-table th:hover {
-  background: #e0e0e0;
+  filter: brightness(0.95);
 }
 .results-table td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--qonsole-table-border-color, #ddd);
   padding: 0.3rem 0.6rem;
   vertical-align: top;
 }
 .results-table tr:nth-child(even) td {
-  background: #fafafa;
+  background: var(--qonsole-table-stripe-bg, #fafafa);
 }
 .results-empty {
   text-align: center;
-  color: #888;
+  color: var(--qonsole-muted-color, #888);
   padding: 1rem;
 }
 .results-code {
