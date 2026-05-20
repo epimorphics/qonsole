@@ -40,7 +40,9 @@
     "lint": "oxlint src",
     "format": "oxfmt src",
     "format:check": "oxfmt --check src",
-    "check": "oxlint src && oxfmt --check src"
+    "check": "oxlint src && oxfmt --check src",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "dependencies": {
     "@codemirror/lang-json": "^6.0.0",
@@ -52,6 +54,7 @@
     "vue": "^3.4.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@vitejs/plugin-vue": "^5.0.0",
     "oxfmt": "^0.51.0",
     "oxlint": "^1.66.0",

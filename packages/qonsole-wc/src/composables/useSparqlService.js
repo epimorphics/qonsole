@@ -17,9 +17,11 @@ export function useSparqlService() {
 
   function checkOutputFormat(queryText, currentFormat) {
     if (currentFormat !== 'tsv') return currentFormat
-    const bodyMatch = queryText.match(/@?prefix[^]*?\n+([\s\S]*)/)
-    const body = bodyMatch ? bodyMatch[1] : queryText
-    if (/^\s*(describe|construct)\b/i.test(body.trim())) return 'text'
+    const lines = queryText.split('\n')
+    const isLeaderLine = (line) => /(^\s*@?prefix)|(^\s*#)|(^\s*$)/i.test(line)
+    while (lines.length && isLeaderLine(lines[0])) lines.shift()
+    const body = lines.join('\n')
+    if (/^\s*(describe|construct)\b/i.test(body)) return 'text'
     return currentFormat
   }
 
