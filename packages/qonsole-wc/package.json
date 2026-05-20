@@ -30,6 +30,9 @@
     }
   },
   "customElements": "custom-elements.json",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
