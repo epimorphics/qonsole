@@ -475,6 +475,22 @@ Releases are published to the [GitHub Package Registry](https://npm.pkg.github.c
 
 5. The **Release workflow** fires automatically, builds the package, and publishes it to the GitHub Package Registry. No additional secrets are needed — it uses the built-in `GITHUB_TOKEN`.
 
+The workflow fails if the release tag is not `v` plus the version in `package.json`.
+
+### Pre-releases
+
+To publish a version for testing without making it the default install, give it
+a pre-release version such as `2.0.0-rc.1` or `2.1.0-alpha.1`, and tick **Set as
+a pre-release** on the GitHub Release. The workflow publishes it under a
+dist-tag named after the pre-release identifier (`rc`, `alpha`), so
+`yarn add @epimorphics/qonsole` still installs the latest full release, and the
+pre-release is installed by version or tag:
+
+```sh
+yarn add @epimorphics/qonsole@2.0.0-rc.1
+yarn add @epimorphics/qonsole@rc
+```
+
 ### CI
 
 Every push to `main` and every pull request runs the **CI workflow**, which checks linting, formatting, and that the build succeeds.
