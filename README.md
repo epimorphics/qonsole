@@ -181,7 +181,7 @@ inside it. Appearance is controlled via CSS custom properties set on the
 | `--qonsole-color` | `#333` | Base text colour |
 | `--qonsole-font-family` | `sans-serif` | Font family for all UI text |
 | `--qonsole-font-size` | `14px` | Base font size |
-| `--qonsole-accent-color` | `#5cb85c` | Run button and primary button background |
+| `--qonsole-accent-color` | `#2e7d32` | Run button and primary button background |
 | `--qonsole-accent-text-color` | `#fff` | Text colour on accent-coloured buttons |
 | `--qonsole-border-color` | `#ccc` | Border colour for inputs, selects, and the editor |
 | `--qonsole-border-radius` | `3px` | Border radius applied consistently across controls |

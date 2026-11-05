@@ -23,7 +23,11 @@
 
     <!-- Query editor -->
     <div class="qonsole__section">
-      <SparqlEditor v-model="queryText" language="sparql" />
+      <SparqlEditor
+        v-model="queryText"
+        language="sparql"
+        label="SPARQL query"
+      />
     </div>
 
     <!-- Controls row -->
@@ -219,62 +223,62 @@ defineExpose({
   font-size: var(--qonsole-font-size, 14px);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.75em;
   color: var(--qonsole-color, #333);
 }
 
 .qonsole__section {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.25em;
 }
 
 .qonsole__section label,
 .section-label {
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 
 .qonsole__section select {
-  padding: 0.3rem 0.5rem;
+  padding: 0.3em 0.5em;
   border: 1px solid var(--qonsole-border-color, #ccc);
   border-radius: var(--qonsole-border-radius, 3px);
-  max-width: 30rem;
+  max-width: 30em;
 }
 
 .qonsole__prefixes {
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.5em;
 }
 
 .qonsole__controls {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.75em;
   flex-wrap: wrap;
 }
 
 .qonsole__controls label {
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 
 .qonsole__controls select {
-  padding: 0.3rem 0.5rem;
+  padding: 0.3em 0.5em;
   border: 1px solid var(--qonsole-border-color, #ccc);
   border-radius: var(--qonsole-border-radius, 3px);
 }
 
 .btn-run {
-  background: var(--qonsole-accent-color, #5cb85c);
+  background: var(--qonsole-accent-color, #2e7d32);
   color: var(--qonsole-accent-text-color, #fff);
   border: none;
   border-radius: var(--qonsole-border-radius, 3px);
-  padding: 0.4rem 1rem;
+  padding: 0.4em 1em;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.9em;
   font-weight: bold;
 }
 .btn-run:hover:not(:disabled) {

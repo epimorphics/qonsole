@@ -151,6 +151,7 @@ __metadata:
   dependencies:
     "@codemirror/lang-json": "npm:^6.0.0"
     "@codemirror/lang-xml": "npm:^6.1.0"
+    "@codemirror/language": "npm:^6.12.3"
     "@codemirror/state": "npm:^6.6.0"
     "@codemirror/view": "npm:^6.43.0"
     "@playwright/test": "npm:^1.60.0"

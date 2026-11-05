@@ -114,8 +114,8 @@ function onCancel() {
 .prefix-dialog {
   border: 1px solid var(--qonsole-border-color, #ccc);
   border-radius: var(--qonsole-border-radius, 4px);
-  padding: 1.5rem;
-  min-width: 22rem;
+  padding: 1.5em;
+  min-width: 22em;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   color: var(--qonsole-color, #333);
   font-family: var(--qonsole-font-family, sans-serif);
@@ -125,16 +125,16 @@ function onCancel() {
   background: rgba(0, 0, 0, 0.4);
 }
 .prefix-dialog h4 {
-  margin: 0 0 1rem;
+  margin: 0 0 1em;
 }
 .field-row {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  margin-bottom: 0.75rem;
+  gap: 0.25em;
+  margin-bottom: 0.75em;
 }
 .field-row input {
-  padding: 0.3rem 0.5rem;
+  padding: 0.3em 0.5em;
   border: 1px solid var(--qonsole-border-color, #ccc);
   border-radius: var(--qonsole-border-radius, 3px);
   font-family: inherit;
@@ -144,15 +144,15 @@ function onCancel() {
 .dialog-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.5em;
+  margin-top: 1em;
 }
 .btn-primary {
-  background: var(--qonsole-accent-color, #337ab7);
+  background: var(--qonsole-accent-color, #2e7d32);
   color: var(--qonsole-accent-text-color, #fff);
   border: none;
   border-radius: var(--qonsole-border-radius, 3px);
-  padding: 0.3rem 0.75rem;
+  padding: 0.3em 0.75em;
   cursor: pointer;
 }
 .btn-primary:hover {
@@ -164,7 +164,7 @@ function onCancel() {
 }
 .lookup-error {
   color: var(--qonsole-error-color, #c00);
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  font-size: 0.875em;
+  margin-top: 0.25em;
 }
 </style>

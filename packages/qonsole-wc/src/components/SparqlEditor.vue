@@ -6,6 +6,11 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { EditorView, basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
+import {
+  HighlightStyle,
+  defaultHighlightStyle,
+  syntaxHighlighting,
+} from '@codemirror/language'
 import { sparql } from 'codemirror-lang-sparql'
 import { json } from '@codemirror/lang-json'
 import { xml } from '@codemirror/lang-xml'
@@ -14,7 +19,17 @@ const props = defineProps({
   modelValue: { type: String, default: '' },
   readonly: { type: Boolean, default: false },
   language: { type: String, default: 'sparql' }, // 'sparql' | 'json' | 'xml' | 'text'
+  // Accessible name for the editable area, announced by screen readers
+  label: { type: String, required: true },
 })
+
+// CodeMirror's default highlighting, except that its IRI/namespace green
+// (#085) is below WCAG AA contrast on the active line; #006b45 is 6.3:1
+const highlightStyle = HighlightStyle.define(
+  defaultHighlightStyle.specs.map((spec) =>
+    spec.color === '#085' ? { ...spec, color: '#006b45' } : spec
+  )
+)
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -33,7 +48,16 @@ function getLanguageExtension() {
 }
 
 onMounted(() => {
-  const extensions = [basicSetup, getLanguageExtension()]
+  const extensions = [
+    basicSetup,
+    syntaxHighlighting(highlightStyle),
+    getLanguageExtension(),
+    // tabindex makes read-only results reachable by keyboard for scrolling
+    EditorView.contentAttributes.of({
+      'aria-label': props.label,
+      tabindex: '0',
+    }),
+  ]
 
   if (props.readonly) {
     extensions.push(EditorState.readOnly.of(true))
