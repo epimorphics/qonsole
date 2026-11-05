@@ -6,6 +6,8 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { EditorView, basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
+import { keymap } from '@codemirror/view'
+import { insertTab } from '@codemirror/commands'
 import {
   HighlightStyle,
   defaultHighlightStyle,
@@ -21,6 +23,8 @@ const props = defineProps({
   language: { type: String, default: 'sparql' }, // 'sparql' | 'json' | 'xml' | 'text'
   // Accessible name for the editable area, announced by screen readers
   label: { type: String, required: true },
+  // id of an element describing the editor, e.g. how to leave it by keyboard
+  describedBy: { type: String, default: null },
 })
 
 // CodeMirror's default highlighting, except that its IRI/namespace green
@@ -31,7 +35,7 @@ const highlightStyle = HighlightStyle.define(
   )
 )
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'escape'])
 
 const editorRef = ref(null)
 let editorView = null
@@ -56,6 +60,7 @@ onMounted(() => {
     EditorView.contentAttributes.of({
       'aria-label': props.label,
       tabindex: '0',
+      ...(props.describedBy ? { 'aria-describedby': props.describedBy } : {}),
     }),
   ]
 
@@ -63,6 +68,19 @@ onMounted(() => {
     extensions.push(EditorState.readOnly.of(true))
   } else {
     extensions.push(
+      // As in qonsole v1: Tab indents, Escape leaves the editor (the parent
+      // decides where focus goes) and Shift+Tab, left unbound, moves focus
+      // back. Autocompletion's Escape runs first, at a higher precedence.
+      keymap.of([
+        { key: 'Tab', run: insertTab },
+        {
+          key: 'Escape',
+          run: () => {
+            emit('escape')
+            return true
+          },
+        },
+      ]),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
           emit('update:modelValue', update.state.doc.toString())

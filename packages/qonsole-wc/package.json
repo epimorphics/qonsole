@@ -45,6 +45,7 @@
     "test:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@codemirror/commands": "^6.10.3",
     "@codemirror/lang-json": "^6.0.0",
     "@codemirror/lang-xml": "^6.1.0",
     "@codemirror/language": "^6.12.3",
