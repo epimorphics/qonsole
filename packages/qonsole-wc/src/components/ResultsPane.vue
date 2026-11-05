@@ -76,6 +76,7 @@
         :model-value="result.data"
         :language="mimeToLanguage(result.mime)"
         :readonly="true"
+        label="Query results"
         class="results-code"
       />
     </template>
@@ -126,22 +127,22 @@ function mimeToLanguage(mime) {
 
 <style>
 .results-pane {
-  margin-top: 0.75rem;
+  margin-top: 0.75em;
 }
 .results-meta {
-  font-size: 0.875rem;
+  font-size: 0.875em;
   color: var(--qonsole-muted-color, #555);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5em;
 }
 .results-loading {
   color: var(--qonsole-muted-color, #888);
   font-style: italic;
-  padding: 0.5rem 0;
+  padding: 0.5em 0;
 }
 .results-error {
   color: var(--qonsole-error-color, #c00);
   background: var(--qonsole-error-bg, #fff0f0);
-  padding: 0.75rem;
+  padding: 0.75em;
   border-radius: var(--qonsole-border-radius, 3px);
   white-space: pre-wrap;
 }
@@ -151,12 +152,12 @@ function mimeToLanguage(mime) {
 .results-table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 0.9rem;
+  font-size: 0.9em;
 }
 .results-table th {
   background: var(--qonsole-table-header-bg, #f0f0f0);
   border: 1px solid var(--qonsole-table-border-color, #ddd);
-  padding: 0.4rem 0.6rem;
+  padding: 0.4em 0.6em;
   text-align: left;
   cursor: pointer;
   user-select: none;
@@ -167,8 +168,14 @@ function mimeToLanguage(mime) {
 }
 .results-table td {
   border: 1px solid var(--qonsole-table-border-color, #ddd);
-  padding: 0.3rem 0.6rem;
+  padding: 0.3em 0.6em;
   vertical-align: top;
+}
+/* WCAG 2.2 target size: links in adjacent rows need 24px between them */
+.results-table td a {
+  display: inline-block;
+  min-height: 24px;
+  line-height: 24px;
 }
 .results-table tr:nth-child(even) td {
   background: var(--qonsole-table-stripe-bg, #fafafa);
@@ -176,12 +183,12 @@ function mimeToLanguage(mime) {
 .results-empty {
   text-align: center;
   color: var(--qonsole-muted-color, #888);
-  padding: 1rem;
+  padding: 1em;
 }
 .results-code {
-  margin-top: 0.5rem;
+  margin-top: 0.5em;
 }
 .sort-indicator {
-  font-size: 0.75rem;
+  font-size: 0.75em;
 }
 </style>

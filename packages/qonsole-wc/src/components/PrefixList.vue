@@ -42,13 +42,15 @@ const emit = defineEmits(['toggle', 'open-add-dialog'])
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.5em;
   align-items: center;
 }
 .prefixes .prefix label {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  /* WCAG 2.2 target size: keep 24px clear around each checkbox */
+  min-height: 24px;
+  gap: 0.25em;
   font-weight: normal;
   cursor: pointer;
 }
@@ -56,10 +58,11 @@ const emit = defineEmits(['toggle', 'open-add-dialog'])
   background: none;
   border: 1px solid var(--qonsole-border-color, #aaa);
   border-radius: 50%;
-  width: 1.5rem;
-  height: 1.5rem;
+  /* WCAG 2.2 target size minimum */
+  width: max(24px, 1.5em);
+  height: max(24px, 1.5em);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1em;
   line-height: 1;
   padding: 0;
   display: flex;
