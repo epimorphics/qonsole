@@ -16,6 +16,13 @@ export function useExamples() {
       .map((ex) => loadRemoteQuery(ex))
 
     await Promise.all(remoteLoads)
+
+    // Configs may use \r or \r\n line endings, but prefix handling splits on \n
+    examples.value.forEach((ex) => {
+      if (typeof ex.query === 'string') {
+        ex.query = ex.query.replace(/\r\n?/g, '\n')
+      }
+    })
   }
 
   async function loadRemoteQuery(ex) {
