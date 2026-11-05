@@ -89,8 +89,15 @@ export function usePrefixes(initialPrefixMap) {
     return [leaderLines.join('\n'), lines.join('\n')]
   }
 
+  // Remove the prefix declarations from the leader, keeping any comments
+  // (example queries use them to describe themselves)
   function stripLeader(query) {
-    return queryLeader(query)[1]
+    const [leader, body] = queryLeader(query)
+    const kept = leader
+      .split('\n')
+      .filter((line) => !/^\s*@?prefix/i.test(line))
+    while (kept.length && /^\s*$/.test(kept[0])) kept.shift()
+    return kept.length ? `${kept.join('\n')}\n${body}` : body
   }
 
   // Add or remove a prefix declaration line in a query string
