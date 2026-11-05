@@ -6,6 +6,10 @@
 # Build output
 packages/qonsole-wc/dist/
 
+# Playwright output
+packages/qonsole-wc/test-results/
+packages/qonsole-wc/playwright-report/
+
 # Dependencies
 node_modules/
 
