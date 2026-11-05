@@ -2,7 +2,9 @@
   <div class="qonsole">
     <!-- Example queries selector -->
     <div v-if="examples.length > 0" class="qonsole__section">
-      <label for="qc-examples">Example queries</label>
+      <component :is="headingTag" class="qonsole__heading">
+        <label for="qc-examples">Example queries</label>
+      </component>
       <select
         id="qc-examples"
         @change="onExampleChange($event.target.selectedIndex)"
@@ -13,7 +15,9 @@
 
     <!-- Prefix list -->
     <div class="qonsole__section qonsole__prefixes">
-      <span class="section-label">Prefixes</span>
+      <component :is="headingTag" class="qonsole__heading">
+        Prefixes
+      </component>
       <PrefixList
         :prefixes="prefixList"
         @toggle="onPrefixToggle"
@@ -64,6 +68,7 @@
       :error="error"
       :execution-time="executionTime"
       :result-count="resultCount"
+      :heading-tag="headingTag"
     />
 
     <!-- Add prefix modal -->
@@ -92,7 +97,14 @@ const props = defineProps({
   prefixes: { type: String, default: '{}' },
   queries: { type: String, default: '[]' },
   allowQueriesFromURL: { type: String, default: 'false' },
+  // Level of the section headings, to fit the host page's outline
+  headingLevel: { type: String, default: '2' },
   service: { type: Object, default: null },
+})
+
+const headingTag = computed(() => {
+  const level = Number.parseInt(props.headingLevel, 10)
+  return `h${level >= 1 && level <= 6 ? level : 2}`
 })
 
 const parsedEndpoints = computed(() => parseJsonProp(props.endpoints))
@@ -234,9 +246,17 @@ defineExpose({
 }
 
 .qonsole__section label,
-.section-label {
+.qonsole__heading {
   font-weight: bold;
   font-size: 0.875em;
+}
+
+.qonsole__heading {
+  margin: 0;
+}
+
+.qonsole__heading label {
+  font-size: inherit;
 }
 
 .qonsole__section select {
