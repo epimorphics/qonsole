@@ -52,15 +52,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/commands@npm:^6.0.0":
-  version: 6.10.3
-  resolution: "@codemirror/commands@npm:6.10.3"
+"@codemirror/commands@npm:^6.0.0, @codemirror/commands@npm:^6.10.3":
+  version: 6.11.1
+  resolution: "@codemirror/commands@npm:6.11.1"
   dependencies:
     "@codemirror/language": "npm:^6.0.0"
-    "@codemirror/state": "npm:^6.6.0"
+    "@codemirror/state": "npm:^6.7.0"
     "@codemirror/view": "npm:^6.27.0"
     "@lezer/common": "npm:^1.1.0"
-  checksum: 10c0/43db9eb5a2aeb09c9714e107a3a4960d16b56879b5dbdbd382a2b0a12bb79cd46c70ff933cea763aeb9b9d218d21e8faa6989d9bd247dfd949f6c373f6847261
+  checksum: 10c0/bec1b31c4fc5778d7605bafd363ac00776f1c57cd3d039093e72746e6ca54f802f7ec688d9e3182e65ec9c014f91aec723a452096acbcbe55cd6eff337d15ab5
   languageName: node
   linkType: hard
 
@@ -133,6 +133,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codemirror/state@npm:^6.7.0":
+  version: 6.7.6
+  resolution: "@codemirror/state@npm:6.7.6"
+  dependencies:
+    "@marijn/find-cluster-break": "npm:^1.0.0"
+  checksum: 10c0/1ea16c30571210d40f6161a3a43b221fa1522fdcfef4836f6063dcd3d04fd2d5f4aefbc5cfdcd30f7d9df96985967cfb12cd876e4abb1cd41bff41ec8f3d328e
+  languageName: node
+  linkType: hard
+
 "@codemirror/view@npm:^6.0.0, @codemirror/view@npm:^6.17.0, @codemirror/view@npm:^6.23.0, @codemirror/view@npm:^6.27.0, @codemirror/view@npm:^6.37.0, @codemirror/view@npm:^6.42.0, @codemirror/view@npm:^6.43.0":
   version: 6.43.0
   resolution: "@codemirror/view@npm:6.43.0"
@@ -149,6 +158,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@epimorphics/qonsole@workspace:packages/qonsole-wc"
   dependencies:
+    "@codemirror/commands": "npm:^6.10.3"
     "@codemirror/lang-json": "npm:^6.0.0"
     "@codemirror/lang-xml": "npm:^6.1.0"
     "@codemirror/language": "npm:^6.12.3"

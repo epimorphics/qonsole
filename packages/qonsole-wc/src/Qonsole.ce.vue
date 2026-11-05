@@ -27,17 +27,28 @@
 
     <!-- Query editor -->
     <div class="qonsole__section">
+      <p id="qc-editor-desc" class="qonsole__editor-desc">
+        Multi-line SPARQL query editor: enter or paste your query below.
+        <span class="visually-hidden">
+          Press Escape to leave the editor, or Shift and Tab to go back.
+        </span>
+      </p>
+      <button type="button" class="qonsole__skip" @click="focusEndpoint">
+        Skip SPARQL editor (go to endpoint selection)
+      </button>
       <SparqlEditor
         v-model="queryText"
         language="sparql"
         label="SPARQL query"
+        described-by="qc-editor-desc"
+        @escape="focusEndpoint"
       />
     </div>
 
     <!-- Controls row -->
     <div class="qonsole__controls">
       <label for="qc-endpoints">SPARQL endpoint</label>
-      <select id="qc-endpoints" v-model="selectedEndpoint">
+      <select id="qc-endpoints" ref="endpointSelect" v-model="selectedEndpoint">
         <option v-for="(url, name) in parsedEndpoints" :key="name" :value="url">
           {{ name }}
         </option>
@@ -112,6 +123,11 @@ const parsedPrefixMap = computed(() => parseJsonProp(props.prefixes))
 const parsedQueries = computed(() => parseJsonProp(props.queries, []))
 
 const selectedEndpoint = ref(null)
+const endpointSelect = ref(null)
+
+function focusEndpoint() {
+  endpointSelect.value?.focus()
+}
 const resultsFormat = ref('tsv')
 const queryText = ref('')
 const showAddPrefix = ref(false)
@@ -253,6 +269,39 @@ defineExpose({
 
 .qonsole__heading {
   margin: 0;
+}
+
+.qonsole__editor-desc {
+  margin: 0;
+  font-size: 0.875em;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Skip link: hidden until it receives keyboard focus, as in qonsole v1 */
+.qonsole__skip:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.qonsole__skip:focus {
+  align-self: flex-start;
+  padding: 0.3em 0.6em;
+  border: none;
+  background: var(--qonsole-focus-color, #ffbf47);
+  color: #0b0c0c;
+  outline: 2px solid var(--qonsole-focus-color, #ffbf47);
 }
 
 .qonsole__heading label {
