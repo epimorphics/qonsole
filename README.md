@@ -96,7 +96,7 @@ Then use the element in your HTML:
 | `endpoints` | JSON string | Object mapping endpoint names to URLs. The first entry is selected by default. |
 | `prefixes` | JSON string | Object mapping prefix short-names to URIs. All are checked on by default. |
 | `queries` | JSON string | Array of `{ name, query }` or `{ name, queryURL }` objects. |
-| `allow-queries-from-u-r-l` | `"true"` / `"false"` | When `"true"`, reads an initial query from the `?query=` URL parameter. |
+| `allow-queries-from-u-r-l` | `"true"` / `"false"` | When `"true"`, reads an initial query from the `?query=` URL parameter, or from `?q=` (as qonsole-rails did). `?query=_localstore` reads it from session storage key `qonsole.query`, for queries too long for a URL. |
 | `heading-level` | `"1"`–`"6"` | Level of the section headings (Example queries, Prefixes, Query results), to fit the host page's outline. Default `"2"`. |
 | `service` | Object (JS property) | Custom SPARQL service — see [Custom SPARQL service](#custom-sparql-service). |
 
