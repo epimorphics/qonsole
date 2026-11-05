@@ -34,7 +34,7 @@
     "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open /dev/",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "oxlint src",
