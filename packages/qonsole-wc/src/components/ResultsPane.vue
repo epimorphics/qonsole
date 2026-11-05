@@ -1,29 +1,39 @@
 <template>
-  <div class="results-pane">
-    <component :is="headingTag" class="qonsole__heading">
+  <div class="results-pane" part="section results">
+    <component :is="headingTag" class="qonsole__heading" part="heading">
       Query results
     </component>
 
-    <div v-if="executionTime || resultCount !== null" class="results-meta">
+    <div
+      v-if="executionTime || resultCount !== null"
+      class="results-meta"
+      part="results-meta"
+    >
       <span v-if="resultCount !== null">
         {{ resultCount }} result{{ resultCount !== 1 ? 's' : '' }}
       </span>
       <span v-if="executionTime"> in {{ executionTime }}</span>
     </div>
 
-    <div v-if="loading" class="results-loading" aria-live="polite">
+    <div
+      v-if="loading"
+      class="results-loading"
+      part="results-loading"
+      aria-live="polite"
+    >
       Running query…
     </div>
 
-    <pre v-else-if="error" class="results-error">{{ error }}</pre>
+    <pre v-else-if="error" class="results-error" part="error">{{ error }}</pre>
 
     <template v-else-if="result">
       <!-- TSV table result -->
       <div v-if="result.kind === 'table'" class="results-table-wrap">
-        <table class="results-table">
+        <table class="results-table" part="results-table">
           <thead>
             <tr>
               <th
+                part="table-header"
                 v-for="(col, i) in result.headers"
                 :key="i"
                 @click="onSort(i)"
@@ -44,12 +54,16 @@
           </thead>
           <tbody>
             <tr v-if="sortedRows.length === 0">
-              <td :colspan="result.headers.length" class="results-empty">
+              <td
+                :colspan="result.headers.length"
+                class="results-empty"
+                part="table-cell"
+              >
                 Query did not return any results.
               </td>
             </tr>
             <tr v-for="(row, ri) in sortedRows" :key="ri">
-              <td v-for="(cell, ci) in row" :key="ci">
+              <td v-for="(cell, ci) in row" :key="ci" part="table-cell">
                 <a
                   v-if="cell.type === 'uri'"
                   :href="cell.href"
@@ -82,6 +96,7 @@
         :readonly="true"
         label="Query results"
         class="results-code"
+        part="results-editor"
       />
     </template>
   </div>

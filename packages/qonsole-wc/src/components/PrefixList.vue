@@ -1,7 +1,7 @@
 <template>
-  <ul class="prefixes">
+  <ul class="prefixes" part="prefix-list">
     <li v-for="prefix in prefixes" :key="prefix.name" class="prefix">
-      <label>
+      <label part="prefix">
         <input
           type="checkbox"
           :checked="prefix.active"
@@ -18,6 +18,7 @@
       <button
         type="button"
         class="btn-add-prefix"
+        part="add-prefix-button"
         title="Add a SPARQL prefix"
         @click="emit('open-add-dialog')"
       >

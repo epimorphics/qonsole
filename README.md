@@ -172,8 +172,15 @@ DESCRIBE and CONSTRUCT queries automatically switch away from table format.
 ## Styling
 
 The component is shadow-DOM encapsulated, so global stylesheets do not apply
-inside it. Appearance is controlled via CSS custom properties set on the
-`epi-qonsole` host element.
+inside it. Appearance is controlled from the host page in two ways:
+
+- [CSS custom properties](#css-custom-properties) set on the `epi-qonsole`
+  element, for colours, fonts and other design tokens
+- [CSS shadow parts](#css-shadow-parts), for anything else: layout, spacing,
+  borders or sizes of particular elements
+
+The defaults are deliberately plain, so that each application supplies its
+own look.
 
 ### CSS custom properties
 
@@ -192,6 +199,7 @@ inside it. Appearance is controlled via CSS custom properties set on the
 | `--qonsole-table-header-bg` | `#f0f0f0` | Results table header background |
 | `--qonsole-table-border-color` | `#ddd` | Results table cell border colour |
 | `--qonsole-table-stripe-bg` | `#fafafa` | Results table alternating row background |
+| `--qonsole-focus-color` | `#ffbf47` | Background of the skip-editor control when it has keyboard focus |
 
 ### Example — dark theme
 
@@ -218,6 +226,58 @@ epi-qonsole {
   --qonsole-accent-color: #0057b8;
   --qonsole-border-radius: 6px;
   --qonsole-font-family: 'Roboto', sans-serif;
+}
+```
+
+### CSS shadow parts
+
+These elements are exposed with the `part` attribute, so they can be styled
+with `epi-qonsole::part(<name>)`. Part names are part of the public API.
+
+| Part | Element |
+|------|---------|
+| `container` | Wrapper around the whole console |
+| `section` | Each section: example queries, prefixes, editor, results |
+| `heading` | Section headings (see the `heading-level` attribute) |
+| `label` | Labels of the endpoint and results format controls |
+| `select` | The example query, endpoint and results format dropdowns |
+| `prefix-list` | List of prefix checkboxes |
+| `prefix` | Each prefix checkbox with its label |
+| `add-prefix-button` | The button opening the add prefix dialog |
+| `editor-description` | Text describing the query editor |
+| `skip-link` | Control that skips past the editor, shown on keyboard focus |
+| `editor` | The query editor |
+| `controls` | Row with the endpoint, results format and run controls |
+| `run-button` | The "Perform query" button |
+| `results` | The results section (also has the `section` part) |
+| `results-meta` | The "N results in …" line |
+| `results-loading` | Message shown while a query runs |
+| `error` | Error message from a failed query |
+| `results-table` | The results table |
+| `table-header` | Each results table header cell |
+| `table-cell` | Each results table cell |
+| `results-editor` | Read-only editor showing plain text, JSON or XML results |
+
+A part's descendants and structural pseudo-classes such as `:nth-child()`
+cannot be selected through `::part()`; use the custom properties for those,
+for example `--qonsole-table-stripe-bg` for alternate rows. State
+pseudo-classes such as `:hover` and `:focus-visible` do work.
+
+```css
+/* Boxed sections and a fixed-height editor */
+epi-qonsole::part(section) {
+  padding: 0.5em;
+  background: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+}
+
+epi-qonsole::part(heading) {
+  text-transform: uppercase;
+}
+
+epi-qonsole::part(editor) {
+  height: 300px;
 }
 ```
 

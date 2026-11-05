@@ -1,12 +1,13 @@
 <template>
-  <div class="qonsole">
+  <div class="qonsole" part="container">
     <!-- Example queries selector -->
-    <div v-if="examples.length > 0" class="qonsole__section">
-      <component :is="headingTag" class="qonsole__heading">
+    <div v-if="examples.length > 0" class="qonsole__section" part="section">
+      <component :is="headingTag" class="qonsole__heading" part="heading">
         <label for="qc-examples">Example queries</label>
       </component>
       <select
         id="qc-examples"
+        part="select"
         @change="onExampleChange($event.target.selectedIndex)"
       >
         <option v-for="(ex, i) in examples" :key="i">{{ ex.name }}</option>
@@ -14,8 +15,8 @@
     </div>
 
     <!-- Prefix list -->
-    <div class="qonsole__section qonsole__prefixes">
-      <component :is="headingTag" class="qonsole__heading">
+    <div class="qonsole__section qonsole__prefixes" part="section">
+      <component :is="headingTag" class="qonsole__heading" part="heading">
         Prefixes
       </component>
       <PrefixList
@@ -26,18 +27,28 @@
     </div>
 
     <!-- Query editor -->
-    <div class="qonsole__section">
-      <p id="qc-editor-desc" class="qonsole__editor-desc">
+    <div class="qonsole__section" part="section">
+      <p
+        id="qc-editor-desc"
+        class="qonsole__editor-desc"
+        part="editor-description"
+      >
         Multi-line SPARQL query editor: enter or paste your query below.
         <span class="visually-hidden">
           Press Escape to leave the editor, or Shift and Tab to go back.
         </span>
       </p>
-      <button type="button" class="qonsole__skip" @click="focusEndpoint">
+      <button
+        type="button"
+        class="qonsole__skip"
+        part="skip-link"
+        @click="focusEndpoint"
+      >
         Skip SPARQL editor (go to endpoint selection)
       </button>
       <SparqlEditor
         v-model="queryText"
+        part="editor"
         language="sparql"
         label="SPARQL query"
         described-by="qc-editor-desc"
@@ -46,16 +57,21 @@
     </div>
 
     <!-- Controls row -->
-    <div class="qonsole__controls">
-      <label for="qc-endpoints">SPARQL endpoint</label>
-      <select id="qc-endpoints" ref="endpointSelect" v-model="selectedEndpoint">
+    <div class="qonsole__controls" part="controls">
+      <label for="qc-endpoints" part="label">SPARQL endpoint</label>
+      <select
+        id="qc-endpoints"
+        ref="endpointSelect"
+        v-model="selectedEndpoint"
+        part="select"
+      >
         <option v-for="(url, name) in parsedEndpoints" :key="name" :value="url">
           {{ name }}
         </option>
       </select>
 
-      <label for="qc-format">Results format</label>
-      <select id="qc-format" v-model="resultsFormat">
+      <label for="qc-format" part="label">Results format</label>
+      <select id="qc-format" v-model="resultsFormat" part="select">
         <option value="tsv">table</option>
         <option value="text">plain text</option>
         <option value="json">JSON</option>
@@ -65,6 +81,7 @@
       <button
         type="button"
         class="btn-run"
+        part="run-button"
         :disabled="loading || !selectedEndpoint"
         @click="onRunQuery"
       >
