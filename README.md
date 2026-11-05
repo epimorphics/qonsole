@@ -97,6 +97,7 @@ Then use the element in your HTML:
 | `prefixes` | JSON string | Object mapping prefix short-names to URIs. All are checked on by default. |
 | `queries` | JSON string | Array of `{ name, query }` or `{ name, queryURL }` objects. |
 | `allow-queries-from-u-r-l` | `"true"` / `"false"` | When `"true"`, reads an initial query from the `?query=` URL parameter. |
+| `heading-level` | `"1"`–`"6"` | Level of the section headings (Example queries, Prefixes, Query results), to fit the host page's outline. Default `"2"`. |
 | `service` | Object (JS property) | Custom SPARQL service — see [Custom SPARQL service](#custom-sparql-service). |
 
 ### Public API

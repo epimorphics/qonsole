@@ -1,5 +1,9 @@
 <template>
   <div class="results-pane">
+    <component :is="headingTag" class="qonsole__heading">
+      Query results
+    </component>
+
     <div v-if="executionTime || resultCount !== null" class="results-meta">
       <span v-if="resultCount !== null">
         {{ resultCount }} result{{ resultCount !== 1 ? 's' : '' }}
@@ -93,6 +97,7 @@ const props = defineProps({
   error: { type: String, default: null },
   executionTime: { type: String, default: null },
   resultCount: { type: Number, default: null },
+  headingTag: { type: String, default: 'h2' },
 })
 
 const sortBy = ref(null)
