@@ -442,7 +442,8 @@ yarn workspace @epimorphics/qonsole dev
 yarn workspace @epimorphics/qonsole build
 ```
 
-Open `packages/qonsole-wc/dev/index.html` in the Vite dev server to test against a live DBpedia endpoint.
+The dev server opens the dev page at <http://localhost:5173/dev/>, which runs queries against a live
+DBpedia endpoint. The root URL Vite prints, <http://localhost:5173/>, has no page and shows nothing.
 
 ---
 
