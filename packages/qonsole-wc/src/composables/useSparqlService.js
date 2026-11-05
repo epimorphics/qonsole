@@ -54,7 +54,10 @@ export function useSparqlService() {
           })
         })
       } else {
-        const params = new URLSearchParams({ query: queryText, output: format })
+        // The format is asked for with the Accept header alone, as the SPARQL
+        // protocol specifies. A non-standard `output` parameter as well makes
+        // Virtuoso (e.g. DBpedia) answer 406 for tsv and text.
+        const params = new URLSearchParams({ query: queryText })
         const res = await fetch(endpointUrl, {
           method: 'POST',
           headers: {
