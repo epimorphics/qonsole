@@ -3,7 +3,8 @@ import { test, expect } from '@playwright/test'
 const FIXTURE = '/tests/fixture.html'
 
 // TSV response for a SELECT query
-const TSV_RESPONSE = '?class\t?label\n' +
+const TSV_RESPONSE =
+  '?class\t?label\n' +
   '<http://www.w3.org/2002/07/owl#Thing>\t"Thing"@en\n' +
   '<http://www.w3.org/2002/07/owl#Class>\t"Class"@en\n'
 
@@ -33,7 +34,9 @@ test.describe('initial render', () => {
     await expect(checkboxes).toHaveCount(3)
   })
 
-  test('checks only the prefixes specified for the first example', async ({ page }) => {
+  test('checks only the prefixes specified for the first example', async ({
+    page,
+  }) => {
     const owl = inside(page, 'input[data-prefix="owl"]')
     const rdfs = inside(page, 'input[data-prefix="rdfs"]')
     const rdf = inside(page, 'input[data-prefix="rdf"]')
@@ -43,13 +46,15 @@ test.describe('initial render', () => {
   })
 
   test('shows the endpoint in the selector', async ({ page }) => {
-    await expect(inside(page, 'select#qc-endpoints')).toContainText('test endpoint')
+    await expect(inside(page, 'select#qc-endpoints')).toContainText(
+      'test endpoint'
+    )
   })
 
   test('loads the first example query into the editor', async ({ page }) => {
-    const editorText = await page.locator('epi-qonsole').evaluate(
-      el => el.currentQueryText()
-    )
+    const editorText = await page
+      .locator('epi-qonsole')
+      .evaluate((el) => el.currentQueryText())
     expect(editorText).toContain('owl:Class')
   })
 })
@@ -62,24 +67,24 @@ test.describe('example selection', () => {
 
   test('switching example updates the editor content', async ({ page }) => {
     await inside(page, 'select#qc-examples').selectOption('Describe resource')
-    const editorText = await page.locator('epi-qonsole').evaluate(
-      el => el.currentQueryText()
-    )
+    const editorText = await page
+      .locator('epi-qonsole')
+      .evaluate((el) => el.currentQueryText())
     expect(editorText).toContain('DESCRIBE')
   })
 
   test('loads a remote queryURL example', async ({ page }) => {
     await inside(page, 'select#qc-examples').selectOption('Remote query')
-    const editorText = await page.locator('epi-qonsole').evaluate(
-      el => el.currentQueryText()
-    )
+    const editorText = await page
+      .locator('epi-qonsole')
+      .evaluate((el) => el.currentQueryText())
     expect(editorText).toContain('SELECT')
   })
 })
 
 test.describe('query execution — table result', () => {
   test.beforeEach(async ({ page }) => {
-    await page.route('https://example.org/sparql', route =>
+    await page.route('https://example.org/sparql', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'text/tab-separated-values',
@@ -118,7 +123,7 @@ test.describe('query execution — JSON result', () => {
     const jsonBody = JSON.stringify({
       results: { bindings: [{ s: { value: 'http://example.org/a' } }] },
     })
-    await page.route('https://example.org/sparql', route =>
+    await page.route('https://example.org/sparql', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/sparql-results+json',
@@ -142,8 +147,10 @@ test.describe('query execution — JSON result', () => {
 })
 
 test.describe('query execution — DESCRIBE auto-switches format', () => {
-  test('switches format from table to text for a DESCRIBE query', async ({ page }) => {
-    await page.route('https://example.org/sparql', route =>
+  test('switches format from table to text for a DESCRIBE query', async ({
+    page,
+  }) => {
+    await page.route('https://example.org/sparql', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'text/plain',
@@ -166,14 +173,16 @@ test.describe('query execution — DESCRIBE auto-switches format', () => {
 
 test.describe('query execution — error handling', () => {
   test('displays an error message on a failed request', async ({ page }) => {
-    await page.route('https://example.org/sparql', route =>
+    await page.route('https://example.org/sparql', (route) =>
       route.fulfill({ status: 500, body: 'Internal Server Error' })
     )
     await page.goto(FIXTURE)
     await inside(page, '.qonsole').waitFor()
     await inside(page, 'button.btn-run').click()
     await expect(inside(page, '.results-error')).toBeVisible()
-    await expect(inside(page, '.results-error')).toContainText('Internal Server Error')
+    await expect(inside(page, '.results-error')).toContainText(
+      'Internal Server Error'
+    )
   })
 })
 
@@ -186,9 +195,9 @@ test.describe('prefix management', () => {
   test('toggling a prefix updates the query text', async ({ page }) => {
     const owlCheckbox = inside(page, 'input[data-prefix="owl"]')
     await owlCheckbox.uncheck()
-    const editorText = await page.locator('epi-qonsole').evaluate(
-      el => el.currentQueryText()
-    )
+    const editorText = await page
+      .locator('epi-qonsole')
+      .evaluate((el) => el.currentQueryText())
     expect(editorText).not.toMatch(/^prefix owl:/m)
   })
 
@@ -205,16 +214,20 @@ test.describe('public API', () => {
   })
 
   test('currentQueryText returns the editor content', async ({ page }) => {
-    const text = await page.locator('epi-qonsole').evaluate(el => el.currentQueryText())
+    const text = await page
+      .locator('epi-qonsole')
+      .evaluate((el) => el.currentQueryText())
     expect(typeof text).toBe('string')
     expect(text.length).toBeGreaterThan(0)
   })
 
   test('setCurrentQueryText updates the editor', async ({ page }) => {
-    await page.locator('epi-qonsole').evaluate(
-      el => el.setCurrentQueryText('SELECT * WHERE { ?s ?p ?o }')
-    )
-    const text = await page.locator('epi-qonsole').evaluate(el => el.currentQueryText())
+    await page
+      .locator('epi-qonsole')
+      .evaluate((el) => el.setCurrentQueryText('SELECT * WHERE { ?s ?p ?o }'))
+    const text = await page
+      .locator('epi-qonsole')
+      .evaluate((el) => el.currentQueryText())
     expect(text).toBe('SELECT * WHERE { ?s ?p ?o }')
   })
 })
