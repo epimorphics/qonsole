@@ -71,9 +71,9 @@ describe('prefix list state', () => {
   })
 
   it('returns a name to URI map of all prefixes, active or not', () => {
-    const { parsedPrefixMap, setActive } = setup({ owl: OWL, rdfs: RDFS })
+    const { currentPrefixMap, setActive } = setup({ owl: OWL, rdfs: RDFS })
     setActive('owl', false)
-    expect(parsedPrefixMap()).toEqual({ owl: OWL, rdfs: RDFS })
+    expect(currentPrefixMap()).toEqual({ owl: OWL, rdfs: RDFS })
   })
 })
 

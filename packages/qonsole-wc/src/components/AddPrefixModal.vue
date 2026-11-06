@@ -11,7 +11,6 @@
           type="text"
           placeholder="e.g. skos"
           autofocus
-          @input="lookupLabel = inputPrefix ? `'${inputPrefix}'` : ''"
         />
         <button
           type="button"
@@ -50,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
   show: { type: Boolean, default: false },
@@ -62,9 +61,12 @@ const emit = defineEmits(['close', 'add-prefix'])
 const dialogRef = ref(null)
 const inputPrefix = ref('')
 const inputUri = ref('')
-const lookupLabel = ref('')
 const lookupLoading = ref(false)
 const lookupError = ref(null)
+
+const lookupLabel = computed(() =>
+  inputPrefix.value ? `'${inputPrefix.value}'` : ''
+)
 
 watch(
   () => props.show,
@@ -72,7 +74,6 @@ watch(
     if (val) {
       inputPrefix.value = ''
       inputUri.value = ''
-      lookupLabel.value = ''
       lookupError.value = null
       dialogRef.value?.showModal()
     } else {

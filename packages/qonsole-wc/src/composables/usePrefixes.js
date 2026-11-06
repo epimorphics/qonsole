@@ -2,18 +2,15 @@ import { ref } from 'vue'
 import { assemblePrefixesFromQuery } from '../lib/prefixes.js'
 
 export function usePrefixes(initialPrefixMap) {
+  // One per checkbox, in config order; all checked to begin with
   // { name: string, uri: string, active: boolean }[]
-  const prefixList = ref([])
-
-  function initPrefixes(prefixMap) {
-    prefixList.value = Object.entries(prefixMap).map(([name, uri]) => ({
+  const prefixList = ref(
+    Object.entries(initialPrefixMap).map(([name, uri]) => ({
       name,
       uri,
       active: true,
     }))
-  }
-
-  initPrefixes(initialPrefixMap)
+  )
 
   function addOrUpdatePrefix(name, uri) {
     const existing = prefixList.value.find((p) => p.name === name)
@@ -42,15 +39,16 @@ export function usePrefixes(initialPrefixMap) {
     })
   }
 
-  // Three-strategy prefix assembly (mirrors original assemblePrefixes)
+  // The prefixes to show above an example query, as in qonsole v1:
+  // - the ones the query declares itself, if it declares any
+  // - else the ones the example's `prefixes` config names
+  // - else the ones currently checked
   function assemblePrefixes(queryBody, queryDefinitionPrefixes) {
     if (/@?prefix\s/i.test(queryBody)) {
       return assemblePrefixesFromQuery(queryBody)
     }
     if (queryDefinitionPrefixes) {
-      const map = Object.fromEntries(
-        prefixList.value.map((p) => [p.name, p.uri])
-      )
+      const map = currentPrefixMap()
       return queryDefinitionPrefixes
         .map((name) => ({ name, uri: map[name] }))
         .filter((p) => p.uri)
@@ -58,18 +56,18 @@ export function usePrefixes(initialPrefixMap) {
     return prefixList.value.filter((p) => p.active)
   }
 
-  // Return { name: uri } map for QName shortening
-  function parsedPrefixMap() {
+  // { name: uri } of every prefix, checked or not, for shortening URIs
+  // in results to QNames
+  function currentPrefixMap() {
     return Object.fromEntries(prefixList.value.map((p) => [p.name, p.uri]))
   }
 
   return {
     prefixList,
-    initPrefixes,
     addOrUpdatePrefix,
     setActive,
     syncPrefixButtonState,
     assemblePrefixes,
-    parsedPrefixMap,
+    currentPrefixMap,
   }
 }

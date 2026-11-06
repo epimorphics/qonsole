@@ -110,7 +110,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { parseJsonProp } from './lib/parseJsonProp.js'
 import { usePrefixes } from './composables/usePrefixes.js'
 import {
@@ -143,43 +143,42 @@ const headingTag = computed(() => {
 })
 
 const parsedEndpoints = computed(() => parseJsonProp(props.endpoints))
-const parsedPrefixMap = computed(() => parseJsonProp(props.prefixes))
+const parsedPrefixes = computed(() => parseJsonProp(props.prefixes))
 const parsedQueries = computed(() => parseJsonProp(props.queries, []))
 
 const selectedEndpoint = ref(null)
+const resultsFormat = ref('tsv')
+const queryText = ref('')
+const showAddPrefix = ref(false)
+
+// The endpoint selector, where focus goes when leaving the editor
 const endpointSelect = ref(null)
 
 function focusEndpoint() {
   endpointSelect.value?.focus()
 }
-const resultsFormat = ref('tsv')
-const queryText = ref('')
-const showAddPrefix = ref(false)
 
 const {
   prefixList,
-  initPrefixes,
   addOrUpdatePrefix,
   setActive,
   syncPrefixButtonState,
   assemblePrefixes,
-  parsedPrefixMap: getPrefixMap,
-} = usePrefixes(parsedPrefixMap.value)
+  currentPrefixMap,
+} = usePrefixes(parsedPrefixes.value)
 
-const { examples, initExamples, selectExample, checkForURLQuery } =
-  useExamples()
+const { examples, initExamples, checkForURLQuery } = useExamples()
 
 const { loading, error, executionTime, resultCount, result, execute } =
   useSparqlService()
 
-function displayQuery(exampleOrQuery) {
-  if (!exampleOrQuery) return
-  const queryBody = exampleOrQuery.query ?? exampleOrQuery
-  const prefixes = assemblePrefixes(queryBody, exampleOrQuery.prefixes)
+// Show an example query under its prefix declarations, and check the
+// boxes of the prefixes it uses
+function displayExample(example) {
+  const prefixes = assemblePrefixes(example.query, example.prefixes)
   const rendered = renderPrefixes(prefixes)
-  queryText.value = rendered
-    ? `${rendered}\n\n${stripLeader(queryBody)}`
-    : stripLeader(queryBody)
+  const body = stripLeader(example.query)
+  queryText.value = rendered ? `${rendered}\n\n${body}` : body
   syncPrefixButtonState(prefixes)
 }
 
@@ -196,13 +195,12 @@ onMounted(async () => {
   if (urlQuery) {
     queryText.value = urlQuery
   } else if (examples.value.length > 0) {
-    displayQuery(examples.value[0])
+    displayExample(examples.value[0])
   }
 })
 
 function onExampleChange(index) {
-  selectExample(index)
-  displayQuery(examples.value[index])
+  displayExample(examples.value[index])
 }
 
 function onPrefixToggle(name, uri, checked) {
@@ -211,21 +209,9 @@ function onPrefixToggle(name, uri, checked) {
 }
 
 function onAddPrefix({ prefix, uri }) {
-  // Save current checkbox state
-  const prevState = Object.fromEntries(
-    prefixList.value.map((p) => [p.name, p.active])
-  )
-
   addOrUpdatePrefix(prefix, uri)
 
-  // Restore prior state for existing prefixes
-  prefixList.value.forEach((p) => {
-    if (p.name !== prefix && prevState[p.name] !== undefined) {
-      p.active = prevState[p.name]
-    }
-  })
-
-  // Rebuild query text prefix block
+  // Rebuild the query's prefix block from the checked prefixes
   const lines = queryText.value.split('\n').filter((l) => !/^prefix\s/i.test(l))
   const activePrefixes = prefixList.value.filter((p) => p.active)
   queryText.value = `${renderPrefixes(activePrefixes)}\n${lines.join('\n')}`
@@ -238,7 +224,7 @@ async function onRunQuery() {
     queryText.value,
     selectedEndpoint.value,
     adjustedFormat,
-    getPrefixMap(),
+    currentPrefixMap(),
     props.service
   )
 }

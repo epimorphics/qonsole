@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 /** ?query= value meaning "read the query from session storage" */
 const LOCAL_STORE_QUERY = '_localstore'
@@ -8,11 +8,6 @@ const SESSION_QUERY_KEY = 'qonsole.query'
 
 export function useExamples() {
   const examples = ref([])
-  const selectedExampleIndex = ref(0)
-
-  const currentExample = computed(
-    () => examples.value[selectedExampleIndex.value] ?? null
-  )
 
   async function initExamples(queriesConfig) {
     examples.value = queriesConfig.map((q) => ({ ...q }))
@@ -40,10 +35,6 @@ export function useExamples() {
     }
   }
 
-  function selectExample(index) {
-    selectedExampleIndex.value = index
-  }
-
   // Query to show on load, from links in other applications:
   // - ?query=<sparql>, as in qonsole v1
   // - ?q=<sparql>, which qonsole-rails read on the server
@@ -67,10 +58,7 @@ export function useExamples() {
 
   return {
     examples,
-    selectedExampleIndex,
-    currentExample,
     initExamples,
-    selectExample,
     checkForURLQuery,
   }
 }
