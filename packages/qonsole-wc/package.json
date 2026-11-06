@@ -45,21 +45,21 @@
     "test:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@codemirror/commands": "^6.10.3",
-    "@codemirror/lang-json": "^6.0.0",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/lang-json": "^6.0.2",
     "@codemirror/lang-xml": "^6.1.0",
     "@codemirror/language": "^6.13.1",
     "@codemirror/state": "^6.7.6",
     "@codemirror/view": "^6.43.15",
-    "codemirror": "^6.0.0",
+    "codemirror": "^6.0.2",
     "codemirror-lang-sparql": "^2.1.0",
-    "vue": "^3.5.34"
+    "vue": "^3.5.45"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
-    "@vitejs/plugin-vue": "^6.0.0",
+    "@playwright/test": "^1.64.1",
+    "@vitejs/plugin-vue": "^6.0.10",
     "oxfmt": "^0.76.0",
     "oxlint": "^1.91.0",
-    "vite": "^8.0.0"
+    "vite": "^8.3.6"
   }
 }
