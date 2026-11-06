@@ -100,6 +100,12 @@ Then use the element in your HTML:
 | `heading-level` | `"1"`–`"6"` | Level of the section headings (Example queries, Prefixes, Query results), to fit the host page's outline. Default `"2"`. |
 | `service` | Object (JS property) | Custom SPARQL service — see [Custom SPARQL service](#custom-sparql-service). |
 
+`endpoints`, `prefixes`, `queries` and `allow-queries-from-u-r-l` are read
+once, when the element is added to the page, as qonsole v1 read its config
+once in `qonsole.init()`. Changing them afterwards has no effect; to
+reconfigure, replace the element. `heading-level` and `service` can be changed
+at any time.
+
 ### Public API
 
 ```js

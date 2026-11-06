@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Changing the `endpoints` attribute after the element was added to the page
+  replaced the endpoint list but left the old endpoint selected and in use.
+  `endpoints`, `prefixes` and `queries` are now read once, as documented.
+
 ---
 
 ## [2.0.0] - 2026-05-20
