@@ -37,11 +37,13 @@
     "dev": "vite --open /dev/",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "oxlint src",
-    "format": "oxfmt src",
-    "format:check": "oxfmt --check src",
-    "check": "oxlint src && oxfmt --check src",
-    "test": "playwright test",
+    "lint": "oxlint src tests/unit",
+    "format": "oxfmt src tests/unit",
+    "format:check": "oxfmt --check src tests/unit",
+    "check": "oxlint src tests/unit && oxfmt --check src tests/unit",
+    "test": "vitest run && playwright test",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
     "test:ui": "playwright test --ui"
   },
   "dependencies": {
@@ -58,8 +60,10 @@
   "devDependencies": {
     "@playwright/test": "^1.64.1",
     "@vitejs/plugin-vue": "^6.0.10",
+    "happy-dom": "^21.0.4",
     "oxfmt": "^0.76.0",
     "oxlint": "^1.91.0",
-    "vite": "^8.3.6"
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
   }
 }
