@@ -28,7 +28,6 @@
       "require": "./dist/qonsole.umd.cjs"
     }
   },
-  "customElements": "custom-elements.json",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },

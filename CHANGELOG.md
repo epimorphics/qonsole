@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `endpoints`, `prefixes` and `queries` are now read once, as documented.
 - Numbers in a results table are shown as the endpoint sent them, as in v1:
   `1.50` was shown as `1.5`, and a value such as `2024-01-01` as `2024`.
+- `package.json` no longer names a `custom-elements.json` manifest, which
+  did not exist and was not published.
 
 ---
 
