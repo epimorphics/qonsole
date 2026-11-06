@@ -142,9 +142,12 @@ const headingTag = computed(() => {
   return `h${level >= 1 && level <= 6 ? level : 2}`
 })
 
-const parsedEndpoints = computed(() => parseJsonProp(props.endpoints))
-const parsedPrefixes = computed(() => parseJsonProp(props.prefixes))
-const parsedQueries = computed(() => parseJsonProp(props.queries, []))
+// Configuration is read once, when the element is mounted, as in qonsole v1.
+// Deliberately not computed: changing these attributes later has no effect,
+// rather than updating the endpoint list while the selection stays put
+const parsedEndpoints = parseJsonProp(props.endpoints)
+const parsedPrefixes = parseJsonProp(props.prefixes)
+const parsedQueries = parseJsonProp(props.queries, [])
 
 const selectedEndpoint = ref(null)
 const resultsFormat = ref('tsv')
@@ -165,7 +168,7 @@ const {
   syncPrefixButtonState,
   assemblePrefixes,
   currentPrefixMap,
-} = usePrefixes(parsedPrefixes.value)
+} = usePrefixes(parsedPrefixes)
 
 const { examples, initExamples, checkForURLQuery } = useExamples()
 
@@ -184,11 +187,11 @@ function displayExample(example) {
 
 onMounted(async () => {
   // Set first endpoint as selected
-  const urls = Object.values(parsedEndpoints.value)
+  const urls = Object.values(parsedEndpoints)
   selectedEndpoint.value = urls[0] ?? null
 
   // Load examples (fetches any remote queryURLs)
-  await initExamples(parsedQueries.value)
+  await initExamples(parsedQueries)
 
   // Check URL param first, otherwise show first example
   const urlQuery = checkForURLQuery(props.allowQueriesFromURL === 'true')

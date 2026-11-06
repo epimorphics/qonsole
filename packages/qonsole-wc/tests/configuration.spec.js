@@ -181,3 +181,55 @@ test.describe('service property', () => {
     await expect(inside(page, '.results-error')).toHaveText('Unauthorised')
   })
 })
+
+// Configuration attributes are read once, when the element is mounted, as in
+// qonsole v1; heading-level and the service property can change at any time
+test.describe('changes after mount', () => {
+  async function setAttributes(page, attrs) {
+    await page.locator('epi-qonsole').evaluate((el, attrs) => {
+      for (const [name, value] of Object.entries(attrs)) {
+        el.setAttribute(name, value)
+      }
+    }, attrs)
+  }
+
+  test('ignores new endpoints, still selecting and using the first', async ({
+    page,
+  }) => {
+    const requests = await stubEndpoint(page, 'ok')
+    await mount(page)
+    await setAttributes(page, {
+      endpoints: '{"later": "https://later.example/sparql"}',
+    })
+
+    await expect(inside(page, '#qc-endpoints option')).toHaveText([
+      'test endpoint',
+    ])
+    await expect(inside(page, '#qc-endpoints')).toHaveValue(ENDPOINT)
+    await inside(page, '#qc-format').selectOption('text')
+    await inside(page, 'button.btn-run').click()
+    await expect(inside(page, '.results-code')).toBeVisible()
+    expect(requests.map((r) => r.url())).toEqual([ENDPOINT])
+  })
+
+  test('ignores new prefixes and queries', async ({ page }) => {
+    await mount(page)
+    const before = await queryText(page)
+    await setAttributes(page, {
+      prefixes: '{"ex": "http://example.org/"}',
+      queries: '[{"name": "Later", "query": "ASK {}"}]',
+    })
+
+    await expect(inside(page, 'ul.prefixes input')).toHaveCount(3)
+    await expect(inside(page, '#qc-examples option')).toHaveText([
+      SELECT_QUERY.name,
+    ])
+    expect(await queryText(page)).toBe(before)
+  })
+
+  test('applies a new heading-level', async ({ page }) => {
+    await mount(page)
+    await setAttributes(page, { 'heading-level': '3' })
+    await expect(inside(page, 'h3.qonsole__heading')).toHaveCount(3)
+  })
+})
