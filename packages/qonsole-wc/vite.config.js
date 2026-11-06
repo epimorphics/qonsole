@@ -22,4 +22,8 @@ export default defineConfig({
       fileName: 'qonsole',
     },
   },
+  test: {
+    // Unit tests only; the Playwright browser tests in tests/ run separately
+    include: ['tests/unit/**/*.test.js'],
+  },
 })
