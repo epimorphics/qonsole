@@ -21,6 +21,18 @@ test.describe('endpoints', () => {
     await expect(inside(page, '#qc-endpoints')).toHaveValue(ENDPOINT)
   })
 
+  test('selects the endpoint named "default", as v1 did', async ({ page }) => {
+    await mount(page, {
+      attributes: {
+        endpoints: { other: endpoints.second, default: ENDPOINT },
+      },
+    })
+    await expect(inside(page, '#qc-endpoints')).toHaveValue(ENDPOINT)
+    await expect(inside(page, '#qc-endpoints option:checked')).toHaveText(
+      'default'
+    )
+  })
+
   test('sends the query to the endpoint chosen', async ({ page }) => {
     await page.route(endpoints.second, (route) =>
       route.fulfill({ status: 200, contentType: 'text/plain', body: 'ok' })
