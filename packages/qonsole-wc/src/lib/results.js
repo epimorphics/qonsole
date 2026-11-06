@@ -18,9 +18,13 @@ function toQName(prefixMap, uri) {
   return best
 }
 
+// A number as TSV writes it, without quotes: integer, decimal or double
+const BARE_NUMBER = /^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/
+
 function parseCell(v, prefixMap) {
-  if (typeof v === 'number' || !isNaN(parseFloat(v))) {
-    return { type: 'literal', value: String(parseFloat(v)) }
+  // Shown as sent, as in qonsole v1: 1.50 stays 1.50, not 1.5
+  if (BARE_NUMBER.test(v)) {
+    return { type: 'literal', value: v }
   }
 
   const typedMatch = v.match(/^"*([^\\^"]*)"*\^\^<*(.*)>*$/m)

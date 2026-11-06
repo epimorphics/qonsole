@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changing the `endpoints` attribute after the element was added to the page
   replaced the endpoint list but left the old endpoint selected and in use.
   `endpoints`, `prefixes` and `queries` are now read once, as documented.
+- Numbers in a results table are shown as the endpoint sent them, as in v1:
+  `1.50` was shown as `1.5`, and a value such as `2024-01-01` as `2024`.
 
 ---
 

@@ -119,14 +119,14 @@ describe('parseAsTable cells', () => {
       expect(cell('42')).toEqual({ type: 'literal', value: '42' })
     })
 
-    // Known bug, new in v2 (v1 showed the value as sent): numbers go through
-    // parseFloat, which changes their lexical form or truncates other values
-    // that start with a digit
-    it.fails('keeps the lexical form of a bare decimal', () => {
-      expect(cell('1.50').value).toBe('1.50')
-    })
+    it.each(['1.50', '-3', '+0.5', '.5', '1e3', '1.0E-2'])(
+      'keeps the lexical form of the bare number %s',
+      (n) => {
+        expect(cell(n)).toEqual({ type: 'literal', value: n })
+      }
+    )
 
-    it.fails('does not truncate a bare value that starts with digits', () => {
+    it('does not truncate a bare value that starts with digits', () => {
       expect(cell('2024-01-01').value).toBe('2024-01-01')
     })
 
