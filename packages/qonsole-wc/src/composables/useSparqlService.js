@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { formatDuration } from '../lib/formatDuration.js'
 import { parseAsTable, parseAsCode } from '../lib/results.js'
 
 const ACCEPT_HEADERS = {
@@ -28,12 +29,18 @@ export function useSparqlService() {
     resultCount.value = null
 
     const t0 = performance.now()
+    const recordTime = () => {
+      executionTime.value = formatDuration(performance.now() - t0)
+    }
 
     try {
       let rawData
 
       if (customService) {
-        // Adapter for the legacy callback-based service API
+        // Adapter for the callback-based service API kept from v1. v2
+        // services pass success() the response string; v1 services passed
+        // a RemoteSparqlServiceResult, whose raw value is in _val and may be
+        // a parsed JSON object or XML Document, which parseAsCode accepts
         rawData = await new Promise((resolve, reject) => {
           customService.execute(queryText, {
             url: endpointUrl,
@@ -65,29 +72,16 @@ export function useSparqlService() {
         rawData = await res.text()
       }
 
-      const elapsed = performance.now() - t0
-      const totalMs = Math.round(elapsed)
-      const ms = totalMs % 1000
-      const s = Math.floor(totalMs / 1000) % 60
-      const m = Math.floor(totalMs / 60000)
-      executionTime.value = `${m} min ${s}.${String(ms).padStart(3, '0')} s`
+      recordTime()
 
-      if (format === 'tsv') {
-        const parsed = parseAsTable(rawData, prefixMap)
-        resultCount.value = parsed.count
-        result.value = { kind: 'table', ...parsed }
-      } else {
-        const parsed = parseAsCode(rawData, format)
-        resultCount.value = parsed.count
-        result.value = { kind: 'code', ...parsed }
-      }
+      const parsed =
+        format === 'tsv'
+          ? { kind: 'table', ...parseAsTable(rawData, prefixMap) }
+          : { kind: 'code', ...parseAsCode(rawData, format) }
+      resultCount.value = parsed.count
+      result.value = parsed
     } catch (e) {
-      const elapsed = performance.now() - t0
-      const totalMs = Math.round(elapsed)
-      const ms = totalMs % 1000
-      const s = Math.floor(totalMs / 1000) % 60
-      const m = Math.floor(totalMs / 60000)
-      executionTime.value = `${m} min ${s}.${String(ms).padStart(3, '0')} s`
+      recordTime()
       resultCount.value = 0
       error.value = e.message || String(e)
     } finally {
