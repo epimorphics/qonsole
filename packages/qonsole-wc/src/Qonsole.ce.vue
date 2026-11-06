@@ -261,6 +261,7 @@ defineExpose({
 }
 
 .qonsole__section label,
+.qonsole__controls label,
 .qonsole__heading {
   font-weight: bold;
   font-size: 0.875em;
@@ -275,16 +276,8 @@ defineExpose({
   font-size: 0.875em;
 }
 
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-/* Skip link: hidden until it receives keyboard focus, as in qonsole v1 */
+/* The skip link is hidden until it receives keyboard focus, as in qonsole v1 */
+.visually-hidden,
 .qonsole__skip:not(:focus) {
   position: absolute;
   width: 1px;
@@ -307,10 +300,14 @@ defineExpose({
   font-size: inherit;
 }
 
-.qonsole__section select {
+.qonsole__section select,
+.qonsole__controls select {
   padding: 0.3em 0.5em;
   border: 1px solid var(--qonsole-border-color, #ccc);
   border-radius: var(--qonsole-border-radius, 3px);
+}
+
+.qonsole__section select {
   max-width: 30em;
 }
 
@@ -326,17 +323,6 @@ defineExpose({
   align-items: center;
   gap: 0.75em;
   flex-wrap: wrap;
-}
-
-.qonsole__controls label {
-  font-weight: bold;
-  font-size: 0.875em;
-}
-
-.qonsole__controls select {
-  padding: 0.3em 0.5em;
-  border: 1px solid var(--qonsole-border-color, #ccc);
-  border-radius: var(--qonsole-border-radius, 3px);
 }
 
 .btn-run {
