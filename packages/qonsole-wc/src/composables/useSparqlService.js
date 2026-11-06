@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { parseAsTable, parseAsCode } from './useResultsRenderer.js'
+import { parseAsTable, parseAsCode } from '../lib/results.js'
 
 const ACCEPT_HEADERS = {
   tsv: 'text/tab-separated-values',
@@ -14,16 +14,6 @@ export function useSparqlService() {
   const executionTime = ref(null)
   const resultCount = ref(null)
   const result = ref(null)
-
-  function checkOutputFormat(queryText, currentFormat) {
-    if (currentFormat !== 'tsv') return currentFormat
-    const lines = queryText.split('\n')
-    const isLeaderLine = (line) => /(^\s*@?prefix)|(^\s*#)|(^\s*$)/i.test(line)
-    while (lines.length && isLeaderLine(lines[0])) lines.shift()
-    const body = lines.join('\n')
-    if (/^\s*(describe|construct)\b/i.test(body)) return 'text'
-    return currentFormat
-  }
 
   async function execute(
     queryText,
@@ -112,6 +102,5 @@ export function useSparqlService() {
     resultCount,
     result,
     execute,
-    checkOutputFormat,
   }
 }

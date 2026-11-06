@@ -1,10 +1,7 @@
 // @vitest-environment happy-dom
 // (parseAsCode uses DOMParser for XML results)
 import { describe, it, expect } from 'vitest'
-import {
-  parseAsTable,
-  parseAsCode,
-} from '../../src/composables/useResultsRenderer.js'
+import { parseAsTable, parseAsCode } from '../../src/lib/results.js'
 
 const XSD = 'http://www.w3.org/2001/XMLSchema#'
 

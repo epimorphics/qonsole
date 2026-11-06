@@ -111,10 +111,17 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { parseJsonProp } from './composables/parseProps.js'
+import { parseJsonProp } from './lib/parseJsonProp.js'
 import { usePrefixes } from './composables/usePrefixes.js'
+import {
+  lookupPrefixCC,
+  renderPrefixes,
+  stripLeader,
+  updatePrefixDeclaration,
+} from './lib/prefixes.js'
 import { useExamples } from './composables/useExamples.js'
 import { useSparqlService } from './composables/useSparqlService.js'
+import { checkOutputFormat } from './lib/outputFormat.js'
 import SparqlEditor from './components/SparqlEditor.vue'
 import PrefixList from './components/PrefixList.vue'
 import AddPrefixModal from './components/AddPrefixModal.vue'
@@ -156,25 +163,14 @@ const {
   setActive,
   syncPrefixButtonState,
   assemblePrefixes,
-  renderPrefixes,
-  stripLeader,
-  updatePrefixDeclaration,
   parsedPrefixMap: getPrefixMap,
-  lookupPrefixCC,
 } = usePrefixes(parsedPrefixMap.value)
 
 const { examples, initExamples, selectExample, checkForURLQuery } =
   useExamples()
 
-const {
-  loading,
-  error,
-  executionTime,
-  resultCount,
-  result,
-  execute,
-  checkOutputFormat,
-} = useSparqlService()
+const { loading, error, executionTime, resultCount, result, execute } =
+  useSparqlService()
 
 function displayQuery(exampleOrQuery) {
   if (!exampleOrQuery) return

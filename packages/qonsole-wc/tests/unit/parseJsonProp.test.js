@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseJsonProp } from '../../src/composables/parseProps.js'
+import { parseJsonProp } from '../../src/lib/parseJsonProp.js'
 
 describe('parseJsonProp', () => {
   it('parses a JSON attribute value', () => {
