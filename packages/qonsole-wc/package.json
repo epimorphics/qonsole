@@ -1,0 +1,71 @@
+{
+  "name": "@epimorphics/qonsole",
+  "version": "2.0.0-rc.2",
+  "description": "A web component for issuing SPARQL queries.",
+  "keywords": [
+    "SPARQL",
+    "web-component",
+    "query"
+  ],
+  "homepage": "https://github.com/epimorphics/qonsole",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/epimorphics/qonsole.git",
+    "directory": "packages/qonsole-wc"
+  },
+  "author": {
+    "name": "Epimorphics Limited",
+    "url": "https://www.epimorphics.com"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/qonsole.js",
+      "require": "./dist/qonsole.umd.cjs"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "dev": "vite --open /dev/",
+    "build": "vite build",
+    "prepack": "node scripts/root-docs.js copy",
+    "postpack": "node scripts/root-docs.js remove",
+    "preview": "vite preview",
+    "lint": "oxlint src tests scripts",
+    "format": "oxfmt src tests scripts",
+    "format:check": "oxfmt --check src tests scripts",
+    "check": "oxlint src tests scripts && oxfmt --check src tests scripts",
+    "test": "vitest run && playwright test",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test:ui": "playwright test --ui"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/lang-json": "^6.0.2",
+    "@codemirror/lang-xml": "^6.1.0",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.15",
+    "codemirror": "^6.0.2",
+    "codemirror-lang-sparql": "^2.1.0",
+    "vue": "^3.5.45"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "happy-dom": "^21.0.4",
+    "oxfmt": "^0.76.0",
+    "oxlint": "^1.91.0",
+    "playwright-core": "^1.64.1",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  }
+}

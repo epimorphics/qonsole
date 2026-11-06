@@ -1,8 +1,21 @@
-/bower_components/
-/.project
-/.tmp/
-/node_modules/
-/lib/
-/font/
-/images/
-/**/*-npm_audit.json
+# Yarn Berry — commit releases/, ignore everything else
+.yarn/install-state.gz
+.yarn/cache
+!.yarn/releases
+
+# Build output
+packages/qonsole-wc/dist/
+
+# Copied from the root while packing; see packages/qonsole-wc/scripts/root-docs.js
+packages/qonsole-wc/README.md
+packages/qonsole-wc/LICENSE.txt
+
+# Playwright output
+packages/qonsole-wc/test-results/
+packages/qonsole-wc/playwright-report/
+
+# Dependencies
+node_modules/
+
+# OS
+.DS_Store
