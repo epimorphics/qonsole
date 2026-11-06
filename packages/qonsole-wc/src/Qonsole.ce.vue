@@ -186,9 +186,9 @@ function displayExample(example) {
 }
 
 onMounted(async () => {
-  // Set first endpoint as selected
-  const urls = Object.values(parsedEndpoints)
-  selectedEndpoint.value = urls[0] ?? null
+  // Select the endpoint named "default", as qonsole v1 did, or else the first
+  selectedEndpoint.value =
+    parsedEndpoints.default ?? Object.values(parsedEndpoints)[0] ?? null
 
   // Load examples (fetches any remote queryURLs)
   await initExamples(parsedQueries)

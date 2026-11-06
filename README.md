@@ -93,7 +93,7 @@ Then use the element in your HTML:
 
 | Prop | Type | Description |
 |------|------|-------------|
-| `endpoints` | JSON string | Object mapping endpoint names to URLs. The first entry is selected by default. |
+| `endpoints` | JSON string | Object mapping endpoint names to URLs. The endpoint named `default` is selected to begin with, as in v1, or else the first. |
 | `prefixes` | JSON string | Object mapping prefix short-names to URIs. All are checked on by default. |
 | `queries` | JSON string | Array of `{ name, query }` or `{ name, queryURL }` objects. |
 | `allow-queries-from-u-r-l` | `"true"` / `"false"` | When `"true"`, reads an initial query from the `?query=` URL parameter, or from `?q=` (as qonsole-rails did). `?query=_localstore` reads it from session storage key `qonsole.query`, for queries too long for a URL. |

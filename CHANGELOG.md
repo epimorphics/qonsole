@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `1.50` was shown as `1.5`, and a value such as `2024-01-01` as `2024`.
 - `package.json` no longer names a `custom-elements.json` manifest, which
   did not exist and was not published.
+- The endpoint named `default` is selected to begin with, as in v1, rather
+  than the first one listed, so v1 configs open on the same endpoint.
 
 ---
 
