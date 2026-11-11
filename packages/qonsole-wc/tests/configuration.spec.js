@@ -61,6 +61,24 @@ test.describe('examples', () => {
     expect(await queryText(page)).toBe('')
   })
 
+  // #15: in v1, an example with an empty query stopped the others loading
+  test('loads examples after one with an empty query', async ({ page }) => {
+    await mount(page, {
+      attributes: {
+        queries: [
+          { name: 'Template', query: '' },
+          { name: 'Other', query: 'Text' },
+        ],
+      },
+      expectQuery: false,
+    })
+    await inside(page, '#qc-examples').selectOption({ label: 'Other' })
+    await expect.poll(() => queryText(page)).toContain('Text')
+
+    await inside(page, '#qc-examples').selectOption({ label: 'Template' })
+    await expect.poll(() => queryText(page)).not.toContain('Text')
+  })
+
   test('shows "Not found" for a queryURL that cannot be loaded', async ({
     page,
   }) => {
