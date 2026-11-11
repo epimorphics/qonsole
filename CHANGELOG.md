@@ -9,24 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-
-- Changing the `endpoints` attribute after the element was added to the page
-  replaced the endpoint list but left the old endpoint selected and in use.
-  `endpoints`, `prefixes` and `queries` are now read once, as documented.
-- Numbers in a results table are shown as the endpoint sent them, as in v1:
-  `1.50` was shown as `1.5`, and a value such as `2024-01-01` as `2024`.
-- `package.json` no longer names a `custom-elements.json` manifest, which
-  did not exist and was not published.
-- The endpoint named `default` is selected to begin with, as in v1, rather
-  than the first one listed, so v1 configs open on the same endpoint.
-
 ---
 
-## [2.0.0] - 2026-05-20
+## [2.0.0] - 2026-11-11
 
 Complete rewrite as a Vue 3 SFC compiled to a native Web Component. See the
-[migration guide](#migrating-from-v1-to-v2) below for upgrade instructions.
+[migration guide](README.md#migrating-from-v1-to-v2) for upgrade instructions.
 
 ### Added
 
@@ -48,7 +36,8 @@ Complete rewrite as a Vue 3 SFC compiled to a native Web Component. See the
 - Integration pattern changed from `qonsole.init(config)` to the `<epi-qonsole>`
   custom element with JSON-string props — see migration guide.
 - `endpoints`, `prefixes`, and `queries` are now element attributes (JSON strings)
-  rather than a JavaScript configuration object.
+  rather than a JavaScript configuration object. Like v1's config, they are
+  read once, when the element is added to the page.
 - SPARQL requests now use the Fetch API with `Content-Type: application/x-www-form-urlencoded`.
 - Result table is a plain `<table>` with client-side sort; DataTables is removed.
 - CodeMirror upgraded from v5 (AMD) to v6 (ESM).

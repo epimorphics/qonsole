@@ -1,6 +1,6 @@
 {
   "name": "@epimorphics/qonsole",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0",
   "description": "A web component for issuing SPARQL queries.",
   "keywords": [
     "SPARQL",
